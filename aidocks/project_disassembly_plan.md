@@ -49,9 +49,9 @@ Modelled on the reference port's tools in the gitignored `user/` folder ([[feedb
 
 ## Order of work
 1. Check capstone is installed; install it only if not (the dev, 2026-10-02). **Done 2026-10-02:** capstone 5.0.9 was already installed in the dev's Python 3.12 (`C:\Users\tonys\AppData\Local\Programs\Python\Python312`), so nothing was installed. Checked that it decodes this binary: at 0x1000157d8 it reads `adr x0, #0x100025efe`, the address of "Rugido.mp3", matching the hand decode.
-2. `macho.py` and `classes.py`, checked against what is already known by hand: 9 classes, the section map, 198 selector references.
-3. `names.py`, `dz.py`, `listings.py`, then `coverage.py` until it reports nothing missing.
-4. `strings.py` and `archive.py`.
+2. `macho.py` and `classes.py`, checked against what is already known by hand: 9 classes, the section map, 198 selector references. **Done 2026-10-02**, all three matching; also 575 function starts, no data in code, and Swift 3's 12-byte field descriptor (no superclass pointer), read from the bytes after a first guess looped.
+3. `names.py`, `dz.py`, `listings.py`, then `coverage.py` until it reports nothing missing. **Done 2026-10-02.** 532 of 575 functions named (208 objc, 69 thunk bodies, 71 by caller, 75 by what they do, 96 by data tables, 12 class helpers, `main`); 43 shared helpers stay `fn_`. **`coverage.py`: COMPLETE**, all 31,019 words of `__text` listed exactly once, every one decoded by capstone. Checked against the hand decode: the sound loads at 0x1000157d8 and the rest match.
+4. `strings.py` and `archive.py`. **Done 2026-10-02.** The French, Russian and Chinese tutorial lines are in `__ustring`, loaded by `GameScene.tutorial`. The `.sks` scenes and the NIBArchive storyboards decode in full. `tools/README.md` explains how to rerun everything.
 5. Read the listings class by class, `GameScene` first, writing `GAME_STRUCTURE.md` as each part is verified.
 6. Report to the dev; they confirm, and the plan is marked finished. Only then does porting start.
 

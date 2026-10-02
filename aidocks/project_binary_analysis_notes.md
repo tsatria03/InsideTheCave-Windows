@@ -27,7 +27,9 @@ Checked on 2026-10-02 by parsing the load commands (read-only).
 
 **What it does not give.** The Swift symbols are **stripped**: no `_TFC13InsideTheCave...` function names are left. Swift calls its own methods directly or through the class vtable, not `objc_msgSend`, so inside `GameScene` a call to `createMonster` shows as a plain `bl` to an address. Map those addresses to names through the Objective-C method lists (each `@objc` method's IMP) and the vtable in the class metadata.
 
-**Tooling.** The reference port in the gitignored `user/` folder has Mach-O and disassembly tools written for **32-bit Thumb-2** (capstone `CS_MODE_THUMB`, 32-bit `class_ro_t`, first fat slice). They will not work unchanged: they need arm64 (`CS_ARCH_ARM64`), 64-bit Objective-C structures, and arm64's `adrp`/`add` and `adrp`/`ldr` pairs for resolving strings and selectors. Its UI row-table tools fit that game's screens only. Building arm64 versions into `tools/` is a developer task ([[project_dev_tasks]]).
+**Tooling.** The reference port's tools in the gitignored `user/` folder are for 32-bit Thumb-2, so arm64 versions were written into `tools/` on 2026-10-02 ([[project_disassembly_plan]], `tools/README.md`): `macho.py`, `classes.py`, `dz.py`, `names.py`, `listings.py`, `coverage.py`, `strings.py`, `archive.py`. Their output is in `analysis/`: every function of `__text` listed in `analysis/disasm/dz_<Class>.txt`, coverage proved. Start a reading there, and use `python tools/dz.py <address or name>` for one function.
+
+**Reading Swift 3 in the listings.** Swift reaches a stored property of a class with an Objective-C ancestor through a global holding its offset (the same global the class's ivar list points to), loaded with `ldr x8, #<global>` then `[x19, x8]`; `dz.py` names these "read/write GameScene.<field>". Constants are often built with `mov`/`movk` as the raw bits of a double (`0xbfd3333333333333` is -0.3).
 
 **Why:** The address rule and the architecture decide whether every later reading of the binary lands on the right bytes.
 
