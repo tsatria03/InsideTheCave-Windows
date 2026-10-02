@@ -13,11 +13,11 @@ metadata:
 
 - Make the first real build and release with compiler.py and releaser.py once the port has an entry script; they were adapted on 2026-10-02 but cannot build yet ([[project_build_scripts]]).
 - Add tests/case/release.py for the releaser's version numbering, changelog filing and archive names.
-- Disassemble the whole game before any porting: the arm64 tools, every function listed, coverage proved, the scenes, storyboards and strings decoded, and GAME_STRUCTURE.md verified from it ([[project_disassembly_plan]]).
 - Write README.md for developers and docks/readme.txt for players once there is a game to describe.
 
 ## Finished
 
+- The whole game is disassembled: arm64 tools in tools/, all 575 functions listed with coverage proved, the strings, scenes and storyboards decoded, and GAME_STRUCTURE.md written from the code ([[project_disassembly_plan]]).
 - The French, Russian and Chinese tutorial lines are found, in the binary's UTF-16 strings, spoken by GameScene.tutorial.
 - The boss the 2016 update described is not in version 2.32: the full disassembly has no boss anywhere.
 

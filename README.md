@@ -18,8 +18,10 @@ cannot show you.
 ## Status
 
 **The port has only just begun.** Nothing is playable yet, and there are no releases.
-What is here so far is the original app bundle, the libraries the port will use, the
-build and release scripts, and the notes the port is being written from.
+The whole original game has been disassembled: every function of its code is listed in
+`analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the game works, read
+from that code. What is here besides is the original app bundle, the libraries the port
+will use, the build and release scripts, and the notes the port is being written from.
 `aidocks/PORTING_STATUS.md` keeps track of what is done.
 
 ---
@@ -63,8 +65,8 @@ and `aidocks/GAME_STRUCTURE.md` records it as it is read out of the binary.
 game/                    the original app bundle, unpacked
   sounds/                the original's 12 sounds, under their own names
 insidethecave/           the Python package (not yet written)
-analysis/                for the binary and its disassembly (empty so far)
-tools/                   for the arm64 Mach-O and disassembly tools (empty so far)
+analysis/                the binary, and its complete disassembly and decoded data
+tools/                   the arm64 Mach-O and disassembly tools that made analysis/
 tests/case/              the automated tests (none yet)
 tests/interact/          tools to play by ear (none yet)
 vendor/                  OpenAL Soft and NVDA's controller client, with their licenses

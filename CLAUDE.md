@@ -10,14 +10,14 @@ A Windows port of **Inside The Cave** (`InsideTheCaveBD` 2.32), an iOS audio gam
 
 There is no source code for the original. The port is **recovered from the arm64 binary** `game/InsideTheCave` and rewritten **entirely in Python** ([[project_python_only]]), each module mirroring one original class and citing the binary addresses it came from. It is a solo port by tsatria03 ([[project_provenance]]).
 
-**State on 2026-10-02:** nothing is ported yet. The repository holds the original app bundle, the vendored libraries, empty folders for the package, tests, tools and analysis, and these notes.
+**State on 2026-10-02:** the whole game is disassembled ([[project_disassembly_plan]], finished): the tools are in `tools/`, every function is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes the game from the code, with addresses. Nothing is ported yet; the package and test folders are empty.
 
 ## Layout
 
 - **`game/`**: the original app bundle, unpacked: the `InsideTheCave` executable, the sounds (12 files, moved by the dev into `game/sounds/` and converted by them to MP3 on 2026-10-02, under their original base names; the binary still asks for `.wav`, `.aiff` and `.mp3` names, so the port looks a sound up without its extension), the fonts, the `.sks` scenes, `Assets.car`, the compiled storyboards, `Frameworks/` (the Swift runtime) and `Info.plist`. The port never writes to it. Don't move, rename, convert or delete sound files unless the dev asks.
 - **`insidethecave/`**: the Python package, empty so far. It will hold `paths.py`, `game/` (one module per original class), `platform/` and `ui/`.
-- **`analysis/`**: empty so far; for the binary and its disassembly.
-- **`tools/`**: empty so far; for the arm64 Mach-O and disassembly tools ([[project_binary_analysis_notes]]).
+- **`analysis/`**: `bin/InsideTheCave_arm64` (a copy of the binary), `data/` (the classes, every function's name, every string, the decoded scenes and storyboards) and `disasm/dz_<Class>.txt` (every function, annotated).
+- **`tools/`**: the arm64 Mach-O and disassembly tools that make `analysis/`, standard library plus `capstone` for the disassembly; `tools/README.md` says how to rerun them ([[project_binary_analysis_notes]]).
 - **`tests/`**: `tests/case/` for the automated tests, `tests/interact/` for the by-ear tools ([[project_tests_layout]]). Both are empty. Every test must keep off the real save and be silent ([[project_safe_test_run]]).
 - **`vendor/`**: `soft_oal.dll` (OpenAL Soft) and `nvdaControllerClient64.dll`, with their licenses. The port is Windows only (the dev, 2026-10-02: no Linux build), and the Linux `libopenal.so.1` was removed the same day.
 - **`docks/`**: the documents a player reads, which a build ships in a `docks` folder beside the executable: `readme.txt`, `changelog.txt`, `credits.txt` and `todo list.txt`. All are empty so far.
@@ -35,7 +35,7 @@ The game will need 64-bit Python 3.12 or newer, `pygame` (not `pygame-ce`) and `
 
 ## Porting rules
 
-- **Disassemble the whole game before porting anything** (the dev, 2026-10-02). No code goes into `insidethecave/` or `InsideTheCave.py` until [[project_disassembly_plan]] is finished: every function listed, coverage proved, `GAME_STRUCTURE.md` verified.
+- **Disassemble the whole game before porting anything** (the dev, 2026-10-02). Done: [[project_disassembly_plan]] was finished and confirmed the same day. Port from `GAME_STRUCTURE.md` and the listings in `analysis/disasm/`, and tick each function off in `PORTING_STATUS.md`.
 - Port from the binary, and cite the address in the code. Record every deliberate difference in `aidocks/DIVERGENCES.md`.
 - Addresses are VM addresses: **file offset = address - 0x100000000** ([[project_binary_analysis_notes]]). Swift symbols are stripped, so the game's own calls are plain branches to addresses; the Objective-C selectors and the strings are the anchors.
 - Before "reproducing" anything that hinges on one branch or constant, check the raw instructions. Say what is verified and what is inferred ([[feedback_side_by_side]]).
