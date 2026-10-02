@@ -360,8 +360,9 @@ def sound_files(src: str) -> list[str]:
     return found
 
 
-#: What data_summary() counts as a sound.  The repository's are all MP3 (the dev converted them on
-#: 2026-10-02); the original's WAV and AIFF still count, for a copy of the untouched bundle.
+#: What data_summary() counts as a sound.  The repository's are all WAV, in sounds\used and sounds\unused
+#: (the dev converted and sorted them on 2026-10-02); the original's MP3 and AIFF still count, for a copy
+#: of the untouched bundle.
 SOUND_EXTENSIONS = ('.wav', '.mp3', '.aiff', '.aif', '.ogg')
 
 

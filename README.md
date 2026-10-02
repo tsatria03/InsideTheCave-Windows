@@ -63,7 +63,8 @@ and `aidocks/GAME_STRUCTURE.md` records it as it is read out of the binary.
 
 ```
 game/                    the original app bundle, unpacked
-  sounds/                the original's 12 sounds, under their own names
+  sounds/used/           the 12 sounds version 2.32 plays, as WAV, under their own names
+  sounds/unused/         14 sounds from the game's older versions
 insidethecave/           the Python package (not yet written)
 analysis/                the binary, and its complete disassembly and decoded data
 tools/                   the arm64 Mach-O and disassembly tools that made analysis/
@@ -93,11 +94,12 @@ the four fonts, the app icons, the Swift runtime in `Frameworks/`, and `_CodeSig
 The port never writes to it; the save will live in `%APPDATA%`.
 
 The one thing that is not where the original kept it is the sounds. The original keeps its
-12 sounds loose in the bundle's top folder, as WAV, MP3 and AIFF; here they sit together in
-`game/sounds/`, all converted to MP3 under their original names, from the roar
-(`Rugido.mp3`) and the bats to the torch, the coins and the music (`SC.mp3`). The
-original asks for each by its old name, such as `SC.wav`, so the port finds a sound by its
-name without the extension.
+12 sounds loose in the bundle's top folder, as WAV, MP3 and AIFF; here they sit in
+`game/sounds/used/`, all converted to 16-bit WAV under their original names, from the roar
+(`Rugido.wav`) and the bats to the torch, the coins and the music (`SC.wav`). The
+original asks for some by another extension, such as `dash.aiff`, so the port finds a sound
+by its name without the extension. `game/sounds/unused/` keeps 14 sounds from the game's
+older versions, which version 2.32 never plays.
 
 ## Where this came from
 

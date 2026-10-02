@@ -26,5 +26,9 @@ Expected, not yet written up in detail:
 - **The screens.** UIKit screens become lists of rows read aloud.
 - **The ranking.** CloudKit's world ranking cannot work.
 
-### The sounds are MP3, in a folder of their own
-The original keeps 12 sounds loose in its bundle's top folder, as WAV, MP3 and AIFF, and loads each by its full file name (`"BatSound.wav"`, `"dash.aiff"`, `"Rugido.mp3"`; see `GAME_STRUCTURE.md`). The dev moved them into `game/sounds/` and converted every one to MP3 on 2026-10-02, keeping the base names (the two that were MP3 already were re-encoded too). So the port has to find a sound by its base name: the binary's `"SC.wav"` is `game/sounds/SC.mp3`. Whether a converted sound plays as loud and as long as the original is to be checked by ear once the port plays them.
+### The sounds are WAV, sorted into used and unused
+The original keeps 12 sounds loose in its bundle's top folder, as WAV, MP3 and AIFF (three with the wrong extension), and loads each by its full file name (`"BatSound.wav"`, `"dash.aiff"`, `"Rugido.mp3"`; see `GAME_STRUCTURE.md`). On 2026-10-02 the dev moved them into `game/sounds/`, converted them to MP3, then the same day to 16-bit PCM WAV, and sorted them, as in their earlier port:
+- `game/sounds/used/`: the 12 the 2.32 binary names, under their base names (`Rugido.wav`, `dash.wav`, `tilintar.wav` and the rest).
+- `game/sounds/unused/`: 14 sounds from the game's older versions, which 2.32 never names (`GAME_STRUCTURE.md` section 15).
+
+So the port finds a sound by its base name, whatever extension the binary gives: the binary's `"dash.aiff"` is `game/sounds/used/dash.wav`. It looks in `used/` first, then `unused/`. WAV needs no decoder: Python's `wave` module reads it and OpenAL plays it. Two that were 8-bit in the original (`MovimentoProibido`, `screamingMan`) are 16-bit now, and every sound has gone through two conversions; whether each plays as loud and as long as the original is to be checked by ear once the port plays them.
