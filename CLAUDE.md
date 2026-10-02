@@ -35,6 +35,7 @@ The game will need 64-bit Python 3.12 or newer, `pygame` (not `pygame-ce`) and `
 
 ## Porting rules
 
+- **Disassemble the whole game before porting anything** (the dev, 2026-10-02). No code goes into `insidethecave/` or `InsideTheCave.py` until [[project_disassembly_plan]] is finished: every function listed, coverage proved, `GAME_STRUCTURE.md` verified.
 - Port from the binary, and cite the address in the code. Record every deliberate difference in `aidocks/DIVERGENCES.md`.
 - Addresses are VM addresses: **file offset = address - 0x100000000** ([[project_binary_analysis_notes]]). Swift symbols are stripped, so the game's own calls are plain branches to addresses; the Objective-C selectors and the strings are the anchors.
 - Before "reproducing" anything that hinges on one branch or constant, check the raw instructions. Say what is verified and what is inferred ([[feedback_side_by_side]]).

@@ -13,9 +13,7 @@ metadata:
 
 - Make the first real build and release with compiler.py and releaser.py once the port has an entry script; they were adapted on 2026-10-02 but cannot build yet ([[project_build_scripts]]).
 - Add tests/case/release.py for the releaser's version numbering, changelog filing and archive names.
-- Fill in GAME_STRUCTURE.md from the code, with addresses, starting with GameScene: the lanes, the spawning, the speeds, the torch and light, the coins, the scenarios and the collisions.
-- Build arm64 versions of the Mach-O and disassembly tools in tools/, and write their output to analysis/ ([[project_binary_analysis_notes]]).
-- Put the game's arm64 binary in analysis/bin, so the analysis can be redone from the repository alone.
+- Disassemble the whole game before any porting: the arm64 tools, every function listed, coverage proved, the scenes, storyboards and strings decoded, and GAME_STRUCTURE.md verified from it ([[project_disassembly_plan]]).
 - Find the boss the 2016 update added: no string names it, so look for it in GameScene's spawning code ([[project_provenance]], GAME_STRUCTURE.md section 0).
 - Find the French, Russian and Chinese narrations: only English, Spanish and Portuguese tutorial text has been found. Look in the UTF-16 __ustring section, the storyboards and Assets.car.
 - Write README.md for developers and docks/readme.txt for players once there is a game to describe.
