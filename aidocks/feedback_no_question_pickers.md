@@ -13,5 +13,5 @@ metadata:
 **How to apply:**
 - Put the question at the end of the reply, in a short numbered list when there is more than one.
 - Say which answer is recommended and why, in one line each, so a plain "the first one" is enough to answer.
-- The dev may answer several questions one at a time (they did on 2026-10-02); wait for each answer rather than assuming the rest.
+- **When there are several questions, ask one at a time** (the dev, 2026-10-02: "Ask one question at a time."), each with its recommendation, and the next only once it is answered. A plan note may still list them all; the reply asks one.
 - Keep code or layout samples in a fenced block in the reply.

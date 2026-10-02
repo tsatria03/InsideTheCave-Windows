@@ -10,8 +10,8 @@ comes at the player, one for the other screens and the ranking. Their key claims
 instructions by hand (each marked **checked** below). Everything here is read from the instructions unless it
 says **inferred**, which means it rests on names, strings, or how SpriteKit or UIKit behave.
 
-Names in quotes are the file names the binary asks for. The repository's sounds are MP3 under the same base
-names since 2026-10-02 (`DIVERGENCES.md`).
+Names in quotes are the file names the binary asks for. The repository's sounds are WAV under the same base
+names, in `game/sounds/used/`, since 2026-10-02 (`DIVERGENCES.md`).
 
 ---
 
@@ -24,11 +24,11 @@ and even a boss"; a leaderboard; VoiceOver; narration in six languages.
 Against the code:
 - **The six languages are there**: the tutorial line in English, Portuguese, Spanish, Chinese, Russian and
   French (section 8).
-- **There is no boss.** No string, node, health or code path for one exists in 2.32. The "new monsters" are
-  the crystal and ice skins of the same monster, by scenario (section 5).
+- **There is no boss in 2.32.** No string, node, health or code path for one exists. The "new monsters" are
+  the crystal and ice skins of the same monster, by scenario (section 5). The boss was a spider, in version
+  2.02, and the rewrite in 2.3 dropped it (section 15).
 - **A thrown torch kills monsters but never bats**; a bat it hits dodges into another lane (section 7).
-- The binary was built with Xcode 8.2 (December 2016), after the article, so a boss removed later, or never
-  shipped, cannot be told apart from here.
+- The binary was built with Xcode 8.2 (December 2016), after the article.
 
 ---
 
@@ -366,6 +366,22 @@ noted (SpriteKit's default), heard from the player.
 - One-shot sounds played by the scene: "MovimentoProibido.wav" (a move into the wall) and "screamingMan.wav"
   (death).
 
+**The files as the original shipped them** (read from their headers in the first commit, 2026-10-02):
+- Stereo: "Rugido.mp3", "BatSound.wav", "MonsterDead.mp3", "dash.aiff", "tilintar.aiff", "tocha.wav",
+  "lancar_tocha.wav", "pegou_tocha.wav", 44.1 kHz.
+- Mono: "SC.wav" and "plim_moeda.wav", 44.1 kHz 16-bit; "MovimentoProibido.wav" and "screamingMan.wav",
+  11.025 kHz 8-bit.
+- Three have the wrong extension: "tocha.wav" is an AIFF file, "dash.aiff" (8-bit) and "tilintar.aiff" are WAV
+  files. Apple's loader goes by the contents, so the original never noticed.
+- The dev's WAVs in `game/sounds/used/` keep each file's channels and rate, all 16-bit now.
+- Since the roar and the bats are stereo, and Apple's 3D audio places only mono sounds (**inferred**), the
+  original most likely played them without direction: the lane was told only by the volume, 3.0 in your
+  lane and 1.0 in another. The port places them (`project_port_plan.md`, question 2).
+
+**Monsters never change lanes.** Each comes straight down the lane it was given (`moveToY` only,
+0x100013ae8); the player is the one who moves. Bats too, except that a thrown torch makes one dodge sideways
+(section 7).
+
 ---
 
 ## 14. The original's bugs and oddities
@@ -373,7 +389,7 @@ noted (SpriteKit's default), heard from the player.
 Each is the original's behaviour, read from the code. Whether the port keeps or fixes each is the dev's decision,
 to be recorded in `DIVERGENCES.md` when made.
 - The result screen crashes on short device names (section 11); the world save can crash too (section 12).
-- No boss, despite the 2016 update's description.
+- No boss: the spider of 2.02 was dropped in the 2.3 rewrite (section 15).
 - Bats cannot be killed; a torch only makes them dodge, possibly into your lane.
 - The coin's jingle never plays.
 - The snow effect is never shown.
@@ -387,3 +403,37 @@ to be recorded in `DIVERGENCES.md` when made.
 - `rankWorld` is reset to placeholders on every launch.
 - The thrown torch's body is a circle twice the sprite's width.
 - The English line says "scape"; the French has spelling mistakes.
+
+---
+
+## 15. The game's other versions, and the spider boss
+
+On 2026-10-02 the dev found App Store copies of eight versions: 1.0, 1.15, 1.18, 1.19, 1.21.1, 2.02, 2.3 and
+2.32. Their code is encrypted with Apple's FairPlay (`cryptid` 1 in both the armv7 and arm64 slices of every
+one), which can only be undone on an iPhone signed into the buying account; it is not decrypted, and not to be.
+Only their unencrypted parts were read: `Info.plist`, `iTunesMetadata.plist`, the sounds, the scene files, the
+storyboards and the names in `Assets.car`. The dev then deleted them from `user/`. Everything below is from
+those parts; nothing of their behaviour can be read.
+
+- **The App Store record** names the seller as **Victor Leal**, and the first release as **2016-06-14**.
+- **1.0 to 1.19** (Xcode 7.3.1, iOS SDK 9.3, the executable "Inside The Cave"): an early game, sounds
+  `Homem gritando dois.wav`, `Rugido.mp3`, `Running_On_Rocks.mp3`, `SuperBonk.mp3`, `Terreno.wav`,
+  `background-music-aac.caf`, `coin.mp3`, `perdeu.wav` ("lost"), `pew-pew-lei.caf`, `toq.wav`; `SC.wav` from 1.15.
+- **1.21.1**: bats (`morcego` images, `BatI.wav`, `batCave.wav`) and the torch (`tocha.wav`).
+- **2.02**: the crystal and ice monsters, and a **spider boss** found nowhere else:
+  - images `aranha` to `aranha4` (spider), `teia` to `teia4`, `teiaDead`, `deadTeia` (web) in `Assets.car`
+  - sounds `aberturaAranha.wav` (the spider's opening), `gritoAranha.wav` (its scream), `hitAranha.wav` (hit),
+    `spider.mp3`, `tocha_teia.wav` (a torch and a web), and `tocha_acende.wav` (a torch lighting)
+  - a storyboard screen showing the spider, and an image `vs_mode.svg`
+  - a 3.1 MB executable, six times the others
+  This is the "boss" the 2016 article describes (section 0). How it behaved cannot be read.
+- **2.3** (Xcode 8.1, build 7, the executable renamed "InsideTheCave"): a rewrite, with the twelve sounds 2.32
+  has. The spider, its sounds and its images are gone.
+- **2.32** (Xcode 8.2): ours. The App Store copy matches ours in every resource and in the size and place of
+  every data section, but its code is a separate compile (an extra `__eh_frame` section, `__text` 0x614 bytes
+  longer); ours is the decrypted arm64 slice of the same version.
+
+The dev kept 14 of the older sounds, converted to WAV, in `game/sounds/unused/`: `aberturaAranha`,
+`background-music`, `batCave`, `coin`, `gritoAranha`, `hitAranha`, `perdeu`, `pew-pew-lei`, `Running_On_Rocks`,
+`spider`, `SuperBonk`, `tocha_acende`, `tocha_teia`, `toq`. Not kept: `Homem gritando dois`, `Terreno`, `BatI`,
+`aaa`.
