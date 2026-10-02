@@ -70,7 +70,26 @@ Nine game classes (inferred from strings; the count matches `__objc_classlist`):
 
 **Scenarios.** The cave changes as you go: `cenarioPedra`, `cenarioPedraAgua`, `cenarioAgua`, `cenarioAguaGelo`, `cenarioGelo` (`scenario0` to `2`, `changeScenario`, `moveScenario`).
 
-**Sound files** (the original keeps them in the bundle's top folder; the dev moved them into `game/sounds/` on 2026-10-02, names unchanged): `BatSound.wav`, `dash.aiff`, `lancar_tocha.wav`, `MonsterDead.mp3`, `MovimentoProibido.wav`, `pegou_tocha.wav`, `plim_moeda.wav`, `Rugido.mp3`, `SC.wav` (16.6 MB, likely the background music), `screamingMan.wav`, `tilintar.aiff`, `tocha.wav`.
+**Sound files.** The original keeps them in the bundle's top folder; the dev moved them into `game/sounds/` on 2026-10-02, names unchanged. All 12 are named in the binary and nowhere else (not in the `.sks` scenes or the storyboards), so the code plays every one.
+
+**What each sound is for (2026-10-02).** Ten are loaded one after another, in the same order, by three functions, `0x100015620`, `0x100015d58` and `0x100017154`, most likely the three initialisers of `GameScene`. That order matches, one for one, ten consecutive stored properties in Swift's field list (`__swift3_reflstr`, 0x100028310). **Verified:** which string is loaded where, and the two orders matching. **Inferred:** that each file belongs to the field in the same place, and what each field means, from its name (Portuguese file names translated).
+
+- `Rugido.mp3`: `roar`, the monster's roar ("rugido", roar). Loaded at 0x1000157d8.
+- `BatSound.wav`: `batSound`, the bats. 0x100015830.
+- `tilintar.aiff`: `coinTinkle` ("tilintar", to jingle); likely a coin ahead jingling so it can be found by ear; `moveCoinSound` suggests it moves with the coin. 0x100015884.
+- `plim_moeda.wav`: `coinSound` ("plim moeda", coin ding); likely picking a coin up. 0x1000158d8.
+- `pegou_tocha.wav`: `getTorchSound` ("pegou tocha", got torch). 0x10001592c.
+- `lancar_tocha.wav`: `playTorchSound` ("lançar tocha", throw torch). 0x100015980.
+- `tocha.wav`: `backgroundTorch` ("tocha", torch); likely the held torch burning in a loop. 0x1000159d4.
+- `SC.wav`: `backgroundMusic`, the game music (16.6 MB; confirmed by the dev). 0x100015a28.
+- `dash.aiff`: `movePlayerSound`, the dash to another lane. 0x100015a7c.
+- `MonsterDead.mp3`: `deadMonster`, a monster or bat dying. 0x100015ad0.
+
+The other two are loaded elsewhere:
+- `MovimentoProibido.wav` ("forbidden move"), in two functions, `0x10000f8e4` (load at 0x10000f988) and `0x10000fb90` (0x10000fc14). Two functions fits a move left and a move right that each refuse at the cave's edge; unverified.
+- `screamingMan.wav`, in one function, `0x1000230c4` (load at 0x100023148), away from the scene's sounds; likely the player's scream at death. Unverified.
+
+The addresses come from a hand decode of arm64 `adr` and `adrp`+`add` pairs, with functions bounded by `LC_FUNCTION_STARTS`. None of these functions is an Objective-C method, so none has a name yet.
 
 ## 4. What needed a server
 
