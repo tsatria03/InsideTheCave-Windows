@@ -11,6 +11,7 @@ metadata:
 
 ## Open
 
+- Port the game, in the five phases of [[project_port_plan]], once the dev has answered its questions.
 - Make the first real build and release with compiler.py and releaser.py once the port has an entry script; they were adapted on 2026-10-02 but cannot build yet ([[project_build_scripts]]).
 - Add tests/case/release.py for the releaser's version numbering, changelog filing and archive names.
 - Write README.md for developers and docks/readme.txt for players once there is a game to describe.
