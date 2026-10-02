@@ -390,7 +390,8 @@ Each is the original's behaviour, read from the code. Whether the port keeps or 
 to be recorded in `DIVERGENCES.md` when made.
 - The result screen crashes on short device names (section 11); the world save can crash too (section 12).
 - No boss: the spider of 2.02 was dropped in the 2.3 rewrite (section 15).
-- Bats cannot be killed; a torch only makes them dodge, possibly into your lane.
+- Bats cannot be killed; a torch only makes them dodge, possibly into your lane. This looks deliberate rather
+  than a bug: the handler is written for it (0x10001356c). The port keeps it (the dev, 2026-10-02).
 - The coin's jingle never plays.
 - The snow effect is never shown.
 - Most contacts are tested in one order of the bodies only.
