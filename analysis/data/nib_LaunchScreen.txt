@@ -1,0 +1,373 @@
+The compiled storyboard LaunchScreen.storyboardc, decoded by tools/archive.py
+
+====================================================================================================
+01J-lp-oVM-view-Ze5-6b-2t3.nib: a NIBArchive, 48 objects, 52 keys, 253 values, 14 classes
+#0  NSObject
+      UINibTopLevelObjectsKey              #9 (NSArray)
+      UINibObjectsKey                      #39 (NSArray)
+      UINibConnectionsKey                  #18 (NSArray)
+      UINibVisibleWindowsKey               #34 (NSArray)
+      UINibAccessibilityConfigurationsKey  #34 (NSArray)
+      UINibTraitStorageListsKey            #34 (NSArray)
+      UINibKeyValuePairsKey                #34 (NSArray)
+#1  NSMutableArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #4 (NSLayoutConstraint)
+#2  UIImageNibPlaceholder
+      UIImageWidth                         1.0
+      UIImageHeight                        1.0
+      UIResourceName                       #45 (NSString 'cpt2')
+#3  NSLayoutConstraint
+      NSFirstItem                          #16 (_UILayoutGuide)
+      NSFirstAttributeV2                   8
+      NSFirstAttribute                     8
+      NSShouldBeArchived                   True
+#4  NSLayoutConstraint
+      NSFirstItem                          #40 (UIImageView)
+      NSFirstAttributeV2                   7
+      NSFirstAttribute                     7
+      NSMultiplier                         1.6484375
+      NSSecondItem                         #40 (UIImageView)
+      NSSecondAttributeV2                  8
+      NSSecondAttribute                    8
+      NSShouldBeArchived                   True
+#5  NSLayoutConstraint
+      NSFirstItem                          #10 (UIImageView)
+      NSFirstAttributeV2                   10
+      NSFirstAttribute                     10
+      NSMultiplier                         1.2999999523162842
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  10
+      NSSecondAttribute                    10
+      NSShouldBeArchived                   True
+#6  NSLayoutConstraint
+      NSFirstItem                          #10 (UIImageView)
+      NSFirstAttributeV2                   9
+      NSFirstAttribute                     9
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  9
+      NSSecondAttribute                    9
+      NSShouldBeArchived                   True
+#7  UIRuntimeOutletConnection
+      UILabel                              #8 (NSString 'view')
+      UISource                             #38 (UIProxyObject)
+      UIDestination                        #46 (UIView)
+#8  NSString
+      NS.bytes                             'view'
+#9  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #46 (UIView)
+      UINibEncoderEmptyKey                 #38 (UIProxyObject)
+      UINibEncoderEmptyKey                 #24 (UIProxyObject)
+#10  UIImageView
+      UIBounds                             bytes[33] 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 d0 76 40 00 00 00 00 00 b0 76 40
+      UICenter                             bytes[17] 07 00 00 00 00 00 70 67 40 00 00 00 00 00 28 7a 40
+      UIDeepDrawRect                       True
+      UIOpaque                             True
+      UIUserInteractionDisabled            True
+      UIAutoresizeSubviews                 True
+      UIAutoresizingMask                   36
+      UIContentMode                        2
+      UIViewDoesNotTranslateAutoresizingMaskIntoConstraints True
+      UIViewAutolayoutConstraints          #20 (NSMutableArray)
+      UIViewContentHuggingPriority         #47 (NSString '{251, 251}')
+      UIViewSemanticContentAttribute       0
+      UIImage                              #2 (UIImageNibPlaceholder)
+#11  NSMutableArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #21 (_UILayoutSupportConstraint)
+#12  NSMutableArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #41 (_UILayoutSupportConstraint)
+#13  NSMutableArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #10 (UIImageView)
+      UINibEncoderEmptyKey                 #40 (UIImageView)
+      UINibEncoderEmptyKey                 #16 (_UILayoutGuide)
+      UINibEncoderEmptyKey                 #37 (_UILayoutGuide)
+#14  NSString
+      NS.bytes                             '_UIViewControllerBottom'
+#15  NSLayoutConstraint
+      NSFirstItem                          #16 (_UILayoutGuide)
+      NSFirstAttributeV2                   3
+      NSFirstAttribute                     3
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  3
+      NSSecondAttribute                    3
+      NSShouldBeArchived                   True
+#16  _UILayoutGuide
+      UIDeepDrawRect                       True
+      UIOpaque                             True
+      UIHidden                             True
+      UIAutoresizeSubviews                 True
+      UIViewDoesNotTranslateAutoresizingMaskIntoConstraints True
+      UIViewAutolayoutConstraints          #12 (NSMutableArray)
+      UIViewSemanticContentAttribute       0
+      _UILayoutGuideIdentifier             #42 (NSString '_UIViewControllerTop')
+      _UILayoutGuideConstraintsToRemove    #28 (NSArray)
+#17  NSLayoutConstraint
+      NSFirstItem                          #10 (UIImageView)
+      NSFirstAttributeV2                   7
+      NSFirstAttribute                     7
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  7
+      NSSecondAttribute                    7
+      NSShouldBeArchived                   True
+#18  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #7 (UIRuntimeOutletConnection)
+#19  UIColor
+      UIColorComponentCount                4
+      UIRed                                0.0
+      UIGreen                              0.0
+      UIBlue                               0.0
+      UIAlpha                              1.0
+      NSRGB                                '0 0 0'
+      NSColorSpace                         2
+#20  NSMutableArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #36 (NSLayoutConstraint)
+#21  _UILayoutSupportConstraint
+      NSFirstItem                          #37 (_UILayoutGuide)
+      NSFirstAttributeV2                   7
+      NSFirstAttribute                     7
+      NSShouldBeArchived                   True
+      NSPriority                           999
+#22  NSLayoutConstraint
+      NSFirstItem                          #40 (UIImageView)
+      NSFirstAttributeV2                   7
+      NSFirstAttribute                     7
+      NSMultiplier                         0.6899999976158142
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  7
+      NSSecondAttribute                    7
+      NSShouldBeArchived                   True
+#23  NSLayoutConstraint
+      NSFirstItem                          #16 (_UILayoutGuide)
+      NSFirstAttributeV2                   5
+      NSFirstAttribute                     5
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  5
+      NSSecondAttribute                    5
+      NSShouldBeArchived                   True
+#24  UIProxyObject
+      UIProxiedObjectIdentifier            #26 (NSString 'IBFirstResponder')
+#25  NSLayoutConstraint
+      NSFirstItem                          #40 (UIImageView)
+      NSFirstAttributeV2                   10
+      NSFirstAttribute                     10
+      NSMultiplier                         0.550000011920929
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  10
+      NSSecondAttribute                    10
+      NSShouldBeArchived                   True
+#26  NSString
+      NS.bytes                             'IBFirstResponder'
+#27  NSLayoutConstraint
+      NSFirstItem                          #37 (_UILayoutGuide)
+      NSFirstAttributeV2                   8
+      NSFirstAttribute                     8
+      NSShouldBeArchived                   True
+#28  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #23 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #15 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #3 (NSLayoutConstraint)
+#29  NSLayoutConstraint
+      NSFirstItem                          #37 (_UILayoutGuide)
+      NSFirstAttributeV2                   5
+      NSFirstAttribute                     5
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  5
+      NSSecondAttribute                    5
+      NSShouldBeArchived                   True
+#30  NSString
+      NS.bytes                             'LOGO'
+#31  NSLayoutConstraint
+      NSFirstItem                          #40 (UIImageView)
+      NSFirstAttributeV2                   9
+      NSFirstAttribute                     9
+      NSSecondItem                         #46 (UIView)
+      NSSecondAttributeV2                  9
+      NSSecondAttribute                    9
+      NSShouldBeArchived                   True
+#32  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #29 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #27 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #35 (NSLayoutConstraint)
+#33  NSString
+      NS.bytes                             'IBFilesOwner'
+#34  NSArray
+      NSInlinedValue                       True
+#35  NSLayoutConstraint
+      NSFirstItem                          #46 (UIView)
+      NSFirstAttributeV2                   4
+      NSFirstAttribute                     4
+      NSSecondItem                         #37 (_UILayoutGuide)
+      NSSecondAttributeV2                  4
+      NSSecondAttribute                    4
+      NSShouldBeArchived                   True
+#36  NSLayoutConstraint
+      NSFirstItem                          #10 (UIImageView)
+      NSFirstAttributeV2                   7
+      NSFirstAttribute                     7
+      NSMultiplier                         1.005509614944458
+      NSSecondItem                         #10 (UIImageView)
+      NSSecondAttributeV2                  8
+      NSSecondAttribute                    8
+      NSShouldBeArchived                   True
+#37  _UILayoutGuide
+      UIDeepDrawRect                       True
+      UIOpaque                             True
+      UIHidden                             True
+      UIAutoresizeSubviews                 True
+      UIViewDoesNotTranslateAutoresizingMaskIntoConstraints True
+      UIViewAutolayoutConstraints          #11 (NSMutableArray)
+      UIViewSemanticContentAttribute       0
+      _UILayoutGuideIdentifier             #14 (NSString '_UIViewControllerBottom')
+      _UILayoutGuideConstraintsToRemove    #32 (NSArray)
+#38  UIProxyObject
+      UIProxiedObjectIdentifier            #33 (NSString 'IBFilesOwner')
+#39  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #46 (UIView)
+      UINibEncoderEmptyKey                 #38 (UIProxyObject)
+      UINibEncoderEmptyKey                 #24 (UIProxyObject)
+      UINibEncoderEmptyKey                 #31 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #22 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #25 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #5 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #6 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #17 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #16 (_UILayoutGuide)
+      UINibEncoderEmptyKey                 #37 (_UILayoutGuide)
+      UINibEncoderEmptyKey                 #10 (UIImageView)
+      UINibEncoderEmptyKey                 #40 (UIImageView)
+      UINibEncoderEmptyKey                 #36 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #4 (NSLayoutConstraint)
+#40  UIImageView
+      UIBounds                             bytes[33] 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 70 70 40 00 00 00 00 00 c0 63 40
+      UICenter                             bytes[17] 07 00 00 00 00 00 b0 67 40 00 00 00 00 00 00 65 40
+      UIDeepDrawRect                       True
+      UIOpaque                             True
+      UIUserInteractionDisabled            True
+      UIAutoresizeSubviews                 True
+      UIAutoresizingMask                   36
+      UIAlpha                              0.949999988079071
+      UIContentMode                        2
+      UIViewDoesNotTranslateAutoresizingMaskIntoConstraints True
+      UIViewAutolayoutConstraints          #1 (NSMutableArray)
+      UIViewContentHuggingPriority         #47 (NSString '{251, 251}')
+      UIViewSemanticContentAttribute       0
+      UIImage                              #44 (UIImageNibPlaceholder)
+#41  _UILayoutSupportConstraint
+      NSFirstItem                          #16 (_UILayoutGuide)
+      NSFirstAttributeV2                   7
+      NSFirstAttribute                     7
+      NSShouldBeArchived                   True
+      NSPriority                           999
+#42  NSString
+      NS.bytes                             '_UIViewControllerTop'
+#43  NSMutableArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #23 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #15 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #3 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #29 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #27 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #35 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #31 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #22 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #25 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #5 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #6 (NSLayoutConstraint)
+      UINibEncoderEmptyKey                 #17 (NSLayoutConstraint)
+#44  UIImageNibPlaceholder
+      UIImageWidth                         1.0
+      UIImageHeight                        1.0
+      UIResourceName                       #30 (NSString 'LOGO')
+#45  NSString
+      NS.bytes                             'cpt2'
+#46  UIView
+      UIBounds                             bytes[33] 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 70 77 40 00 00 00 00 00 d8 84 40
+      UICenter                             bytes[17] 07 00 00 00 00 00 70 67 40 00 00 00 00 00 d8 74 40
+      UISubviews                           #13 (NSMutableArray)
+      UIBackgroundColor                    #19 (UIColor)
+      UIDeepDrawRect                       True
+      UIOpaque                             True
+      UIAutoresizeSubviews                 True
+      UIAutoresizingMask                   18
+      UITintColor                          #19 (UIColor)
+      UIViewAutolayoutConstraints          #43 (NSMutableArray)
+      UIViewSemanticContentAttribute       0
+#47  NSString
+      NS.bytes                             '{251, 251}'
+
+====================================================================================================
+game/Base.lproj/LaunchScreen.storyboardc/Info.plist
+
+UIViewControllerIdentifiersToNibNames:
+    UIViewController-01J-lp-oVM: 'UIViewController-01J-lp-oVM'
+UIStoryboardDesignatedEntryPointIdentifier: 'UIViewController-01J-lp-oVM'
+UIStoryboardVersion: 1
+
+====================================================================================================
+UIViewController-01J-lp-oVM.nib: a NIBArchive, 18 objects, 16 keys, 39 values, 7 classes
+#0  NSObject
+      UINibTopLevelObjectsKey              #2 (NSArray)
+      UINibObjectsKey                      #14 (NSArray)
+      UINibConnectionsKey                  #3 (NSArray)
+      UINibVisibleWindowsKey               #12 (NSArray)
+      UINibAccessibilityConfigurationsKey  #12 (NSArray)
+      UINibTraitStorageListsKey            #12 (NSArray)
+      UINibKeyValuePairsKey                #12 (NSArray)
+#1  NSString
+      NS.bytes                             'sceneViewController'
+#2  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #5 (UIViewController)
+      UINibEncoderEmptyKey                 #9 (UIProxyObject)
+      UINibEncoderEmptyKey                 #4 (UIProxyObject)
+      UINibEncoderEmptyKey                 #17 (UIProxyObject)
+#3  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #15 (UIRuntimeOutletConnection)
+      UINibEncoderEmptyKey                 #7 (UIRuntimeOutletConnection)
+#4  UIProxyObject
+      UIProxiedObjectIdentifier            #10 (NSString 'IBFirstResponder')
+#5  UIViewController
+      UIExternalObjectsTableForViewLoading #13 (NSDictionary)
+      UINibName                            #6 (NSString '01J-lp-oVM-view-Ze5-6b-2t3')
+#6  NSString
+      NS.bytes                             '01J-lp-oVM-view-Ze5-6b-2t3'
+#7  UIRuntimeOutletConnection
+      UILabel                              #8 (NSString 'storyboard')
+      UISource                             #5 (UIViewController)
+      UIDestination                        #17 (UIProxyObject)
+#8  NSString
+      NS.bytes                             'storyboard'
+#9  UIProxyObject
+      UIProxiedObjectIdentifier            #16 (NSString 'IBFilesOwner')
+#10  NSString
+      NS.bytes                             'IBFirstResponder'
+#11  NSString
+      NS.bytes                             'UIStoryboardPlaceholder'
+#12  NSArray
+      NSInlinedValue                       True
+#13  NSDictionary
+      NSInlinedValue                       True
+#14  NSArray
+      NSInlinedValue                       True
+      UINibEncoderEmptyKey                 #5 (UIViewController)
+      UINibEncoderEmptyKey                 #9 (UIProxyObject)
+      UINibEncoderEmptyKey                 #4 (UIProxyObject)
+      UINibEncoderEmptyKey                 #17 (UIProxyObject)
+#15  UIRuntimeOutletConnection
+      UILabel                              #1 (NSString 'sceneViewController')
+      UISource                             #9 (UIProxyObject)
+      UIDestination                        #5 (UIViewController)
+#16  NSString
+      NS.bytes                             'IBFilesOwner'
+#17  UIProxyObject
+      UIProxiedObjectIdentifier            #11 (NSString 'UIStoryboardPlaceholder')

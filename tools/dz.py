@@ -63,7 +63,7 @@ def norm(reg: str) -> str:
 
 class Insn:
     """One instruction, or one word capstone could not decode, with what is known about it."""
-    __slots__ = ('address', 'mnemonic', 'op_str', 'size', 'notes', 'target', 'kind', 'ref')
+    __slots__ = ('address', 'mnemonic', 'op_str', 'size', 'notes', 'target', 'kind', 'ref', 'addrs')
 
     def __init__(self, address, mnemonic, op_str, size=4):
         self.address, self.mnemonic, self.op_str, self.size = address, mnemonic, op_str, size
@@ -71,6 +71,7 @@ class Insn:
         self.target = None          # a branch or call target
         self.kind = ''              # 'call', 'jump', 'cond', 'ret', 'word'
         self.ref = None             # an address in the code this instruction takes, such as a closure's
+        self.addrs: list[int] = []  # every address this instruction was found to build or load from
 
     def text(self) -> str:
         line = '  0x%x  %-7s %s' % (self.address, self.mnemonic, self.op_str)
@@ -272,6 +273,7 @@ class Disassembler:
             r = reg(ops[0])
             state[r] = ('addr', ops[1].imm)
             if mn == 'adr':
+                x.addrs.append(ops[1].imm)
                 d = self.describe(ops[1].imm)
                 if d:
                     x.notes.append(d)
@@ -285,6 +287,7 @@ class Disassembler:
             if src and src[0] == 'addr':
                 va = src[1] + imm
                 state[dst] = ('addr', va)
+                x.addrs.append(va)
                 d = self.describe(va)
                 if d:
                     x.notes.append(d)
@@ -325,6 +328,7 @@ class Disassembler:
             is_load = mn.startswith('ld')
             if b and b[0] == 'addr' and not index:
                 va = b[1] + mem.mem.disp
+                x.addrs.append(va)
                 note = self.describe(va, loaded=is_load, reg=loaded_reg)
                 if is_load and ops[0].type == A.ARM64_OP_REG:
                     self._loaded(norm(regname(ops[0].reg)), va, state)
@@ -353,6 +357,7 @@ class Disassembler:
                 state.pop(base, None)
             return
         if mn.startswith('ldr') and len(ops) == 2 and ops[1].type == A.ARM64_OP_IMM:   # literal
+            x.addrs.append(ops[1].imm)
             d = self.describe(ops[1].imm, loaded=True, reg=regname(ops[0].reg))
             if d:
                 x.notes.append(d)

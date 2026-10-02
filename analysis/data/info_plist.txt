@@ -1,0 +1,81 @@
+game/Info.plist
+
+CFBundleName: 'InsideTheCave'
+DTXcode: '0821'
+DTSDKName: 'iphoneos10.2'
+UILaunchStoryboardName: 'LaunchScreen'
+CFBundleIcons~ipad:
+    CFBundlePrimaryIcon:
+        CFBundleIconFiles:
+            - 'AppIcon20x20'
+            - 'AppIcon29x29'
+            - 'AppIcon40x40'
+            - 'AppIcon60x60'
+            - 'AppIcon76x76'
+            - 'AppIcon83.5x83.5'
+DTSDKBuild: '14C89'
+CFBundleDevelopmentRegion: 'en'
+CFBundleVersion: '1'
+BuildMachineOSBuild: '16B2555'
+DTPlatformName: 'iphoneos'
+CFBundlePackageType: 'APPL'
+UIMainStoryboardFile: 'Main'
+CFBundleSupportedPlatforms:
+    - 'iPhoneOS'
+UIStatusBarHidden: True
+CFBundleShortVersionString: '2.32'
+CFBundleInfoDictionaryVersion: '6.0'
+UIRequiredDeviceCapabilities:
+    - 'armv7'
+CFBundleExecutable: 'InsideTheCave'
+UISupportedInterfaceOrientations~ipad:
+    - 'UIInterfaceOrientationPortrait'
+    - 'UIInterfaceOrientationPortraitUpsideDown'
+UIRequiresFullScreen: True
+CFBundleIdentifier: 'InsideTheCaveBD'
+UIAppFonts:
+    - 'Apple ][.ttf'
+    - 'Fipps-Regular.otf'
+    - 'PressStart2P.ttf'
+DTXcodeBuild: '8C1002'
+DTPlatformVersion: '10.2'
+LSRequiresIPhoneOS: True
+CFBundleDisplayName: 'Inside The Cave'
+UISupportedInterfaceOrientations:
+    - 'UIInterfaceOrientationPortrait'
+    - 'UIInterfaceOrientationPortraitUpsideDown'
+CFBundleIcons:
+    CFBundlePrimaryIcon:
+        CFBundleIconFiles:
+            - 'AppIcon20x20'
+            - 'AppIcon29x29'
+            - 'AppIcon40x40'
+            - 'AppIcon60x60'
+DTCompiler: 'com.apple.compilers.llvm.clang.1_0'
+MinimumOSVersion: '9.3'
+DTPlatformBuild: '14C89'
+UIDeviceFamily:
+    - 1
+    - 2
+UISupportedDevices:
+    - 'iPad4,1'
+    - 'iPad4,2'
+    - 'iPad4,3'
+    - 'iPad4,4'
+    - 'iPad4,5'
+    - 'iPad4,6'
+    - 'iPad4,7'
+    - 'iPad4,8'
+    - 'iPad4,9'
+    - 'iPad5,1'
+    - 'iPad5,2'
+    - 'iPad5,3'
+    - 'iPad5,4'
+    - 'iPad6,7'
+    - 'iPad6,8'
+    - 'iPhone6,1'
+    - 'iPhone6,2'
+    - 'iPhone7,2'
+    - 'iPhone8,1'
+    - 'iPhone8,4'
+    - 'iPod7,1'
