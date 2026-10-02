@@ -70,7 +70,7 @@ Nine game classes (inferred from strings; the count matches `__objc_classlist`):
 
 **Scenarios.** The cave changes as you go: `cenarioPedra`, `cenarioPedraAgua`, `cenarioAgua`, `cenarioAguaGelo`, `cenarioGelo` (`scenario0` to `2`, `changeScenario`, `moveScenario`).
 
-**Sound files** (all in `game/`): `BatSound.wav`, `dash.aiff`, `lancar_tocha.wav`, `MonsterDead.mp3`, `MovimentoProibido.wav`, `pegou_tocha.wav`, `plim_moeda.wav`, `Rugido.mp3`, `SC.wav` (16.6 MB, likely the background music), `screamingMan.wav`, `tilintar.aiff`, `tocha.wav`.
+**Sound files** (the original keeps them in the bundle's top folder; the dev moved them into `game/sounds/` on 2026-10-02, names unchanged): `BatSound.wav`, `dash.aiff`, `lancar_tocha.wav`, `MonsterDead.mp3`, `MovimentoProibido.wav`, `pegou_tocha.wav`, `plim_moeda.wav`, `Rugido.mp3`, `SC.wav` (16.6 MB, likely the background music), `screamingMan.wav`, `tilintar.aiff`, `tocha.wav`.
 
 ## 4. What needed a server
 

@@ -15,8 +15,8 @@ They are copies of the reference port's build and release scripts, from the giti
 
 **What the adaptation will need, once allowed** (listed now so nothing is missed; nothing done yet):
 - The names: executable, entry script, the `insidethecave` package import, the environment variables, the build folder, the zip names and the release title.
-- The game files to copy. This bundle is flat: the WAV, MP3 and AIFF sounds sit in `game/` with the fonts, the `.sks` scenes, the asset catalogue `Assets.car` and the nibs. Which of them the port reads is not known until the port exists; the iOS executable, `_CodeSignature`, `Frameworks/` and the app icons should stay out.
-- Whether the sounds are sorted into `game/sounds/used` and `unused` as in the reference port. That is the dev's decision; don't move sound files unless asked.
+- The game files to copy. The 12 sounds are in `game/sounds/` (the dev moved them there on 2026-10-02, flat, names unchanged); the fonts, the `.sks` scenes, the asset catalogue `Assets.car` and the nibs are still in `game/`. Which of them the port reads is not known until the port exists; the iOS executable, `_CodeSignature`, `Frameworks/` and the app icons should stay out.
+- Any further sorting of the sounds (subfolders, or used and unused) is the dev's decision; don't move sound files unless asked.
 - `VERSION` already holds `26.10.01-1`.
 
 **How to apply:** Leave both files alone until the go-ahead. When it comes, record the adaptation plan in its own note first ([[feedback_record_plans_first]]), and never run either script ([[feedback_dont_run_or_build]]).
