@@ -91,9 +91,11 @@ the four fonts, the app icons, the Swift runtime in `Frameworks/`, and `_CodeSig
 The port never writes to it; the save will live in `%APPDATA%`.
 
 The one thing that is not where the original kept it is the sounds. The original keeps its
-12 sounds loose in the bundle's top folder; here they sit together in `game/sounds/`,
-each unchanged and under its original name: WAV, MP3 and AIFF, from the roar
-(`Rugido.mp3`) and the bats to the torch, the coins and the music (`SC.wav`).
+12 sounds loose in the bundle's top folder, as WAV, MP3 and AIFF; here they sit together in
+`game/sounds/`, all converted to MP3 under their original names, from the roar
+(`Rugido.mp3`) and the bats to the torch, the coins and the music (`SC.mp3`). The
+original asks for each by its old name, such as `SC.wav`, so the port finds a sound by its
+name without the extension.
 
 ## Where this came from
 

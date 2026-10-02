@@ -14,7 +14,7 @@ There is no source code for the original. The port is **recovered from the arm64
 
 ## Layout
 
-- **`game/`**: the original app bundle, unpacked: the `InsideTheCave` executable, the sounds (12 WAV, MP3 and AIFF files, moved by the dev into `game/sounds/` under their original names), the fonts, the `.sks` scenes, `Assets.car`, the compiled storyboards, `Frameworks/` (the Swift runtime) and `Info.plist`. The port never writes to it. Don't move, rename, convert or delete sound files unless the dev asks.
+- **`game/`**: the original app bundle, unpacked: the `InsideTheCave` executable, the sounds (12 files, moved by the dev into `game/sounds/` and converted by them to MP3 on 2026-10-02, under their original base names; the binary still asks for `.wav`, `.aiff` and `.mp3` names, so the port looks a sound up without its extension), the fonts, the `.sks` scenes, `Assets.car`, the compiled storyboards, `Frameworks/` (the Swift runtime) and `Info.plist`. The port never writes to it. Don't move, rename, convert or delete sound files unless the dev asks.
 - **`insidethecave/`**: the Python package, empty so far. It will hold `paths.py`, `game/` (one module per original class), `platform/` and `ui/`.
 - **`analysis/`**: empty so far; for the binary and its disassembly.
 - **`tools/`**: empty so far; for the arm64 Mach-O and disassembly tools ([[project_binary_analysis_notes]]).

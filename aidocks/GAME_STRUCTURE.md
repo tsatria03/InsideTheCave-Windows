@@ -70,7 +70,7 @@ Nine game classes (inferred from strings; the count matches `__objc_classlist`):
 
 **Scenarios.** The cave changes as you go: `cenarioPedra`, `cenarioPedraAgua`, `cenarioAgua`, `cenarioAguaGelo`, `cenarioGelo` (`scenario0` to `2`, `changeScenario`, `moveScenario`).
 
-**Sound files.** The original keeps them in the bundle's top folder; the dev moved them into `game/sounds/` on 2026-10-02, names unchanged. All 12 are named in the binary and nowhere else (not in the `.sks` scenes or the storyboards), so the code plays every one.
+**Sound files.** The original keeps them in the bundle's top folder; the dev moved them into `game/sounds/` on 2026-10-02, then converted all 12 to MP3 the same day, keeping each base name (`BatSound.wav` is now `game/sounds/BatSound.mp3`). The names below are the ones the binary asks for. All 12 are named in the binary and nowhere else (not in the `.sks` scenes or the storyboards), so the code plays every one.
 
 **What each sound is for (2026-10-02).** Ten are loaded one after another, in the same order, by three functions, `0x100015620`, `0x100015d58` and `0x100017154`, most likely the three initialisers of `GameScene`. That order matches, one for one, ten consecutive stored properties in Swift's field list (`__swift3_reflstr`, 0x100028310). **Verified:** which string is loaded where, and the two orders matching. **Inferred:** that each file belongs to the field in the same place, and what each field means, from its name (Portuguese file names translated).
 
