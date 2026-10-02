@@ -19,10 +19,10 @@ There is no source code for the original. The port is **recovered from the arm64
 - **`analysis/`**: empty so far; for the binary and its disassembly.
 - **`tools/`**: empty so far; for the arm64 Mach-O and disassembly tools ([[project_binary_analysis_notes]]).
 - **`tests/`**: `tests/case/` for the automated tests, `tests/interact/` for the by-ear tools ([[project_tests_layout]]). Both are empty. Every test must keep off the real save and be silent ([[project_safe_test_run]]).
-- **`vendor/`**: `soft_oal.dll` and `libopenal.so.1` (OpenAL Soft) and `nvdaControllerClient64.dll`, with their licenses.
+- **`vendor/`**: `soft_oal.dll` (OpenAL Soft) and `nvdaControllerClient64.dll`, with their licenses. The port is Windows only (the dev, 2026-10-02: no Linux build), so `libopenal.so.1` there is unused.
 - **`docks/`**: the documents a player reads, which a build ships in a `docks` folder beside the executable: `readme.txt`, `changelog.txt`, `credits.txt` and `todo list.txt`. All are empty so far.
 - **`aidocks/`**: the memory notes, plus three developer references: `PORTING_STATUS.md`, `DIVERGENCES.md` and `GAME_STRUCTURE.md`.
-- **`compiler.py`** and **`releaser.py`**: the PyInstaller build script and the release script. They still name the reference port's game. **Do not edit them until the dev gives the go-ahead** ([[project_build_scripts]]).
+- **`compiler.py`** and **`releaser.py`**: the PyInstaller build script and the release script, adapted to this game on 2026-10-02 but not yet run. The compiler builds `dist\InsideTheCave-Windows` around `InsideTheCave.exe`, shipping only `game\sounds\` from the bundle, and refuses to build until `InsideTheCave.py` and the `insidethecave` package exist ([[project_build_scripts]]).
 - **`VERSION`**: the date version, `YY.MM.DD-N`.
 - **`New File.txt`** at the root is the dev's private scratchpad. It is gitignored; never read, edit, flag or delete it.
 - **`user/`** is gitignored private reference material, including the reference port the dev pointed to as an example of how a port is done. Read it, but never edit it, and never name the games in it in this repo's files ([[feedback_no_other_games]]).

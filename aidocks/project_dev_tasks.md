@@ -11,7 +11,8 @@ metadata:
 
 ## Open
 
-- Adapt compiler.py and releaser.py to Inside The Cave, once the dev gives the go-ahead ([[project_build_scripts]]).
+- Make the first real build and release with compiler.py and releaser.py once the port has an entry script; they were adapted on 2026-10-02 but cannot build yet ([[project_build_scripts]]).
+- Add tests/case/release.py for the releaser's version numbering, changelog filing and archive names.
 - Fill in GAME_STRUCTURE.md from the code, with addresses, starting with GameScene: the lanes, the spawning, the speeds, the torch and light, the coins, the scenarios and the collisions.
 - Build arm64 versions of the Mach-O and disassembly tools in tools/, and write their output to analysis/ ([[project_binary_analysis_notes]]).
 - Put the game's arm64 binary in analysis/bin, so the analysis can be redone from the repository alone.

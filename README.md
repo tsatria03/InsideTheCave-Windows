@@ -37,9 +37,9 @@ Windows 10 or later, and two packages:
   a Windows voice when none is running. Without it, only NVDA would speak.
 
 Everything else will be the standard library. The audio is OpenAL Soft through `ctypes`:
-`vendor/openal/soft_oal.dll` (and `vendor/openal/libopenal.so.1` for Linux) ships with
-the repository, so there is nothing to install for it. `vendor/nvda/nvdaControllerClient64.dll`
-ships too, so NVDA can speak directly.
+`vendor/openal/soft_oal.dll` ships with the repository, so there is nothing to install for
+it. `vendor/nvda/nvdaControllerClient64.dll` ships too, so NVDA can speak directly. The
+port is for Windows only.
 
 ## How the game plays
 
@@ -129,17 +129,19 @@ a chosen point on a save of their own.
 
 Both scripts open a numbered menu when double-clicked, and wait for Enter at the end.
 Building needs PyInstaller (`pip install pyinstaller`); releasing also needs the GitHub
-CLI, signed in with `gh auth login`. **Both are still being adapted to this game**, and
-will be ready once there is a game to build.
+CLI, signed in with `gh auth login`. Both are set up for this game, but **there is no game
+to build yet**: until the port's entry script exists, the compiler says so and stops.
 
-- **`compiler.py`** only builds. It never zips and never changes the repository. It makes
-  a folder build, or with `--embed` a single exe holding the sounds and data, and puts the
-  documents from `docks/` in a `docks` folder beside the executable, with `VERSION` and
-  the license.
+- **`compiler.py`** only builds. It never zips and never changes the repository. Everything
+  lands in `dist\InsideTheCave-Windows`, around `InsideTheCave.exe`. It makes a folder build, with the
+  sounds beside the executable in `game\sounds`, or with `--embed` a single exe holding
+  them, and puts the documents from `docks/` in a `docks` folder beside the executable,
+  with `VERSION` and the license. Of the original app bundle, only the sounds ship.
 - **`releaser.py`** does the rest, asking Y or N before each step: it checks that
   everything is committed and pushed, sets `VERSION` to today's date and that day's
   release number, files the changelog's unreleased lines under it, builds with the
-  compiler, zips the build, commits, tags `V<version>`, and uploads the zip to GitHub.
+  compiler, zips the build into `InsideTheCave-Win-<version>.zip`, commits, tags
+  `V<version>`, and uploads the zip to GitHub as the release "InsideTheCave V<version>".
 
 A version is the date of the release and that day's number: `26.10.02-1` would be the first
 release of the 2nd of October 2026.

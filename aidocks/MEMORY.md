@@ -8,9 +8,9 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 
 ## Project: what the port is and how to work on it
 - [Provenance](project_provenance.md): the original was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife (MacMagazine, 2016-09-06, confirmed by the dev); it is no longer on the App Store. The port is solo, by tsatria03, with no contributors now or planned.
-- [Python only](project_python_only.md): pygame, OpenAL Soft through ctypes, NVDA or Prism; the insidethecave/ package with game, platform and ui.
+- [Python only](project_python_only.md): pygame, OpenAL Soft through ctypes, NVDA or Prism; the insidethecave/ package with game, platform and ui. Windows only: no Linux build (the dev has no WSL).
 - [Binary analysis notes](project_binary_analysis_notes.md): a thin arm64 Mach-O, unencrypted, Swift 3 with stripped symbols. File offset = address - 0x100000000. The section map, and why 32-bit Thumb tooling will not work unchanged.
-- [Build scripts](project_build_scripts.md): compiler.py and releaser.py still name the reference port's game. Do not edit either until the dev gives the go-ahead.
+- [Build scripts](project_build_scripts.md): compiler.py and releaser.py adapted 2026-10-02 at the dev's go-ahead; built, not yet confirmed. The compiler finds game\ and game\sounds itself, ships only the sounds, and refuses to build until InsideTheCave.py and the package exist.
 - [Safe test run](project_safe_test_run.md): the design every test follows from the first one: a _scratch_save helper, silent, off the real save, headless. Plain scripts, run in PowerShell, skipping _*.py.
 - [Tests layout](project_tests_layout.md): tests/case for the automated tests, tests/interact for the by-ear tools Claude never runs.
 - [Developer tasks](project_dev_tasks.md): repository, tool, analysis, test, build and docs tasks, open and finished.

@@ -8,7 +8,7 @@ metadata:
 
 The port is written entirely in Python, per `requirements.txt` (`pygame`, `prismatoid`):
 - **pygame** for the window, the keyboard and the frame loop. It must be `pygame`, not `pygame-ce`; the two cannot be installed side by side. Initialise only `pygame.display` (and `pygame.font`), never `pygame.init()`, which would open SDL's mixer as a second audio device.
-- **OpenAL Soft through ctypes** for all sound, from `vendor/openal/soft_oal.dll` (and `libopenal.so.1` for Linux). The original's positional `SKAudioNode`s (`setPositional:`, `setListener:`) map onto OpenAL sources and the listener.
+- **OpenAL Soft through ctypes** for all sound, from `vendor/openal/soft_oal.dll`. The port is **Windows only**: the dev has no WSL and asked for the Linux build to be removed (2026-10-02), so don't add Linux paths or a Linux save location. The original's positional `SKAudioNode`s (`setPositional:`, `setListener:`) map onto OpenAL sources and the listener.
 - **The NVDA controller client** (`vendor/nvda/nvdaControllerClient64.dll`), then **Prism** (`prismatoid`) for other screen readers and a Windows voice. This stands in for the original's `AVSpeechSynthesizer`, which spoke the tutorial line.
 
 Don't propose moving parts to another language or engine.

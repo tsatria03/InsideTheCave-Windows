@@ -1,22 +1,33 @@
 ---
 name: project_build_scripts
-description: "compiler.py and releaser.py at the root are copies of the reference port's scripts, still naming that game (33 lines). Do not edit either until the dev gives the go-ahead (2026-10-02). What they will need when that comes."
+description: "compiler.py and releaser.py were adapted to Inside The Cave on 2026-10-02 at the dev's go-ahead: built, not yet confirmed, and they cannot be until the port has an entry script. The compiler finds game\\ and game\\sounds itself, ships only the sounds, and refuses to build while InsideTheCave.py or the insidethecave package is missing."
 metadata:
   type: project
 ---
 
-**Status: waiting for the dev's go-ahead. Do not modify `compiler.py` or `releaser.py` yet** (the dev, 2026-10-02: "do not modify the compiler/releaser scripts yet. Wait till I give you the goahead."). Both are untracked in git as of that day.
+**Status: built, not yet confirmed (2026-10-02).** The dev gave the go-ahead that day ("Modify the build scripts."), after first asking for them to be left alone until then. Checked only by parsing both files and by a search for leftovers. Neither has been run: never run either ([[feedback_dont_run_or_build]]). Neither can make a real build until `InsideTheCave.py` and the `insidethecave` package exist, and the compiler says so instead of starting PyInstaller. It becomes "finished" only once the dev has built and released with them ([[feedback_record_plans_first]]).
 
-They are copies of the reference port's build and release scripts, from the gitignored `user/` folder ([[feedback_no_other_games]]), and still name that game on 33 lines between them: its executable and package names, its environment variable, its sound folder layout, and its release title.
+Both came from the reference port's scripts in the gitignored `user/` folder ([[feedback_no_other_games]]).
 
-**What the compiler does, in short:** a numbered menu (or flags) around PyInstaller. It builds a folder build, or with `--embed` one exe holding the sounds and data, into `dist\<Name>-Windows` (or `dist/<Name>-Linux` on Linux). It copies only the game files the port reads, ships `docks/` as a `docks` folder beside the executable with `VERSION` and `license.txt`, and puts the third-party licenses inside the executable. It never zips and never changes the repository.
+## What the compiler does
+A numbered menu, or flags, around PyInstaller: a folder build, or with `--embed` one exe holding the sounds and data; also `--clean`, `--console`, `--onefile`, `--no-game` and `--dry-run`. Every build lands in `dist\InsideTheCave-Windows` around `InsideTheCave.exe`. It ships `docks\` (readme, changelog, credits, todo list) as a `docks` folder beside the executable with `VERSION` and `license.txt`, and puts the third-party licenses (OpenAL Soft, the NVDA client, Prism, pygame) inside the executable as `licenses\`. It never zips and never changes the repository.
 
-**What the releaser does, in short:** check, then set the date version `YY.MM.DD-N` in `VERSION`, file `unrelease:` in `docks/changelog.txt` under it, build through the compiler, zip, commit "Release <version>", tag `V<version>` and upload to GitHub through `gh`. It enforces the 5 to 100 entry limits ([[feedback_changelog]]).
+## What the releaser does
+Check, then set the date version `YY.MM.DD-N` in `VERSION`, file `unrelease:` in `docks/changelog.txt` under it, build through the compiler, zip (`InsideTheCave-Win-<version>.zip`, extracting to `InsideTheCave-Windows`), commit "Release <version>", tag `V<version>`, and upload as the release "InsideTheCave V<version>" through `gh`. It enforces the 5 to 100 entry limits ([[feedback_changelog]]), and never moves a tag or replaces a release asset.
 
-**What the adaptation will need, once allowed** (listed now so nothing is missed; nothing done yet):
-- The names: executable, entry script, the `insidethecave` package import, the environment variables, the build folder, the zip names and the release title.
-- The game files to copy. The 12 sounds are in `game/sounds/` (the dev moved them there on 2026-10-02, flat, names unchanged); the fonts, the `.sks` scenes, the asset catalogue `Assets.car` and the nibs are still in `game/`. Which of them the port reads is not known until the port exists; the iOS executable, `_CodeSignature`, `Frameworks/` and the app icons should stay out.
-- Any further sorting of the sounds (subfolders, or used and unused) is the dev's decision; don't move sound files unless asked.
-- `VERSION` already holds `26.10.01-1`.
+## What changed from the reference scripts (2026-10-02)
+- **Names:** `NAME = 'InsideTheCave'`, `ENTRY = 'InsideTheCave.py'`, a new `PACKAGE = 'insidethecave'`, the build folders, zip names, release title, menu titles and examples (`26.10.02-1`).
+- **Finding the game's data:** the reference compiler asked its port's `paths.py`. This one finds it itself (`game_source()`): the folder named by `INSIDETHECAVE_GAME`, else the repository's `game\`, whichever holds a `sounds` folder. So a build never depends on the port's code importing, and works before the port exists. `insidethecave/paths.py` should look in the same places, and in `game\sounds` beside the executable when frozen.
+- **What ships from the bundle:** only `game\sounds\`, whole (`SOUNDS`, `sound_files()`), as `game\sounds` beside the executable, or inside it with `--embed`. `GAME_FILES` (top-folder files) is empty: add a pattern once the port reads one, such as the `.sks` scenes or `Info.plist`. Never shipped: the iOS executable, `_CodeSignature`, `Frameworks\`, `Assets.car`, the fonts, the storyboards and the icons.
+- **Sounds counted** as `.wav`, `.mp3`, `.aiff`, `.aif` and `.ogg`; `data_summary()` reads "12 files - 12 sounds".
+- **`docks\credits.txt`** ships too, since this repository has one.
+- **A new check in `problems_now()`:** the build refuses while `InsideTheCave.py` or `insidethecave\__init__.py` is missing, saying the port has not been written yet. A dry run still reports everything else.
+- **The closing line** credits the game's files to Iago Barbosa, Juliana Barros and Victor Leal ([[project_provenance]]).
+- **Removed:** the other project's contributor credits, dates and plan-note links in the comments; they now point here.
+- `TOOLS_INI` (`~/.game_tools/tools.ini`, the dev's shared tools file naming `gh`) and the `gh` fallback path stay as they were.
+- **Windows only (the dev, 2026-10-02: "Can you please remove the linux thing? I do not have WSL.").** The reference scripts built and released for Linux too, from a per-system table. That is gone: the compiler has plain `EXE`, `FOLDER`, `BINARIES` and `VENDOR_LICENSES` constants and refuses to build anywhere but Windows; the releaser packs a zip only (no `.tar.gz`, no `tarfile`), and its "Add this system's build to the release" step and menu choice are removed. `add_to_release()` stays, so uploading to a release that is already on GitHub without its zip adds the zip rather than failing. `vendor/openal/libopenal.so.1` is left in the repository, unused; whether to delete it is the dev's call.
 
-**How to apply:** Leave both files alone until the go-ahead. When it comes, record the adaptation plan in its own note first ([[feedback_record_plans_first]]), and never run either script ([[feedback_dont_run_or_build]]).
+## Still to do
+- A `tests/case/release.py` for the releaser's version numbering, changelog filing and archive names, which builds nothing and touches no network ([[project_dev_tasks]]).
+- Bring back a `--test` build once the game writes a log and a `crash.txt`.
+- The first real build, by the dev, once the port has an entry script; then confirm and mark this finished.
