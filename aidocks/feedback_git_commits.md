@@ -1,12 +1,12 @@
 ---
 name: feedback_git_commits
-description: "One commit per fix. Commit only when the dev asks, then push right away without asking unless they say to hold. Never pull/merge/rebase without a go-ahead; force pushes and history rewrites need an explicit go-ahead. Use git commit -F with a message file, and never hide git's errors."
+description: "One commit per fix. Commit only when the dev asks, and push only when they say so; commits pile up locally until then. Never pull/merge/rebase without a go-ahead; force pushes and history rewrites need an explicit go-ahead. Use git commit -F with a message file, and never hide git's errors."
 metadata:
   node_type: memory
   type: feedback
 ---
 
-**Commit only when the dev asks.** Once a commit is made at their request, **push it to `origin main` straight away**, without asking, **unless the dev has said to hold the pushes**; while that holds, commit when asked and push only when they say so.
+**Commit only when the dev asks, and push only when the dev asks.** A request to commit is not a request to push (the dev, 2026-10-02: "Only push if I tell you 2. Most of the time I like to make multiple commits before I decide I want to push something."). Let commits pile up locally; push when told, and then everything waiting goes up together. "Commit and push" means both. Don't offer to push after every commit; say how many commits are waiting only when it helps.
 
 **Nothing comes in from elsewhere** (the dev, 2026-10-02: "Expect nothing new to come in if you do a git fetch. I'm going to be the only one working on this project. I'll let you know if that ever changes."). So don't fetch before every push as a routine, and don't report "nothing new came in". A push that is rejected because the remote moved is the one sign something changed: then stop, fetch, and report it.
 
