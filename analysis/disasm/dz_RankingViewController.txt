@@ -18,11 +18,11 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100005788  mov     x19, x0
   0x10000578c  bl      #0x100008280                          ; RankingViewController.changeValue:~closure2~call1~call1
   0x100005790  mov     x0, x22
-  0x100005794  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100005794  bl      #0x100008c54                          ; fn_100008c54
   0x100005798  mov     x0, x21
-  0x10000579c  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000579c  bl      #0x100008c54                          ; fn_100008c54
   0x1000057a0  mov     x0, x20
-  0x1000057a4  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000057a4  bl      #0x100008c54                          ; fn_100008c54
   0x1000057a8  mov     x0, x23
   0x1000057ac  bl      #0x100023e80                          ; _swift_errorRelease
   0x1000057b0  cbz     x19, #0x1000057cc
@@ -613,7 +613,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100008b68  stp     x25, x26, [x21, #0x30]
   0x100008b6c  nop     
   0x100008b70  ldr     x0, #0x10002c0c8                      ; import __swiftEmptyArrayStorage
-  0x100008b74  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100008b74  bl      #0x100008c54                          ; fn_100008c54
   0x100008b78  str     x21, [x19, #0x20]
   0x100008b7c  ldr     x21, [x20, #0x20]
   0x100008b80  str     x19, [x20, #0x20]
@@ -680,7 +680,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100014a1c  adr     x8, #0x100032b10                      ; __DATA,__objc_data 0x100032b10
   0x100014a20  nop     
   0x100014a24  add     x0, x8, #0x10                         ; class metadata TableCell
-  0x100014a28  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100014a28  bl      #0x1000069a8                          ; fn_1000069a8
   0x100014a2c  adr     x8, #0x100034070                      ; __DATA,__common 0x100034070
   0x100014a30  nop     
   0x100014a34  stlr    x0, [x8]                              ; __DATA,__common 0x100034070
@@ -928,7 +928,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021138  mov     x0, x19
   0x10002113c  bl      #0x100023c4c                          ; _objc_release
   0x100021140  mov     x0, x22
-  0x100021144  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021144  bl      #0x100008c54                          ; fn_100008c54
   0x100021148  sub     sp, x29, #0x40
   0x10002114c  ldp     x29, x30, [sp, #0x40]
   0x100021150  ldp     x20, x19, [sp, #0x30]
@@ -987,7 +987,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021264  ldr     x0, [x19, x8]                         ; read RankingViewController.BD
   0x100021268  ldp     x29, x30, [sp, #0x10]
   0x10002126c  ldp     x20, x19, [sp], #0x20
-  0x100021270  b       #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021270  b       #0x100008c54                          ; fn_100008c54
 
 //// RankingViewController.initWithNibName:bundle:  0x100021274..0x100021494  (thunk of -[RankingViewController initWithNibName:bundle:])
 //// called by: -[RankingViewController initWithNibName:bundle:]
@@ -1041,7 +1041,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021330  str     x25, [x24, #0x20]
   0x100021334  nop     
   0x100021338  ldr     x0, #0x100032920                      ; class CKContainer
-  0x10002133c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10002133c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100021340  mov     x26, x0
   0x100021344  nop     
   0x100021348  ldr     x27, #0x100032798                     ; @selector(defaultContainer)
@@ -1069,7 +1069,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000213a0  str     x24, [x22, #0x38]                     ; __DATA,__common 0x100034038
   0x1000213a4  mov     x24, x23
   0x1000213a8  ldr     x23, [sp, #8]
-  0x1000213ac  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000213ac  bl      #0x100008c54                          ; fn_100008c54
   0x1000213b0  ldr     x0, [x22, #0x38]                      ; __DATA,__common 0x100034038
   0x1000213b4  cbz     x0, #0x100021490
   0x1000213b8  nop     
@@ -1094,7 +1094,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021404  adr     x8, #0x1000333a0                      ; __DATA,__objc_data 0x1000333a0
   0x100021408  nop     
   0x10002140c  add     x0, x8, #0x10                         ; class metadata RankingViewController
-  0x100021410  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100021410  bl      #0x1000069a8                          ; fn_1000069a8
   0x100021414  adr     x8, #0x1000340f0                      ; __DATA,__common 0x1000340f0
   0x100021418  nop     
   0x10002141c  stlr    x0, [x8]                              ; __DATA,__common 0x1000340f0
@@ -1178,7 +1178,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021544  adr     x8, #0x1000333a0                      ; __DATA,__objc_data 0x1000333a0
   0x100021548  nop     
   0x10002154c  add     x0, x8, #0x10                         ; class metadata RankingViewController
-  0x100021550  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100021550  bl      #0x1000069a8                          ; fn_1000069a8
   0x100021554  mov     x20, x0
   0x100021558  adr     x8, #0x1000340f0                      ; __DATA,__common 0x1000340f0
   0x10002155c  nop     
@@ -1224,7 +1224,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000215fc  str     x23, [x22, #0x20]
   0x100021600  nop     
   0x100021604  ldr     x0, #0x100032920                      ; class CKContainer
-  0x100021608  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100021608  bl      #0x1000069a8                          ; fn_1000069a8
   0x10002160c  mov     x24, x0
   0x100021610  nop     
   0x100021614  ldr     x25, #0x100032798                     ; @selector(defaultContainer)
@@ -1250,7 +1250,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021664  bl      #0x100023c4c                          ; _objc_release
   0x100021668  ldr     x0, [x26, #0x38]                      ; __DATA,__common 0x100034038
   0x10002166c  str     x22, [x26, #0x38]                     ; __DATA,__common 0x100034038
-  0x100021670  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021670  bl      #0x100008c54                          ; fn_100008c54
   0x100021674  ldr     x0, [x26, #0x38]                      ; __DATA,__common 0x100034038
   0x100021678  cbz     x0, #0x1000216d4
   0x10002167c  nop     
@@ -1427,7 +1427,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021a5c  bl      #0x100023c34                          ; _objc_msgSend
   0x100021a60  mov     x20, x0
   0x100021a64  mov     x0, x21
-  0x100021a68  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021a68  bl      #0x100008c54                          ; fn_100008c54
   0x100021a6c  mov     x0, x19
   0x100021a70  bl      #0x100023c4c                          ; _objc_release
   0x100021a74  mov     x0, x20
@@ -1742,11 +1742,11 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021f3c  and     x8, x8, x9
   0x100021f40  cbnz    x8, #0x100021e8c
   0x100021f44  mov     x0, x26
-  0x100021f48  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021f48  bl      #0x100008c54                          ; fn_100008c54
   0x100021f4c  ldr     x8, [sp, #0x40]
   0x100021f50  tbnz    x8, #0x3f, #0x100022378
   0x100021f54  ldr     x0, [sp, #0x40]
-  0x100021f58  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021f58  bl      #0x100008c54                          ; fn_100008c54
   0x100021f5c  brk     #1
   0x100021f60  mov     w8, #0x18
   0x100021f64  mul     x8, x27, x8
@@ -1757,10 +1757,10 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100021f78  mov     x0, x19
   0x100021f7c  bl      #0x100023f34                          ; _swift_unknownRetain
   0x100021f80  mov     x0, x26
-  0x100021f84  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021f84  bl      #0x100008c54                          ; fn_100008c54
   0x100021f88  ldr     x0, [sp, #0x40]
   0x100021f8c  tbnz    x0, #0x3f, #0x100021f98
-  0x100021f90  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100021f90  bl      #0x100008c54                          ; fn_100008c54
   0x100021f94  b       #0x100021fa0
   0x100021f98  and     x0, x0, #0x7fffffffffffffff
   0x100021f9c  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1913,11 +1913,11 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000221e8  and     x8, x8, x9
   0x1000221ec  cbnz    x8, #0x100022138
   0x1000221f0  mov     x0, x25
-  0x1000221f4  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000221f4  bl      #0x100008c54                          ; fn_100008c54
   0x1000221f8  ldr     x8, [sp, #0x40]
   0x1000221fc  tbnz    x8, #0x3f, #0x100022388
   0x100022200  ldr     x0, [sp, #0x40]
-  0x100022204  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022204  bl      #0x100008c54                          ; fn_100008c54
   0x100022208  brk     #1
   0x10002220c  mov     w8, #0x18
   0x100022210  mul     x8, x22, x8
@@ -1928,10 +1928,10 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022224  mov     x0, x19
   0x100022228  bl      #0x100023f34                          ; _swift_unknownRetain
   0x10002222c  mov     x0, x25
-  0x100022230  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022230  bl      #0x100008c54                          ; fn_100008c54
   0x100022234  ldr     x0, [sp, #0x40]
   0x100022238  tbnz    x0, #0x3f, #0x100022244
-  0x10002223c  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10002223c  bl      #0x100008c54                          ; fn_100008c54
   0x100022240  b       #0x10002224c
   0x100022244  and     x0, x0, #0x7fffffffffffffff
   0x100022248  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1962,7 +1962,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000222ac  cbnz    x0, #0x1000222cc
   0x1000222b0  nop     
   0x1000222b4  ldr     x0, #0x100032a28                      ; class UITableViewCell
-  0x1000222b8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000222b8  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000222bc  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000222c0  adr     x8, #0x100034028                      ; __DATA,__data 0x100034028
   0x1000222c4  nop     
@@ -1979,7 +1979,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000222f0  mov     x19, x0
   0x1000222f4  nop     
   0x1000222f8  ldr     x0, #0x1000329a8                      ; class UIColor
-  0x1000222fc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000222fc  bl      #0x1000069a8                          ; fn_1000069a8
   0x100022300  nop     
   0x100022304  ldr     x1, #0x100032848                      ; @selector(clearColor)
   0x100022308  bl      #0x100023c34                          ; _objc_msgSend  [? clearColor]
@@ -2030,21 +2030,21 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000223bc  brk     #1
   0x1000223c0  brk     #1
   0x1000223c4  mov     x0, x26
-  0x1000223c8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000223c8  bl      #0x100008c54                          ; fn_100008c54
   0x1000223cc  ldr     x8, [sp, #0x40]
   0x1000223d0  tbnz    x8, #0x3f, #0x100022408
   0x1000223d4  ldr     x0, [sp, #0x40]
-  0x1000223d8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000223d8  bl      #0x100008c54                          ; fn_100008c54
   0x1000223dc  brk     #1
   0x1000223e0  brk     #1
   0x1000223e4  brk     #1
   0x1000223e8  brk     #1
   0x1000223ec  mov     x0, x25
-  0x1000223f0  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000223f0  bl      #0x100008c54                          ; fn_100008c54
   0x1000223f4  ldr     x8, [sp, #0x40]
   0x1000223f8  tbnz    x8, #0x3f, #0x100022418
   0x1000223fc  ldr     x0, [sp, #0x40]
-  0x100022400  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022400  bl      #0x100008c54                          ; fn_100008c54
   0x100022404  brk     #1
   0x100022408  ldr     x8, [sp, #0x40]
   0x10002240c  and     x0, x8, #0x7fffffffffffffff
@@ -2123,7 +2123,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022524  str     x21, [x20, #0x10]
   0x100022528  nop     
   0x10002252c  ldr     x0, #0x100032940                      ; class NSPredicate
-  0x100022530  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100022530  bl      #0x1000069a8                          ; fn_1000069a8
   0x100022534  mov     x22, x0
   0x100022538  nop     
   0x10002253c  ldr     x23, #0x100032298                     ; @selector(predicateWithValue:)
@@ -2194,7 +2194,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022640  str     x8, [sp]
   0x100022644  mov     w8, #0x42000000
   0x100022648  stp     w8, wzr, [sp, #8]                     ; = 0x42000000
-  0x10002264c  adr     x8, #0x100020cf0                      ; &metadata CKRecord
+  0x10002264c  adr     x8, #0x100020cf0                      ; &fn_100020cf0
   0x100022650  nop     
   0x100022654  fmov    d0, x8
   0x100022658  adr     x8, #0x10002ca10                      ; __DATA,__const 0x10002ca10
@@ -2223,15 +2223,15 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000226b4  mov     x0, x27
   0x1000226b8  bl      #0x100023c7c                          ; __Block_release
   0x1000226bc  mov     x0, x19
-  0x1000226c0  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000226c0  bl      #0x100008c54                          ; fn_100008c54
   0x1000226c4  mov     x0, x20
-  0x1000226c8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000226c8  bl      #0x100008c54                          ; fn_100008c54
   0x1000226cc  mov     x0, x21
   0x1000226d0  bl      #0x100023c4c                          ; _objc_release
   0x1000226d4  mov     x0, x23
-  0x1000226d8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000226d8  bl      #0x100008c54                          ; fn_100008c54
   0x1000226dc  mov     x0, x24
-  0x1000226e0  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000226e0  bl      #0x100008c54                          ; fn_100008c54
   0x1000226e4  mov     x0, x22
   0x1000226e8  bl      #0x100023c4c                          ; _objc_release
   0x1000226ec  sub     sp, x29, #0x50
@@ -2379,7 +2379,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022918  mov     x0, x20
   0x10002291c  bl      #0x100023c4c                          ; _objc_release
   0x100022920  mov     x0, x21
-  0x100022924  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022924  bl      #0x100008c54                          ; fn_100008c54
   0x100022928  sub     sp, x29, #0x30
   0x10002292c  ldp     x29, x30, [sp, #0x30]
   0x100022930  ldp     x20, x19, [sp, #0x20]
@@ -2545,7 +2545,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022b98  str     x22, [x21, #0x20]
   0x100022b9c  nop     
   0x100022ba0  ldr     x0, #0x100032920                      ; class CKContainer
-  0x100022ba4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100022ba4  bl      #0x1000069a8                          ; fn_1000069a8
   0x100022ba8  mov     x23, x0
   0x100022bac  nop     
   0x100022bb0  ldr     x24, #0x100032798                     ; @selector(defaultContainer)
@@ -2571,7 +2571,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022c00  bl      #0x100023c4c                          ; _objc_release
   0x100022c04  ldr     x0, [x25, #0x38]                      ; __DATA,__common 0x100034038
   0x100022c08  str     x21, [x25, #0x38]                     ; __DATA,__common 0x100034038
-  0x100022c0c  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022c0c  bl      #0x100008c54                          ; fn_100008c54
   0x100022c10  ldr     x0, [x25, #0x38]                      ; __DATA,__common 0x100034038
   0x100022c14  cbz     x0, #0x100022c88
   0x100022c18  nop     
@@ -2584,7 +2584,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022c34  adr     x8, #0x1000333a0                      ; __DATA,__objc_data 0x1000333a0
   0x100022c38  nop     
   0x100022c3c  add     x0, x8, #0x10                         ; class metadata RankingViewController
-  0x100022c40  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100022c40  bl      #0x1000069a8                          ; fn_1000069a8
   0x100022c44  mov     x21, x0
   0x100022c48  adr     x8, #0x1000340f0                      ; __DATA,__common 0x1000340f0
   0x100022c4c  nop     
@@ -2616,7 +2616,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022cd8  mov     x0, x21
   0x100022cdc  bl      #0x100023c58                          ; _objc_retain
   0x100022ce0  mov     x0, x19
-  0x100022ce4  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022ce4  bl      #0x100008c54                          ; fn_100008c54
   0x100022ce8  mov     x0, x20
   0x100022cec  mov     x1, x21
   0x100022cf0  bl      #0x10002276c                          ; RankingViewController.changeValue:~closure1~call1
@@ -2648,7 +2648,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022dbc  mov     x0, x24
   0x100022dc0  bl      #0x100008ca4                          ; fn_100008ca4
   0x100022dc4  mov     x0, x19
-  0x100022dc8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022dc8  bl      #0x100008c54                          ; fn_100008c54
   0x100022dcc  mov     x0, x21
   0x100022dd0  mov     x1, x20
   0x100022dd4  mov     x2, x22
@@ -2672,7 +2672,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022e28  mov     x0, x20
   0x100022e2c  bl      #0x100023c58                          ; _objc_retain
   0x100022e30  mov     x0, x19
-  0x100022e34  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022e34  bl      #0x100008c54                          ; fn_100008c54
   0x100022e38  mov     x0, x20
   0x100022e3c  bl      #0x100022940                          ; RankingViewController.changeValue:~closure1~call1~closure1~call1
   0x100022e40  mov     x0, x20
@@ -2690,7 +2690,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100022e64  mov     x0, x20
   0x100022e68  bl      #0x100023c58                          ; _objc_retain
   0x100022e6c  mov     x0, x19
-  0x100022e70  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100022e70  bl      #0x100008c54                          ; fn_100008c54
   0x100022e74  adr     x0, #0x100026e80                      ; 'unwindToHomeScreenSegue'
   0x100022e78  nop     
   0x100022e7c  mov     w1, #0x17

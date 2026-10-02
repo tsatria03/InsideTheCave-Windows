@@ -38,6 +38,9 @@ import dz
 OUT = os.path.join(macho.ROOT, 'analysis', 'data', 'functions.txt')
 #: A thunk is short; anything longer that calls one game function is a method in its own right.
 THUNK_MAX = 48
+#: A metadata accessor is short too.  A long function that fetches a class's metadata is using the class,
+#: not providing it: the 158-instruction startScore body fetches SKAction's (0x10001532c).
+METADATA_MAX = 40
 
 
 def swift_name(class_name: str, selector: str) -> str:
@@ -86,13 +89,32 @@ def compute(d: dz.Disassembler = None):
     if m.entry in d.starts:
         names[m.entry] = ('main', 'entry')
     graph = Graph(d)
-    # the Swift bodies behind the thunks
+    # the Swift bodies behind the thunks.  A function that is the one game function of more than one
+    # thunk is a shared helper - fetching a class's metadata, say - not anybody's body: taking the first
+    # such thunk's name once labelled a metadata helper TableCell.awakeFromNib (found 2026-10-02 at
+    # 0x10000cc5c, where createMonster calls it for SKPhysicsBody).
+    candidates: dict[int, list] = {}
     for imp, (c, meth) in imps.items():
         if imp not in d.starts:
             continue
         inside = [t for t in dict.fromkeys(graph.calls[imp]) if t not in imps]
-        if len(inside) == 1 and graph.length[imp] <= THUNK_MAX and inside[0] not in names:
-            names[inside[0]] = (swift_name(c.name, meth.selector), 'thunk of ' + meth.name(c.name))
+        if len(inside) == 1 and graph.length[imp] <= THUNK_MAX:
+            candidates.setdefault(inside[0], []).append((c, meth))
+    for target, thunks in candidates.items():
+        if target in names:
+            continue
+        if len(thunks) > 1:
+            # several thunks call it: the body belongs to the one that does nothing else - sends no
+            # message of its own - as -[GameScene startScore] does to the body -[GameScene startGame]
+            # also calls before it starts the spawning (0x1000152fc).  Two or more such forwarders
+            # mean a shared helper.
+            pure = [(c, meth) for c, meth in thunks
+                    if not any(n.startswith('_objc_msgSend') for x in d.function(meth.imp)
+                               for n in x.notes)]
+            thunks = pure if len(pure) == 1 else []
+        if len(thunks) == 1:
+            c, meth = thunks[0]
+            names[target] = (swift_name(c.name, meth.selector), 'thunk of ' + meth.name(c.name))
     _by_caller(d, graph, names)
     _by_what_it_does(d, graph, names)
     _by_caller(d, graph, names)
@@ -154,8 +176,8 @@ def _by_what_it_does(d, graph, names):
         if supers and sent_super:
             give(f, '%s.%s~body' % (supers[0], sent_super[-1]),
                  'ends in [super %s] of %s' % (sent_super[-1], supers[0]))
-        elif any(c.startswith(('_swift_getObjCClassMetadata', '_swift_getInitializedObjCClass'))
-                 for c in calls) and classes:
+        elif len(insns) <= METADATA_MAX and classes and any(
+                c.startswith(('_swift_getObjCClassMetadata', '_swift_getInitializedObjCClass')) for c in calls):
             give(f, 'metadata %s' % classes[0], 'swift type metadata accessor for %s' % classes[0])
         elif len(insns) == 1 and insns[0].kind == 'jump' and insns[0].notes:
             give(f, 'jump~%s' % insns[0].notes[0].split('  ')[0], 'a single jump')

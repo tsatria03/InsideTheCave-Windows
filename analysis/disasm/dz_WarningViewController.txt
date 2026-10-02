@@ -93,7 +93,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e990  adr     x8, #0x100032a30                      ; __DATA,__objc_data 0x100032a30
   0x10000e994  nop     
   0x10000e998  add     x0, x8, #0x10                         ; class metadata WarningViewController
-  0x10000e99c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e99c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e9a0  adr     x8, #0x100034068                      ; __DATA,__common 0x100034068
   0x10000e9a4  nop     
   0x10000e9a8  stlr    x0, [x8]                              ; __DATA,__common 0x100034068
@@ -104,7 +104,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e9bc  bl      #0x100023c40                          ; _objc_msgSendSuper2  [? viewDidLoad]
   0x10000e9c0  nop     
   0x10000e9c4  ldr     x0, #0x100032970                      ; class NSTimer
-  0x10000e9c8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e9c8  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e9cc  mov     x20, x0
   0x10000e9d0  nop     
   0x10000e9d4  ldr     x21, #0x100032490                     ; @selector(segue)
@@ -294,7 +294,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000eca4  mov     x0, x19
   0x10000eca8  bl      #0x100023c4c                          ; _objc_release
   0x10000ecac  mov     x0, x21
-  0x10000ecb0  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000ecb0  bl      #0x100008c54                          ; fn_100008c54
   0x10000ecb4  sub     sp, x29, #0x40
   0x10000ecb8  ldp     x29, x30, [sp, #0x40]
   0x10000ecbc  ldp     x20, x19, [sp, #0x30]
@@ -317,7 +317,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ecf8  mov     x0, x19
   0x10000ecfc  ldp     x29, x30, [sp, #0x10]
   0x10000ed00  ldp     x20, x19, [sp], #0x20
-  0x10000ed04  b       #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000ed04  b       #0x100008c54                          ; fn_100008c54
   0x10000ed08  and     x0, x19, #0x7fffffffffffffff
   0x10000ed0c  ldp     x29, x30, [sp, #0x10]
   0x10000ed10  ldp     x20, x19, [sp], #0x20
@@ -342,7 +342,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ed54  cbnz    x22, #0x10000ed78
   0x10000ed58  nop     
   0x10000ed5c  ldr     x0, #0x100032990                      ; class UITouch
-  0x10000ed60  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000ed60  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000ed64  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x10000ed68  mov     x22, x0
   0x10000ed6c  adr     x8, #0x100033c68                      ; __DATA,__data 0x100033c68
@@ -360,7 +360,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ed9c  bl      #0x100023c4c                          ; _objc_release
   0x10000eda0  tbnz    x21, #0x3f, #0x10000edb0
   0x10000eda4  mov     x0, x21
-  0x10000eda8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000eda8  bl      #0x100008c54                          ; fn_100008c54
   0x10000edac  b       #0x10000edb8
   0x10000edb0  and     x0, x21, #0x7fffffffffffffff
   0x10000edb4  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -444,7 +444,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ef28  str     x0, [x21, x8]                         ; write WarningViewController.timer
   0x10000ef2c  nop     
   0x10000ef30  ldr     x0, #0x100032918                      ; class NSLocale
-  0x10000ef34  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000ef34  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000ef38  nop     
   0x10000ef3c  ldr     x1, #0x100032460                      ; @selector(currentLocale)
   0x10000ef40  bl      #0x100023c34                          ; _objc_msgSend  [? currentLocale]
@@ -483,7 +483,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000efc4  adr     x8, #0x100032a30                      ; __DATA,__objc_data 0x100032a30
   0x10000efc8  nop     
   0x10000efcc  add     x0, x8, #0x10                         ; class metadata WarningViewController
-  0x10000efd0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000efd0  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000efd4  adr     x8, #0x100034068                      ; __DATA,__common 0x100034068
   0x10000efd8  nop     
   0x10000efdc  stlr    x0, [x8]                              ; __DATA,__common 0x100034068
@@ -562,7 +562,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f0f0  adr     x8, #0x100032a30                      ; __DATA,__objc_data 0x100032a30
   0x10000f0f4  nop     
   0x10000f0f8  add     x0, x8, #0x10                         ; class metadata WarningViewController
-  0x10000f0fc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000f0fc  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000f100  adr     x8, #0x100034068                      ; __DATA,__common 0x100034068
   0x10000f104  nop     
   0x10000f108  stlr    x0, [x8]                              ; __DATA,__common 0x100034068
@@ -685,7 +685,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f404  mov     x0, x20
   0x10000f408  bl      #0x100023c4c                          ; _objc_release
   0x10000f40c  mov     x0, x21
-  0x10000f410  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000f410  bl      #0x100008c54                          ; fn_100008c54
   0x10000f414  sub     sp, x29, #0x30
   0x10000f418  ldp     x29, x30, [sp, #0x30]
   0x10000f41c  ldp     x20, x19, [sp, #0x20]
@@ -723,7 +723,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f490  str     x0, [x20, x8]                         ; write WarningViewController.timer
   0x10000f494  nop     
   0x10000f498  ldr     x0, #0x100032918                      ; class NSLocale
-  0x10000f49c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000f49c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000f4a0  nop     
   0x10000f4a4  ldr     x1, #0x100032460                      ; @selector(currentLocale)
   0x10000f4a8  bl      #0x100023c34                          ; _objc_msgSend  [? currentLocale]
@@ -751,7 +751,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f500  adr     x8, #0x100032a30                      ; __DATA,__objc_data 0x100032a30
   0x10000f504  nop     
   0x10000f508  add     x0, x8, #0x10                         ; class metadata WarningViewController
-  0x10000f50c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000f50c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000f510  adr     x8, #0x100034068                      ; __DATA,__common 0x100034068
   0x10000f514  nop     
   0x10000f518  stlr    x0, [x8]                              ; __DATA,__common 0x100034068
@@ -779,7 +779,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f594  mov     x0, x20
   0x10000f598  bl      #0x100023c58                          ; _objc_retain
   0x10000f59c  mov     x0, x19
-  0x10000f5a0  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000f5a0  bl      #0x100008c54                          ; fn_100008c54
   0x10000f5a4  adr     x0, #0x100025538                      ; 'WarningToMenu'
   0x10000f5a8  nop     
   0x10000f5ac  mov     w1, #0xd

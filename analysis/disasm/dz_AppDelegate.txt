@@ -76,7 +76,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000191d0  mov     x1, x22
   0x1000191d4  bl      #0x100024060                          ; __TZFE10FoundationVs10Dictionary36_unconditionallyBridgeFromObjectiveCfGSqCSo12NSDictionary_GS0_xq__
   0x1000191d8  tbnz    x0, #0x3f, #0x1000191e4
-  0x1000191dc  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000191dc  bl      #0x100008c54                          ; fn_100008c54
   0x1000191e0  b       #0x1000191ec
   0x1000191e4  and     x0, x0, #0x7fffffffffffffff
   0x1000191e8  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -129,7 +129,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000192cc  adr     x8, #0x100033070                      ; __DATA,__objc_data 0x100033070
   0x1000192d0  nop     
   0x1000192d4  add     x0, x8, #0x10                         ; class metadata AppDelegate
-  0x1000192d8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000192d8  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000192dc  adr     x8, #0x1000340d0                      ; __DATA,__common 0x1000340d0
   0x1000192e0  nop     
   0x1000192e4  stlr    x0, [x8]                              ; __DATA,__common 0x1000340d0
@@ -158,7 +158,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100019338  adr     x8, #0x100033070                      ; __DATA,__objc_data 0x100033070
   0x10001933c  nop     
   0x100019340  add     x0, x8, #0x10                         ; class metadata AppDelegate
-  0x100019344  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019344  bl      #0x1000069a8                          ; fn_1000069a8
   0x100019348  adr     x8, #0x1000340d0                      ; __DATA,__common 0x1000340d0
   0x10001934c  nop     
   0x100019350  stlr    x0, [x8]                              ; __DATA,__common 0x1000340d0

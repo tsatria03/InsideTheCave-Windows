@@ -527,7 +527,7 @@ C strings (__cstring, 390)
             used by GameScene.init at 0x1000162e4
             used by GameScene.initWithCoder: at 0x1000176e4
             used by GameScene.initWithSize: at 0x100015bb8
-            used by GameScene~shared1 at 0x100022f10
+            used by GameScene~shared3 at 0x100022f10
 0x100025fa7  'Snow'
             used by GameScene.didMoveToView: at 0x100017058
 0x100025fb0  'v24@0:8@"NSString"16'
@@ -599,7 +599,7 @@ C strings (__cstring, 390)
             used by GameViewController.prepareForSegue:sender: at 0x100018b70
             used by GameViewController.prepareForSegue:sender: at 0x100018b9c
 0x100026277  'GameScene'
-            used by GameViewController.unwindToGameSegue: at 0x100017bec
+            used by GameViewController~shared1 at 0x100017bec
 0x100026281  'coinCounterIce'
             used by GameViewController.changeCoinCounterWithScenario: at 0x100018f74
 0x100026290  'coinCounterWater'
@@ -750,8 +750,8 @@ C strings (__cstring, 390)
             used by HomeScreenViewController.initWithNibName:bundle: at 0x10001ad2c
             used by HomeScreenViewController.initWithNibName:bundle: at 0x10001ae20
 0x100026d30  '0'
-            used by GameViewController.unwindToGameSegue: at 0x100017aec
-            used by GameViewController.unwindToGameSegue: at 0x100017ba4
+            used by GameViewController~shared1 at 0x100017aec
+            used by GameViewController~shared1 at 0x100017ba4
             used by HomeScreenViewController.initWithCoder: at 0x10001b360
             used by HomeScreenViewController.initWithCoder: at 0x10001b474
             used by HomeScreenViewController.initWithCoder: at 0x10001b554
@@ -960,7 +960,7 @@ C strings (__cstring, 390)
             no code loads it
 0x100027916  'upScore'
             used by GameScene.obstacleDidCollideWithPlayer:obstacleE: at 0x100023104
-            used by GameScene.startGame at 0x100015538
+            used by GameScene.startScore at 0x100015538
 0x100027920  'screamingMan.wav'
             used by GameScene.obstacleDidCollideWithPlayer:obstacleE: at 0x100023148
 0x100027931  'deadPedra.png'

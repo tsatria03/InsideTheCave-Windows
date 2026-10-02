@@ -56,7 +56,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000becc  fmul    d8, d0, d1
   0x10000bed0  nop     
   0x10000bed4  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x10000bed8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000bed8  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000bedc  nop     
   0x10000bee0  ldr     x1, #0x100032370                      ; @selector(bodyWithCircleOfRadius:)
   0x10000bee4  mov     v0.16b, v8.16b
@@ -431,7 +431,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000c480  mov     v9.16b, v1.16b
   0x10000c484  nop     
   0x10000c488  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x10000c48c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000c48c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000c490  nop     
   0x10000c494  ldr     x1, #0x100032308                      ; @selector(bodyWithRectangleOfSize:)
   0x10000c498  mov     v0.16b, v8.16b
@@ -788,14 +788,14 @@ on the straight path into each instruction; the instructions themselves are comp
 //// -[GameScene coinTogether]  0x10000c9f4..0x10000ca00  (objc)
   0x10000c9f4  adr     x2, #0x1000323d0                      ; @selector(createCoin)
   0x10000c9f8  nop     
-  0x10000c9fc  b       #0x10000ca0c                          ; GameScene.coinTogether
+  0x10000c9fc  b       #0x10000ca0c                          ; GameScene~shared1
 
 //// -[GameScene torchTogether]  0x10000ca00..0x10000ca0c  (objc)
   0x10000ca00  adr     x2, #0x1000323c0                      ; @selector(createTorchObstacle)
   0x10000ca04  nop     
-  0x10000ca08  b       #0x10000ca0c                          ; GameScene.coinTogether
+  0x10000ca08  b       #0x10000ca0c                          ; GameScene~shared1
 
-//// GameScene.coinTogether  0x10000ca0c..0x10000caf8  (thunk of -[GameScene coinTogether])
+//// GameScene~shared1  0x10000ca0c..0x10000caf8  (class: called only from GameScene)
 //// called by: -[GameScene coinTogether], -[GameScene torchTogether]
   0x10000ca0c  stp     x22, x21, [sp, #-0x30]!
   0x10000ca10  stp     x20, x19, [sp, #0x10]
@@ -948,7 +948,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000cc50  fmul    d9, d1, d9
   0x10000cc54  nop     
   0x10000cc58  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x10000cc5c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000cc5c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000cc60  nop     
   0x10000cc64  ldr     x1, #0x1000323b0                      ; @selector(bodyWithRectangleOfSize:center:)
   0x10000cc68  fmov    d3, #-22.00000000
@@ -1048,7 +1048,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000cde0  b.eq    #0x10000cdf8
   0x10000cde4  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x10000cde8  nop     
-  0x10000cdec  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x10000cdec  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x10000cdf0  nop     
   0x10000cdf4  bl      #0x100023ee0                          ; _swift_once
   0x10000cdf8  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -1065,7 +1065,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ce24  mov     x3, x22
   0x10000ce28  mov     x4, x23
   0x10000ce2c  mov     x5, x21
-  0x10000ce30  bl      #0x10002303c                          ; GameScene~shared2
+  0x10000ce30  bl      #0x10002303c                          ; GameScene~shared4
   0x10000ce34  mov     x24, x0
   0x10000ce38  mov     x0, x26
   0x10000ce3c  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1127,7 +1127,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000cf1c  mov     x3, x22
   0x10000cf20  mov     x4, x23
   0x10000cf24  mov     x5, x21
-  0x10000cf28  bl      #0x10002303c                          ; GameScene~shared2
+  0x10000cf28  bl      #0x10002303c                          ; GameScene~shared4
   0x10000cf2c  mov     x24, x0
   0x10000cf30  mov     x0, x26
   0x10000cf34  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1189,7 +1189,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d014  mov     x3, x22
   0x10000d018  mov     x4, x23
   0x10000d01c  mov     x5, x21
-  0x10000d020  bl      #0x10002303c                          ; GameScene~shared2
+  0x10000d020  bl      #0x10002303c                          ; GameScene~shared4
   0x10000d024  mov     x22, x0
   0x10000d028  mov     x0, x26
   0x10000d02c  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1384,7 +1384,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d30c  fmul    d9, d1, d9
   0x10000d310  nop     
   0x10000d314  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x10000d318  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000d318  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000d31c  nop     
   0x10000d320  ldr     x1, #0x1000323b0                      ; @selector(bodyWithRectangleOfSize:center:)
   0x10000d324  fmov    d3, #-22.00000000
@@ -1628,7 +1628,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d6c8  fmul    d9, d1, d9
   0x10000d6cc  nop     
   0x10000d6d0  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x10000d6d4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000d6d4  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000d6d8  nop     
   0x10000d6dc  ldr     x1, #0x1000323b0                      ; @selector(bodyWithRectangleOfSize:center:)
   0x10000d6e0  fmov    d3, #-22.00000000
@@ -1778,7 +1778,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d90c  b.eq    #0x10000d924
   0x10000d910  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x10000d914  nop     
-  0x10000d918  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x10000d918  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x10000d91c  nop     
   0x10000d920  bl      #0x100023ee0                          ; _swift_once
   0x10000d924  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -1795,7 +1795,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d950  mov     x3, x22
   0x10000d954  mov     x4, x23
   0x10000d958  mov     x5, x21
-  0x10000d95c  bl      #0x10002303c                          ; GameScene~shared2
+  0x10000d95c  bl      #0x10002303c                          ; GameScene~shared4
   0x10000d960  mov     x24, x0
   0x10000d964  mov     x0, x26
   0x10000d968  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1810,7 +1810,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d98c  cbnz    x3, #0x10000d9b0
   0x10000d990  nop     
   0x10000d994  ldr     x0, #0x100032960                      ; class UIImage
-  0x10000d998  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000d998  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000d99c  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x10000d9a0  mov     x3, x0
   0x10000d9a4  adr     x8, #0x100033be0                      ; __DATA,__data 0x100033be0
@@ -1824,7 +1824,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000d9c4  mov     x21, x0
   0x10000d9c8  nop     
   0x10000d9cc  ldr     x0, #0x100032968                      ; class SKTexture
-  0x10000d9d0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000d9d0  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000d9d4  nop     
   0x10000d9d8  ldr     x1, #0x100032390                      ; @selector(textureWithImage:)
   0x10000d9dc  mov     x2, x21
@@ -1854,7 +1854,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000da3c  mov     x3, x22
   0x10000da40  mov     x4, x23
   0x10000da44  mov     x5, x21
-  0x10000da48  bl      #0x10002303c                          ; GameScene~shared2
+  0x10000da48  bl      #0x10002303c                          ; GameScene~shared4
   0x10000da4c  mov     x24, x0
   0x10000da50  mov     x0, x26
   0x10000da54  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1869,7 +1869,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000da78  cbnz    x3, #0x10000da9c
   0x10000da7c  nop     
   0x10000da80  ldr     x0, #0x100032960                      ; class UIImage
-  0x10000da84  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000da84  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000da88  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x10000da8c  mov     x3, x0
   0x10000da90  adr     x8, #0x100033be0                      ; __DATA,__data 0x100033be0
@@ -1883,7 +1883,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000dab0  mov     x21, x0
   0x10000dab4  nop     
   0x10000dab8  ldr     x0, #0x100032968                      ; class SKTexture
-  0x10000dabc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000dabc  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000dac0  nop     
   0x10000dac4  ldr     x1, #0x100032390                      ; @selector(textureWithImage:)
   0x10000dac8  mov     x2, x21
@@ -1913,7 +1913,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000db28  mov     x3, x22
   0x10000db2c  mov     x4, x23
   0x10000db30  mov     x5, x21
-  0x10000db34  bl      #0x10002303c                          ; GameScene~shared2
+  0x10000db34  bl      #0x10002303c                          ; GameScene~shared4
   0x10000db38  mov     x22, x0
   0x10000db3c  mov     x0, x26
   0x10000db40  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -1925,7 +1925,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000db58  cbnz    x3, #0x10000db7c
   0x10000db5c  nop     
   0x10000db60  ldr     x0, #0x100032960                      ; class UIImage
-  0x10000db64  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000db64  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000db68  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x10000db6c  mov     x3, x0
   0x10000db70  adr     x8, #0x100033be0                      ; __DATA,__data 0x100033be0
@@ -1940,7 +1940,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000db94  mov     x21, x0
   0x10000db98  nop     
   0x10000db9c  ldr     x0, #0x100032968                      ; class SKTexture
-  0x10000dba0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000dba0  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000dba4  nop     
   0x10000dba8  ldr     x1, #0x100032390                      ; @selector(textureWithImage:)
   0x10000dbac  mov     x2, x21
@@ -1955,7 +1955,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000dbd0  mov     x21, x0
   0x10000dbd4  nop     
   0x10000dbd8  ldr     x0, #0x100032968                      ; class SKTexture
-  0x10000dbdc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000dbdc  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000dbe0  nop     
   0x10000dbe4  ldr     x1, #0x100032390                      ; @selector(textureWithImage:)
   0x10000dbe8  mov     x2, x21
@@ -2032,7 +2032,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000dd04  fmul    d9, d1, d9
   0x10000dd08  nop     
   0x10000dd0c  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x10000dd10  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000dd10  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000dd14  nop     
   0x10000dd18  ldr     x1, #0x100032308                      ; @selector(bodyWithRectangleOfSize:)
   0x10000dd1c  mov     v0.16b, v8.16b
@@ -2271,7 +2271,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e0ac  b       #0x10000e73c
   0x10000e0b0  nop     
   0x10000e0b4  ldr     x0, #0x100032970                      ; class NSTimer
-  0x10000e0b8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e0b8  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e0bc  mov     x21, x0
   0x10000e0c0  nop     
   0x10000e0c4  ldr     x22, #0x100032420                     ; @selector(startGame)
@@ -2396,7 +2396,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e2a0  mov     x22, x0
   0x10000e2a4  nop     
   0x10000e2a8  ldr     x0, #0x100032980                      ; class AVSpeechSynthesisVoice
-  0x10000e2ac  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e2ac  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e2b0  nop     
   0x10000e2b4  ldr     x1, #0x100032438                      ; @selector(voiceWithLanguage:)
   0x10000e2b8  mov     x2, x22
@@ -2458,7 +2458,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e398  mov     x22, x0
   0x10000e39c  nop     
   0x10000e3a0  ldr     x0, #0x100032980                      ; class AVSpeechSynthesisVoice
-  0x10000e3a4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e3a4  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e3a8  nop     
   0x10000e3ac  ldr     x1, #0x100032438                      ; @selector(voiceWithLanguage:)
   0x10000e3b0  mov     x2, x22
@@ -2502,7 +2502,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e448  mov     x22, x0
   0x10000e44c  nop     
   0x10000e450  ldr     x0, #0x100032980                      ; class AVSpeechSynthesisVoice
-  0x10000e454  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e454  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e458  nop     
   0x10000e45c  ldr     x1, #0x100032438                      ; @selector(voiceWithLanguage:)
   0x10000e460  mov     x2, x22
@@ -2547,7 +2547,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e4fc  mov     x22, x0
   0x10000e500  nop     
   0x10000e504  ldr     x0, #0x100032980                      ; class AVSpeechSynthesisVoice
-  0x10000e508  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e508  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e50c  nop     
   0x10000e510  ldr     x1, #0x100032438                      ; @selector(voiceWithLanguage:)
   0x10000e514  mov     x2, x22
@@ -2612,7 +2612,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e600  bl      #0x100023c4c                          ; _objc_release
   0x10000e604  nop     
   0x10000e608  ldr     x0, #0x100032970                      ; class NSTimer
-  0x10000e60c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e60c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e610  mov     x21, x0
   0x10000e614  nop     
   0x10000e618  ldr     x22, #0x100032420                     ; @selector(startGame)
@@ -2681,7 +2681,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e714  mov     x22, x0
   0x10000e718  nop     
   0x10000e71c  ldr     x0, #0x100032980                      ; class AVSpeechSynthesisVoice
-  0x10000e720  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e720  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e724  nop     
   0x10000e728  ldr     x1, #0x100032438                      ; @selector(voiceWithLanguage:)
   0x10000e72c  mov     x2, x22
@@ -2725,7 +2725,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000e7c4  mov     x22, x0
   0x10000e7c8  nop     
   0x10000e7cc  ldr     x0, #0x100032980                      ; class AVSpeechSynthesisVoice
-  0x10000e7d0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000e7d0  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000e7d4  nop     
   0x10000e7d8  ldr     x1, #0x100032438                      ; @selector(voiceWithLanguage:)
   0x10000e7dc  mov     x2, x22
@@ -2817,7 +2817,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f6bc  mov     v9.16b, v0.16b
   0x10000f6c0  nop     
   0x10000f6c4  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000f6c8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000f6c8  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000f6cc  mov     x21, x0
   0x10000f6d0  nop     
   0x10000f6d4  ldr     x1, #0x1000324a8                      ; @selector(play)
@@ -2899,7 +2899,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f7f8  bl      #0x100023c34                          ; _objc_msgSend  [? setPosition:]
   0x10000f7fc  nop     
   0x10000f800  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000f804  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000f804  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000f808  mov     x22, x0
   0x10000f80c  nop     
   0x10000f810  ldr     x1, #0x1000324a8                      ; @selector(play)
@@ -2995,7 +2995,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000f96c  b       #0x10000fa1c
   0x10000f970  nop     
   0x10000f974  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000f978  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000f978  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000f97c  mov     x20, x0
   0x10000f980  mov     x0, x19
   0x10000f984  bl      #0x100023c58                          ; _objc_retain
@@ -3039,7 +3039,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000fa1c  str     q0, [sp]
   0x10000fa20  nop     
   0x10000fa24  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000fa28  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000fa28  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000fa2c  mov     x21, x0
   0x10000fa30  adrp    x22, #0x100032000
   0x10000fa34  ldr     x20, [x22, #0x2e8]                    ; @selector(size)
@@ -3163,7 +3163,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000fbf8  cbnz    x8, #0x10000fc98
   0x10000fbfc  nop     
   0x10000fc00  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000fc04  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000fc04  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000fc08  mov     x20, x0
   0x10000fc0c  mov     x0, x19
   0x10000fc10  bl      #0x100023c58                          ; _objc_retain
@@ -3212,7 +3212,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000fcbc  str     q0, [sp]
   0x10000fcc0  nop     
   0x10000fcc4  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000fcc8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000fcc8  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000fccc  mov     x21, x0
   0x10000fcd0  adrp    x22, #0x100032000
   0x10000fcd4  ldr     x20, [x22, #0x2e8]                    ; @selector(size)
@@ -3318,7 +3318,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000fe50  ldr     x20, [x19, x23]                       ; read GameScene.movePlayerSound
   0x10000fe54  nop     
   0x10000fe58  ldr     x0, #0x100032998                      ; class SKAction
-  0x10000fe5c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000fe5c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000fe60  mov     x21, x0
   0x10000fe64  nop     
   0x10000fe68  ldr     x22, #0x1000324a8                     ; @selector(play)
@@ -3396,7 +3396,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ff78  cbnz    x22, #0x10000ff9c
   0x10000ff7c  nop     
   0x10000ff80  ldr     x0, #0x100032990                      ; class UITouch
-  0x10000ff84  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10000ff84  bl      #0x1000069a8                          ; fn_1000069a8
   0x10000ff88  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x10000ff8c  mov     x22, x0
   0x10000ff90  adr     x8, #0x100033c68                      ; __DATA,__data 0x100033c68
@@ -3414,7 +3414,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10000ffc0  bl      #0x100023c4c                          ; _objc_release
   0x10000ffc4  tbnz    x21, #0x3f, #0x10000ffd4
   0x10000ffc8  mov     x0, x21
-  0x10000ffcc  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10000ffcc  bl      #0x100008c54                          ; fn_100008c54
   0x10000ffd0  b       #0x10000ffdc
   0x10000ffd4  and     x0, x21, #0x7fffffffffffffff
   0x10000ffd8  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -3658,7 +3658,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100010364  mov     x0, x20
   0x100010368  bl      #0x100023f34                          ; _swift_unknownRetain
   0x10001036c  mov     x0, x21
-  0x100010370  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100010370  bl      #0x100008c54                          ; fn_100008c54
   0x100010374  mov     x0, x22
   0x100010378  bl      #0x100023f1c                          ; _swift_unknownRelease
   0x10001037c  str     x20, [sp, #8]
@@ -3682,7 +3682,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000103c4  cbnz    x3, #0x1000103e8
   0x1000103c8  nop     
   0x1000103cc  ldr     x0, #0x100032990                      ; class UITouch
-  0x1000103d0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000103d0  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000103d4  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000103d8  mov     x3, x0
   0x1000103dc  adr     x8, #0x100033c68                      ; __DATA,__data 0x100033c68
@@ -3762,7 +3762,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000104f8  mov     x20, x0
   0x1000104fc  tbnz    x21, #0x3f, #0x10001050c
   0x100010500  mov     x0, x21
-  0x100010504  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100010504  bl      #0x100008c54                          ; fn_100008c54
   0x100010508  b       #0x100010514
   0x10001050c  and     x0, x21, #0x7fffffffffffffff
   0x100010510  bl      #0x100023f1c                          ; _swift_unknownRelease
@@ -3772,7 +3772,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100010520  and     x0, x23, #0x7fffffffffffffff
   0x100010524  bl      #0x100023f1c                          ; _swift_unknownRelease
   0x100010528  mov     x0, x22
-  0x10001052c  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x10001052c  bl      #0x100008c54                          ; fn_100008c54
   0x100010530  nop     
   0x100010534  ldr     x21, #0x1000324d0                     ; @selector(view)
   0x100010538  mov     x0, x19
@@ -4016,7 +4016,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000108bc  ldr     x20, [x19, x23]                       ; read GameScene.backgroundTorch
   0x1000108c0  nop     
   0x1000108c4  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000108c8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000108c8  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000108cc  mov     x21, x0
   0x1000108d0  nop     
   0x1000108d4  ldr     x22, #0x1000324a8                     ; @selector(play)
@@ -4119,7 +4119,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100010a44  ldr     x20, [x19, x23]                       ; read GameScene.backgroundMusic
   0x100010a48  nop     
   0x100010a4c  ldr     x0, #0x100032998                      ; class SKAction
-  0x100010a50  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100010a50  bl      #0x1000069a8                          ; fn_1000069a8
   0x100010a54  mov     x21, x0
   0x100010a58  nop     
   0x100010a5c  ldr     x22, #0x1000324b8                     ; @selector(changeVolumeTo:duration:)
@@ -4277,7 +4277,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100010ca8  fadd    d8, d0, d0
   0x100010cac  nop     
   0x100010cb0  ldr     x0, #0x100032958                      ; class SKPhysicsBody
-  0x100010cb4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100010cb4  bl      #0x1000069a8                          ; fn_1000069a8
   0x100010cb8  nop     
   0x100010cbc  ldr     x1, #0x100032370                      ; @selector(bodyWithCircleOfRadius:)
   0x100010cc0  mov     v0.16b, v8.16b
@@ -4481,7 +4481,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100010fc4  cbnz    x20, #0x100010fe8
   0x100010fc8  nop     
   0x100010fcc  ldr     x0, #0x1000329a8                      ; class UIColor
-  0x100010fd0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100010fd0  bl      #0x1000069a8                          ; fn_1000069a8
   0x100010fd4  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100010fd8  mov     x20, x0
   0x100010fdc  adr     x8, #0x100033ca0                      ; __DATA,__data 0x100033ca0
@@ -4603,7 +4603,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011198  cbnz    x21, #0x1000111bc
   0x10001119c  nop     
   0x1000111a0  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000111a4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000111a4  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000111a8  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000111ac  mov     x21, x0
   0x1000111b0  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
@@ -4611,7 +4611,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000111b8  stlr    x21, [x8]                             ; __DATA,__data 0x100033c80
   0x1000111bc  nop     
   0x1000111c0  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000111c4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000111c4  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000111c8  mov     x20, x0
   0x1000111cc  str     x20, [sp, #0x10]
   0x1000111d0  nop     
@@ -4714,7 +4714,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011354  cbnz    x3, #0x100011378
   0x100011358  nop     
   0x10001135c  ldr     x0, #0x1000329a0                      ; class SKLightNode
-  0x100011360  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011360  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011364  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100011368  mov     x3, x0
   0x10001136c  adr     x8, #0x100033c90                      ; __DATA,__data 0x100033c90
@@ -4799,7 +4799,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000114a8  cbnz    x0, #0x1000114c8
   0x1000114ac  nop     
   0x1000114b0  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000114b4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000114b4  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000114b8  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000114bc  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x1000114c0  nop     
@@ -5056,7 +5056,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011870  cbnz    x0, #0x100011890
   0x100011874  nop     
   0x100011878  ldr     x0, #0x100032998                      ; class SKAction
-  0x10001187c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001187c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011880  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100011884  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x100011888  nop     
@@ -5064,7 +5064,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011890  str     x0, [sp, #0x18]
   0x100011894  nop     
   0x100011898  ldr     x0, #0x100032998                      ; class SKAction
-  0x10001189c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001189c  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000118a0  mov     x20, x0
   0x1000118a4  nop     
   0x1000118a8  ldr     x21, #0x1000322e8                     ; @selector(size)
@@ -5137,7 +5137,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000119b4  mov     x0, x26
   0x1000119b8  bl      #0x100023c7c                          ; __Block_release
   0x1000119bc  mov     x0, x25
-  0x1000119c0  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000119c0  bl      #0x100008c54                          ; fn_100008c54
   0x1000119c4  adr     x8, #0x10002c6e0                      ; __DATA,__const 0x10002c6e0
   0x1000119c8  nop     
   0x1000119cc  add     x0, x8, #0x10                         ; __DATA,__const 0x10002c6f0
@@ -5172,7 +5172,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011a40  mov     x0, x26
   0x100011a44  bl      #0x100023c7c                          ; __Block_release
   0x100011a48  mov     x0, x25
-  0x100011a4c  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100011a4c  bl      #0x100008c54                          ; fn_100008c54
   0x100011a50  adrp    x8, #0x100033000
   0x100011a54  ldr     x0, [x8, #0xc98]                      ; __DATA,__data 0x0
   0x100011a58  cbnz    x0, #0x100011a94
@@ -5181,7 +5181,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011a64  ldr     x0, [x8, #0xc80]                      ; __DATA,__data 0x0
   0x100011a68  cbnz    x0, #0x100011a84
   0x100011a6c  ldr     x0, [x9, #0x998]                      ; class SKAction
-  0x100011a70  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011a70  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011a74  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100011a78  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x100011a7c  nop     
@@ -5325,7 +5325,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011c88  b.eq    #0x100011ca0
   0x100011c8c  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x100011c90  nop     
-  0x100011c94  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x100011c94  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x100011c98  nop     
   0x100011c9c  bl      #0x100023ee0                          ; _swift_once
   0x100011ca0  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -5404,7 +5404,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011dc4  cbnz    x21, #0x100011de8
   0x100011dc8  nop     
   0x100011dcc  ldr     x0, #0x100032960                      ; class UIImage
-  0x100011dd0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011dd0  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011dd4  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100011dd8  mov     x21, x0
   0x100011ddc  adr     x8, #0x100033be0                      ; __DATA,__data 0x100033be0
@@ -5421,7 +5421,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011e08  mov     x23, x0
   0x100011e0c  nop     
   0x100011e10  ldr     x0, #0x100032968                      ; class SKTexture
-  0x100011e14  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011e14  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011e18  mov     x26, x0
   0x100011e1c  adrp    x20, #0x100032000
   0x100011e20  ldr     x1, [x20, #0x390]                     ; @selector(textureWithImage:)
@@ -5478,7 +5478,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011eec  cbnz    x22, #0x100011f10
   0x100011ef0  nop     
   0x100011ef4  ldr     x0, #0x100032998                      ; class SKAction
-  0x100011ef8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011ef8  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011efc  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100011f00  mov     x22, x0
   0x100011f04  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
@@ -5491,7 +5491,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011f20  cbnz    x22, #0x100011f40
   0x100011f24  nop     
   0x100011f28  ldr     x0, #0x100032998                      ; class SKAction
-  0x100011f2c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011f2c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011f30  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100011f34  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x100011f38  nop     
@@ -5503,7 +5503,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100011f50  stlr    x25, [x8]                             ; __DATA,__data 0x100033c98
   0x100011f54  nop     
   0x100011f58  ldr     x0, #0x100032998                      ; class SKAction
-  0x100011f5c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100011f5c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100011f60  mov     x23, x0
   0x100011f64  mov     x0, x24
   0x100011f68  bl      #0x100023c58                          ; _objc_retain
@@ -5719,7 +5719,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000122b0  cbnz    x0, #0x1000122d0
   0x1000122b4  nop     
   0x1000122b8  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000122bc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000122bc  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000122c0  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000122c4  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x1000122c8  nop     
@@ -5727,14 +5727,14 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000122d0  str     x0, [sp, #0x28]
   0x1000122d4  nop     
   0x1000122d8  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000122dc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000122dc  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000122e0  mov     x23, x0
   0x1000122e4  adrp    x8, #0x100033000
   0x1000122e8  ldr     x28, [x8, #0xbe0]                     ; __DATA,__data 0x0
   0x1000122ec  cbnz    x28, #0x100012310
   0x1000122f0  nop     
   0x1000122f4  ldr     x0, #0x100032960                      ; class UIImage
-  0x1000122f8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000122f8  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000122fc  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100012300  mov     x28, x0
   0x100012304  adr     x8, #0x100033be0                      ; __DATA,__data 0x100033be0
@@ -5751,7 +5751,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012330  mov     x25, x0
   0x100012334  nop     
   0x100012338  ldr     x0, #0x100032968                      ; class SKTexture
-  0x10001233c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001233c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100012340  mov     x20, x0
   0x100012344  adrp    x21, #0x100032000
   0x100012348  ldr     x1, [x21, #0x390]                     ; @selector(textureWithImage:)
@@ -5823,7 +5823,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012450  cbnz    x0, #0x100012470
   0x100012454  nop     
   0x100012458  ldr     x0, #0x100032998                      ; class SKAction
-  0x10001245c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001245c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100012460  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100012464  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x100012468  nop     
@@ -6025,7 +6025,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012794  mov     x0, x19
   0x100012798  ldp     x29, x30, [sp, #0x10]
   0x10001279c  ldp     x20, x19, [sp], #0x20
-  0x1000127a0  b       #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000127a0  b       #0x100008c54                          ; fn_100008c54
 
 //// GameScene.moveScenario~closure2  0x1000127bc..0x1000127ec  (only caller GameScene.moveScenario)
 //// called by: GameScene.moveScenario
@@ -6040,12 +6040,12 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000127dc  mov     x0, x19
   0x1000127e0  ldp     x29, x30, [sp, #0x10]
   0x1000127e4  ldp     x20, x19, [sp], #0x20
-  0x1000127e8  b       #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000127e8  b       #0x100008c54                          ; fn_100008c54
 
 //// -[GameScene didBeginContact:]  0x1000127f8..0x100012804  (objc)
   0x1000127f8  adr     x3, #0x100012984                      ; &-[GameScene didBeginContact:]~closure1
   0x1000127fc  nop     
-  0x100012800  b       #0x1000128d4                          ; GameScene.didBeginContact:
+  0x100012800  b       #0x1000128d4                          ; GameScene~shared2
 
 //// -[GameScene torchDidCollideWithObstacle:obstacleE:]  0x100012804..0x100012868  (objc)
   0x100012804  stp     x22, x21, [sp, #-0x30]!
@@ -6103,9 +6103,9 @@ on the straight path into each instruction; the instructions themselves are comp
 //// -[GameScene playerDidCollideWithTorch:]  0x1000128c8..0x1000128d4  (objc)
   0x1000128c8  adr     x3, #0x1000137b8                      ; &-[GameScene playerDidCollideWithTorch:]~closure1
   0x1000128cc  nop     
-  0x1000128d0  b       #0x1000128d4                          ; GameScene.didBeginContact:
+  0x1000128d0  b       #0x1000128d4                          ; GameScene~shared2
 
-//// GameScene.didBeginContact:  0x1000128d4..0x100012924  (thunk of -[GameScene didBeginContact:])
+//// GameScene~shared2  0x1000128d4..0x100012924  (class: called only from GameScene)
 //// called by: -[GameScene didBeginContact:], -[GameScene playerDidCollideWithTorch:]
   0x1000128d4  stp     x22, x21, [sp, #-0x30]!
   0x1000128d8  stp     x20, x19, [sp, #0x10]
@@ -6453,7 +6453,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012e1c  cbz     x22, #0x100013394
   0x100012e20  adrp    x25, #0x100032000
   0x100012e24  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100012e28  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100012e28  bl      #0x1000069a8                          ; fn_1000069a8
   0x100012e2c  mov     x1, x0
   0x100012e30  mov     x0, x22
   0x100012e34  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6469,7 +6469,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012e5c  mov     x23, x0
   0x100012e60  cbz     x23, #0x100013398
   0x100012e64  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100012e68  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100012e68  bl      #0x1000069a8                          ; fn_1000069a8
   0x100012e6c  mov     x1, x0
   0x100012e70  mov     x0, x23
   0x100012e74  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6520,7 +6520,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012f28  cbz     x22, #0x1000133a4
   0x100012f2c  adrp    x25, #0x100032000
   0x100012f30  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100012f34  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100012f34  bl      #0x1000069a8                          ; fn_1000069a8
   0x100012f38  mov     x1, x0
   0x100012f3c  mov     x0, x22
   0x100012f40  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6536,7 +6536,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100012f68  mov     x23, x0
   0x100012f6c  cbz     x23, #0x1000133a8
   0x100012f70  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100012f74  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100012f74  bl      #0x1000069a8                          ; fn_1000069a8
   0x100012f78  mov     x1, x0
   0x100012f7c  mov     x0, x23
   0x100012f80  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6588,7 +6588,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013038  cbz     x22, #0x10001339c
   0x10001303c  adrp    x25, #0x100032000
   0x100013040  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100013044  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013044  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013048  mov     x1, x0
   0x10001304c  mov     x0, x22
   0x100013050  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6604,7 +6604,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013078  mov     x23, x0
   0x10001307c  cbz     x23, #0x1000133a0
   0x100013080  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100013084  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013084  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013088  mov     x1, x0
   0x10001308c  mov     x0, x23
   0x100013090  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6656,7 +6656,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013148  cbz     x22, #0x1000133ac
   0x10001314c  nop     
   0x100013150  ldr     x0, #0x100032950                      ; class SKSpriteNode
-  0x100013154  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013154  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013158  mov     x1, x0
   0x10001315c  mov     x0, x22
   0x100013160  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6749,7 +6749,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000132bc  cbz     x22, #0x1000133b0
   0x1000132c0  adrp    x25, #0x100032000
   0x1000132c4  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x1000132c8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000132c8  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000132cc  mov     x1, x0
   0x1000132d0  mov     x0, x22
   0x1000132d4  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6765,7 +6765,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000132fc  mov     x23, x0
   0x100013300  cbz     x23, #0x1000133b4
   0x100013304  ldr     x0, [x25, #0x950]                     ; class SKSpriteNode
-  0x100013308  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013308  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001330c  mov     x1, x0
   0x100013310  mov     x0, x23
   0x100013314  bl      #0x100023e74                          ; _swift_dynamicCastObjCClassUnconditional
@@ -6827,7 +6827,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000133e8  ldr     x22, [x19, x25]                       ; read GameScene.deadMonster
   0x1000133ec  nop     
   0x1000133f0  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000133f4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000133f4  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000133f8  mov     x23, x0
   0x1000133fc  nop     
   0x100013400  ldr     x24, #0x1000324a8                     ; @selector(play)
@@ -7036,7 +7036,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013720  str     q0, [sp]
   0x100013724  nop     
   0x100013728  ldr     x0, #0x100032998                      ; class SKAction
-  0x10001372c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001372c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013730  mov     x21, x0
   0x100013734  mov     x0, x20
   0x100013738  bl      #0x100023c58                          ; _objc_retain
@@ -7087,7 +7087,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000137e0  ldr     x21, [x19, x24]                       ; read GameScene.getTorchSound
   0x1000137e4  nop     
   0x1000137e8  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000137ec  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000137ec  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000137f0  mov     x22, x0
   0x1000137f4  nop     
   0x1000137f8  ldr     x23, #0x1000324a8                     ; @selector(play)
@@ -7175,7 +7175,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013934  ldr     x21, [x19, x24]                       ; read GameScene.coinSound
   0x100013938  nop     
   0x10001393c  ldr     x0, #0x100032998                      ; class SKAction
-  0x100013940  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013940  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013944  mov     x22, x0
   0x100013948  nop     
   0x10001394c  ldr     x23, #0x1000324a8                     ; @selector(play)
@@ -7267,7 +7267,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013a98  cbnz    x19, #0x100013abc
   0x100013a9c  nop     
   0x100013aa0  ldr     x0, #0x100032998                      ; class SKAction
-  0x100013aa4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013aa4  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013aa8  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100013aac  mov     x19, x0
   0x100013ab0  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
@@ -7275,7 +7275,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013ab8  stlr    x19, [x8]                             ; __DATA,__data 0x100033c80
   0x100013abc  adrp    x26, #0x100032000
   0x100013ac0  ldr     x0, [x26, #0x998]                     ; class SKAction
-  0x100013ac4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013ac4  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013ac8  mov     x20, x0
   0x100013acc  adrp    x23, #0x100032000
   0x100013ad0  ldr     x22, [x23, #0x2e8]                    ; @selector(size)
@@ -7330,7 +7330,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013b94  ldr     x0, [x25, #0xc80]
   0x100013b98  cbnz    x0, #0x100013bb4
   0x100013b9c  ldr     x0, [x26, #0x998]                     ; class SKAction
-  0x100013ba0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013ba0  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013ba4  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100013ba8  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x100013bac  nop     
@@ -7416,7 +7416,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013cec  mov     x0, x24
   0x100013cf0  bl      #0x100023c4c                          ; _objc_release
   0x100013cf4  mov     x0, x25
-  0x100013cf8  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100013cf8  bl      #0x100008c54                          ; fn_100008c54
   0x100013cfc  mov     x0, x20
   0x100013d00  sub     sp, x29, #0x60
   0x100013d04  ldp     x29, x30, [sp, #0x60]
@@ -7461,7 +7461,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013d8c  cbnz    x19, #0x100013db0
   0x100013d90  nop     
   0x100013d94  ldr     x0, #0x100032998                      ; class SKAction
-  0x100013d98  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013d98  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013d9c  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100013da0  mov     x19, x0
   0x100013da4  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
@@ -7469,7 +7469,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013dac  stlr    x19, [x8]                             ; __DATA,__data 0x100033c80
   0x100013db0  adrp    x24, #0x100032000
   0x100013db4  ldr     x0, [x24, #0x998]                     ; class SKAction
-  0x100013db8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013db8  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013dbc  mov     x20, x0
   0x100013dc0  nop     
   0x100013dc4  ldr     x21, #0x1000322e8                     ; @selector(size)
@@ -7503,7 +7503,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013e34  ldr     x0, [x23, #0xc80]
   0x100013e38  cbnz    x0, #0x100013e54
   0x100013e3c  ldr     x0, [x24, #0x998]                     ; class SKAction
-  0x100013e40  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013e40  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013e44  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100013e48  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x100013e4c  nop     
@@ -7582,7 +7582,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013f5c  cbnz    x19, #0x100013f80
   0x100013f60  nop     
   0x100013f64  ldr     x0, #0x100032998                      ; class SKAction
-  0x100013f68  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013f68  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013f6c  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100013f70  mov     x19, x0
   0x100013f74  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
@@ -7590,7 +7590,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100013f7c  stlr    x19, [x8]                             ; __DATA,__data 0x100033c80
   0x100013f80  adrp    x24, #0x100032000
   0x100013f84  ldr     x0, [x24, #0x998]                     ; class SKAction
-  0x100013f88  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100013f88  bl      #0x1000069a8                          ; fn_1000069a8
   0x100013f8c  mov     x20, x0
   0x100013f90  nop     
   0x100013f94  ldr     x21, #0x1000322e8                     ; @selector(size)
@@ -7624,7 +7624,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100014004  ldr     x0, [x23, #0xc80]
   0x100014008  cbnz    x0, #0x100014024
   0x10001400c  ldr     x0, [x24, #0x998]                     ; class SKAction
-  0x100014010  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100014010  bl      #0x1000069a8                          ; fn_1000069a8
   0x100014014  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100014018  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x10001401c  nop     
@@ -7715,7 +7715,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100014184  mov     x0, x19
   0x100014188  ldp     x29, x30, [sp, #0x10]
   0x10001418c  ldp     x20, x19, [sp], #0x20
-  0x100014190  b       #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100014190  b       #0x100008c54                          ; fn_100008c54
 
 //// GameScene.didMoveToView:~call1  0x100014a40..0x100014afc  (only caller GameScene.didMoveToView:)
 //// called by: GameScene.didMoveToView:
@@ -8386,7 +8386,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000152f0  mov     x19, x0
   0x1000152f4  bl      #0x100023c58                          ; _objc_retain
   0x1000152f8  mov     x0, x19
-  0x1000152fc  bl      #0x10001532c                          ; GameScene.startGame
+  0x1000152fc  bl      #0x10001532c                          ; GameScene.startScore
   0x100015300  nop     
   0x100015304  ldr     x8, #0x100033d80                      ; offset of GameScene.blockPlayer
   0x100015308  strb    wzr, [x19, x8]                        ; write GameScene.blockPlayer
@@ -8399,7 +8399,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100015324  ldp     x20, x19, [sp], #0x20
   0x100015328  b       #0x100023c4c                          ; _objc_release
 
-//// GameScene.startGame  0x10001532c..0x1000155a4  (thunk of -[GameScene startGame])
+//// GameScene.startScore  0x10001532c..0x1000155a4  (thunk of -[GameScene startScore])
 //// called by: -[GameScene startGame], -[GameScene startScore]
   0x10001532c  stp     x26, x25, [sp, #-0x50]!
   0x100015330  stp     x24, x23, [sp, #0x10]
@@ -8414,7 +8414,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100015354  cbnz    x20, #0x100015378
   0x100015358  nop     
   0x10001535c  ldr     x0, #0x100032998                      ; class SKAction
-  0x100015360  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100015360  bl      #0x1000069a8                          ; fn_1000069a8
   0x100015364  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100015368  mov     x20, x0
   0x10001536c  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
@@ -8427,7 +8427,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100015388  cbnz    x20, #0x1000153a8
   0x10001538c  nop     
   0x100015390  ldr     x0, #0x100032998                      ; class SKAction
-  0x100015394  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100015394  bl      #0x1000069a8                          ; fn_1000069a8
   0x100015398  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x10001539c  adr     x8, #0x100033c80                      ; __DATA,__data 0x100033c80
   0x1000153a0  nop     
@@ -8439,7 +8439,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000153b8  stlr    x22, [x8]                             ; __DATA,__data 0x100033c98
   0x1000153bc  nop     
   0x1000153c0  ldr     x0, #0x100032998                      ; class SKAction
-  0x1000153c4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000153c4  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000153c8  mov     x21, x0
   0x1000153cc  mov     w1, #0x30
   0x1000153d0  mov     w2, #7
@@ -8464,7 +8464,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10001541c  bl      #0x100008c84                          ; fn_100008c84
   0x100015420  mov     x23, x0
   0x100015424  stp     x19, x24, [x23, #0x10]
-  0x100015428  adr     x8, #0x1000178a8                      ; &GameScene.startGame~closure1
+  0x100015428  adr     x8, #0x1000178a8                      ; &GameScene.startScore~closure1
   0x10001542c  nop     
   0x100015430  stp     x8, x23, [sp, #0x20]
   0x100015434  nop     
@@ -8520,7 +8520,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000154fc  mov     x0, x24
   0x100015500  bl      #0x100023c7c                          ; __Block_release
   0x100015504  mov     x0, x23
-  0x100015508  bl      #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x100015508  bl      #0x100008c54                          ; fn_100008c54
   0x10001550c  nop     
   0x100015510  ldr     x22, #0x100032650                     ; @selector(repeatActionForever:)
   0x100015514  mov     x0, x19
@@ -8567,7 +8567,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000155b0  mov     x19, x0
   0x1000155b4  bl      #0x100023c58                          ; _objc_retain
   0x1000155b8  mov     x0, x19
-  0x1000155bc  bl      #0x10001532c                          ; GameScene.startGame
+  0x1000155bc  bl      #0x10001532c                          ; GameScene.startScore
   0x1000155c0  mov     x0, x19
   0x1000155c4  ldp     x29, x30, [sp, #0x10]
   0x1000155c8  ldp     x20, x19, [sp], #0x20
@@ -9021,7 +9021,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100015ca8  b.eq    #0x100015cc0
   0x100015cac  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x100015cb0  nop     
-  0x100015cb4  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x100015cb4  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x100015cb8  nop     
   0x100015cbc  bl      #0x100023ee0                          ; _swift_once
   0x100015cc0  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -9040,7 +9040,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100015cf4  adr     x8, #0x100032bf8                      ; __DATA,__objc_data 0x100032bf8
   0x100015cf8  nop     
   0x100015cfc  add     x0, x8, #0x10                         ; class metadata GameScene
-  0x100015d00  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100015d00  bl      #0x1000069a8                          ; fn_1000069a8
   0x100015d04  mov     x20, x0
   0x100015d08  adr     x8, #0x1000340c0                      ; __DATA,__common 0x1000340c0
   0x100015d0c  nop     
@@ -9485,7 +9485,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000163d4  b.eq    #0x1000163ec
   0x1000163d8  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x1000163dc  nop     
-  0x1000163e0  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x1000163e0  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x1000163e4  nop     
   0x1000163e8  bl      #0x100023ee0                          ; _swift_once
   0x1000163ec  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -9504,7 +9504,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100016420  adr     x8, #0x100032bf8                      ; __DATA,__objc_data 0x100032bf8
   0x100016424  nop     
   0x100016428  add     x0, x8, #0x10                         ; class metadata GameScene
-  0x10001642c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001642c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100016430  mov     x20, x0
   0x100016434  adr     x8, #0x1000340c0                      ; __DATA,__common 0x1000340c0
   0x100016438  nop     
@@ -9536,7 +9536,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100016490  adr     x8, #0x100032bf8                      ; __DATA,__objc_data 0x100032bf8
   0x100016494  nop     
   0x100016498  add     x0, x8, #0x10                         ; class metadata GameScene
-  0x10001649c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001649c  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000164a0  adr     x8, #0x1000340c0                      ; __DATA,__common 0x1000340c0
   0x1000164a4  nop     
   0x1000164a8  stlr    x0, [x8]                              ; __DATA,__common 0x1000340c0
@@ -9936,7 +9936,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100016d64  adr     x8, #0x100032bf8                      ; __DATA,__objc_data 0x100032bf8
   0x100016d68  nop     
   0x100016d6c  add     x0, x8, #0x10                         ; class metadata GameScene
-  0x100016d70  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100016d70  bl      #0x1000069a8                          ; fn_1000069a8
   0x100016d74  mov     x23, x0
   0x100016d78  adr     x8, #0x1000340c0                      ; __DATA,__common 0x1000340c0
   0x100016d7c  nop     
@@ -10130,7 +10130,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10001706c  mov     x25, x0
   0x100017070  nop     
   0x100017074  ldr     x0, #0x1000329d0                      ; class SKEmitterNode
-  0x100017078  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100017078  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001707c  nop     
   0x100017080  ldr     x1, #0x1000326d8                      ; @selector(nodeWithFileNamed:)
   0x100017084  mov     x2, x25
@@ -10607,7 +10607,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000177d4  b.eq    #0x1000177ec
   0x1000177d8  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x1000177dc  nop     
-  0x1000177e0  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x1000177e0  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x1000177e4  nop     
   0x1000177e8  bl      #0x100023ee0                          ; _swift_once
   0x1000177ec  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -10626,7 +10626,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100017820  adr     x8, #0x100032bf8                      ; __DATA,__objc_data 0x100032bf8
   0x100017824  nop     
   0x100017828  add     x0, x8, #0x10                         ; class metadata GameScene
-  0x10001782c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001782c  bl      #0x1000069a8                          ; fn_1000069a8
   0x100017830  mov     x21, x0
   0x100017834  adr     x8, #0x1000340c0                      ; __DATA,__common 0x1000340c0
   0x100017838  nop     
@@ -10646,8 +10646,8 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100017870  ldp     x28, x27, [sp], #0x60
   0x100017874  ret     
 
-//// GameScene.startGame~closure1  0x1000178a8..0x1000178d0  (only caller GameScene.startGame)
-//// called by: GameScene.startGame
+//// GameScene.startScore~closure1  0x1000178a8..0x1000178d0  (only caller GameScene.startScore)
+//// called by: GameScene.startScore
   0x1000178a8  stp     x20, x19, [sp, #-0x20]!
   0x1000178ac  stp     x29, x30, [sp, #0x10]
   0x1000178b0  add     x29, sp, #0x10
@@ -10657,7 +10657,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000178c0  mov     x0, x19
   0x1000178c4  ldp     x29, x30, [sp, #0x10]
   0x1000178c8  ldp     x20, x19, [sp], #0x20
-  0x1000178cc  b       #0x100008c54                          ; ResultViewController..cxx_destruct
+  0x1000178cc  b       #0x100008c54                          ; fn_100008c54
 
 //// -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:]  0x1000194fc..0x1000195e4  (objc)
   0x1000194fc  stp     x26, x25, [sp, #-0x50]!
@@ -10841,7 +10841,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000197b0  mov     x27, x0
   0x1000197b4  nop     
   0x1000197b8  ldr     x0, #0x100032968                      ; class SKTexture
-  0x1000197bc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000197bc  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000197c0  mov     x24, x0
   0x1000197c4  adrp    x28, #0x100032000
   0x1000197c8  ldr     x1, [x28, #0x780]                     ; @selector(textureWithImageNamed:)
@@ -10909,7 +10909,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000198c0  cbnz    x0, #0x1000198e0
   0x1000198c4  nop     
   0x1000198c8  ldr     x0, #0x100032968                      ; class SKTexture
-  0x1000198cc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000198cc  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000198d0  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000198d4  adr     x8, #0x100033ee8                      ; __DATA,__data 0x100033ee8
   0x1000198d8  nop     
@@ -10924,7 +10924,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000198fc  cbnz    x23, #0x100019920
   0x100019900  nop     
   0x100019904  ldr     x0, #0x100032968                      ; class SKTexture
-  0x100019908  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019908  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001990c  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100019910  mov     x23, x0
   0x100019914  adr     x8, #0x100033ee8                      ; __DATA,__data 0x100033ee8
@@ -10932,7 +10932,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10001991c  stlr    x23, [x8]                             ; __DATA,__data 0x100033ee8
   0x100019920  nop     
   0x100019924  ldr     x0, #0x100032998                      ; class SKAction
-  0x100019928  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019928  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001992c  mov     x22, x0
   0x100019930  mov     w1, #0x40
   0x100019934  mov     w2, #7
@@ -11031,7 +11031,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100019a9c  mov     x21, x0
   0x100019aa0  nop     
   0x100019aa4  ldr     x0, #0x100032968                      ; class SKTexture
-  0x100019aa8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019aa8  bl      #0x1000069a8                          ; fn_1000069a8
   0x100019aac  mov     x27, x0
   0x100019ab0  adrp    x19, #0x100032000
   0x100019ab4  ldr     x1, [x19, #0x780]                     ; @selector(textureWithImageNamed:)
@@ -11168,7 +11168,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100019cc0  cbnz    x0, #0x100019ce0
   0x100019cc4  nop     
   0x100019cc8  ldr     x0, #0x100032968                      ; class SKTexture
-  0x100019ccc  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019ccc  bl      #0x1000069a8                          ; fn_1000069a8
   0x100019cd0  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100019cd4  adr     x8, #0x100033ee8                      ; __DATA,__data 0x100033ee8
   0x100019cd8  nop     
@@ -11183,7 +11183,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100019cfc  cbnz    x24, #0x100019d20
   0x100019d00  nop     
   0x100019d04  ldr     x0, #0x100032968                      ; class SKTexture
-  0x100019d08  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019d08  bl      #0x1000069a8                          ; fn_1000069a8
   0x100019d0c  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x100019d10  mov     x24, x0
   0x100019d14  adr     x8, #0x100033ee8                      ; __DATA,__data 0x100033ee8
@@ -11191,7 +11191,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100019d1c  stlr    x24, [x8]                             ; __DATA,__data 0x100033ee8
   0x100019d20  nop     
   0x100019d24  ldr     x0, #0x100032998                      ; class SKAction
-  0x100019d28  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100019d28  bl      #0x1000069a8                          ; fn_1000069a8
   0x100019d2c  mov     x19, x0
   0x100019d30  mov     w27, #7
   0x100019d34  mov     w1, #0x58
@@ -11271,7 +11271,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100019e5c  ldp     x28, x27, [sp], #0x60
   0x100019e60  ret     
 
-//// GameScene~shared1  0x100022f08..0x100022f28  (class: called only from GameScene)
+//// GameScene~shared3  0x100022f08..0x100022f28  (class: called only from GameScene)
 //// called by: GameScene.createMonster, GameScene.createCoin, GameScene.changeScenario, GameScene.initWithSize:, GameScene.init, GameScene.initWithCoder:, GameScene.obstacleDidCollideWithPlayer:obstacleE:
   0x100022f08  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
   0x100022f0c  nop     
@@ -11339,7 +11339,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100023034  ldp     x22, x21, [sp], #0x30
   0x100023038  b       #0x100023c4c                          ; _objc_release
 
-//// GameScene~shared2  0x10002303c..0x1000230c4  (class: called only from GameScene)
+//// GameScene~shared4  0x10002303c..0x1000230c4  (class: called only from GameScene)
 //// called by: GameScene.createMonster, GameScene.createCoin
   0x10002303c  stp     x29, x30, [sp, #-0x10]!
   0x100023040  mov     x29, sp
@@ -11409,7 +11409,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100023134  bl      #0x100023c4c                          ; _objc_release
   0x100023138  nop     
   0x10002313c  ldr     x0, #0x100032998                      ; class SKAction
-  0x100023140  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100023140  bl      #0x1000069a8                          ; fn_1000069a8
   0x100023144  mov     x21, x0
   0x100023148  adr     x0, #0x100027920                      ; 'screamingMan.wav'
   0x10002314c  nop     
@@ -11457,7 +11457,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000231f4  b.eq    #0x10002320c
   0x1000231f8  adr     x0, #0x100034040                      ; __DATA,__common 0x100034040
   0x1000231fc  nop     
-  0x100023200  adr     x1, #0x100022f08                      ; &GameScene~shared1
+  0x100023200  adr     x1, #0x100022f08                      ; &GameScene~shared3
   0x100023204  nop     
   0x100023208  bl      #0x100023ee0                          ; _swift_once
   0x10002320c  adr     x8, #0x100034078                      ; __DATA,__common 0x100034078
@@ -11757,7 +11757,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x1000236a4  bl      #0x100023c34                          ; _objc_msgSend  [? setPaused:]
   0x1000236a8  nop     
   0x1000236ac  ldr     x0, #0x100032970                      ; class NSTimer
-  0x1000236b0  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000236b0  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000236b4  mov     x20, x0
   0x1000236b8  nop     
   0x1000236bc  ldr     x21, #0x100032890                     ; @selector(clear)
@@ -11886,7 +11886,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10002389c  cbnz    x20, #0x1000238c0
   0x1000238a0  nop     
   0x1000238a4  ldr     x0, #0x1000329a8                      ; class UIColor
-  0x1000238a8  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x1000238a8  bl      #0x1000069a8                          ; fn_1000069a8
   0x1000238ac  bl      #0x100023ea4                          ; _swift_getObjCClassMetadata
   0x1000238b0  mov     x20, x0
   0x1000238b4  adr     x8, #0x100033ca0                      ; __DATA,__data 0x100033ca0
@@ -12006,7 +12006,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100023a68  ldr     x19, [x19, x8]                        ; read GameScene.backgroundTorch
   0x100023a6c  nop     
   0x100023a70  ldr     x0, #0x100032998                      ; class SKAction
-  0x100023a74  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100023a74  bl      #0x1000069a8                          ; fn_1000069a8
   0x100023a78  mov     x20, x0
   0x100023a7c  nop     
   0x100023a80  ldr     x21, #0x100032898                     ; @selector(changeVolumeBy:duration:)
@@ -12038,7 +12038,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x100023ae8  ldr     x19, [x19, x8]                        ; read GameScene.backgroundTorch
   0x100023aec  nop     
   0x100023af0  ldr     x0, #0x100032998                      ; class SKAction
-  0x100023af4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x100023af4  bl      #0x1000069a8                          ; fn_1000069a8
   0x100023af8  mov     x20, x0
   0x100023afc  nop     
   0x100023b00  ldr     x21, #0x100032898                     ; @selector(changeVolumeBy:duration:)

@@ -7,19 +7,19 @@ on the straight path into each instruction; the instructions themselves are comp
 //// -[HomeScreenViewController ranking]  0x100019e64..0x100019e70  (objc)
   0x100019e64  adr     x2, #0x100033f18                      ; offset of HomeScreenViewController.ranking
   0x100019e68  nop     
-  0x100019e6c  b       #0x100019e88                          ; HomeScreenViewController.ranking
+  0x100019e6c  b       #0x100019e88                          ; HomeScreenViewController~shared1
 
 //// -[HomeScreenViewController setRanking:]  0x100019e70..0x100019e7c  (objc)
   0x100019e70  adr     x3, #0x100033f18                      ; offset of HomeScreenViewController.ranking
   0x100019e74  nop     
-  0x100019e78  b       #0x100019f0c                          ; HomeScreenViewController.setRanking:
+  0x100019e78  b       #0x100019f0c                          ; HomeScreenViewController~shared2
 
 //// -[HomeScreenViewController ranking2]  0x100019e7c..0x100019e88  (objc)
   0x100019e7c  adr     x2, #0x100033f20                      ; offset of HomeScreenViewController.ranking2
   0x100019e80  nop     
-  0x100019e84  b       #0x100019e88                          ; HomeScreenViewController.ranking
+  0x100019e84  b       #0x100019e88                          ; HomeScreenViewController~shared1
 
-//// HomeScreenViewController.ranking  0x100019e88..0x100019f00  (thunk of -[HomeScreenViewController ranking])
+//// HomeScreenViewController~shared1  0x100019e88..0x100019f00  (class: called only from HomeScreenViewController)
 //// called by: -[HomeScreenViewController ranking], -[HomeScreenViewController ranking2]
   0x100019e88  stp     x20, x19, [sp, #-0x20]!
   0x100019e8c  stp     x29, x30, [sp, #0x10]
@@ -55,9 +55,9 @@ on the straight path into each instruction; the instructions themselves are comp
 //// -[HomeScreenViewController setRanking2:]  0x100019f00..0x100019f0c  (objc)
   0x100019f00  adr     x3, #0x100033f20                      ; offset of HomeScreenViewController.ranking2
   0x100019f04  nop     
-  0x100019f08  b       #0x100019f0c                          ; HomeScreenViewController.setRanking:
+  0x100019f08  b       #0x100019f0c                          ; HomeScreenViewController~shared2
 
-//// HomeScreenViewController.setRanking:  0x100019f0c..0x100019fa0  (thunk of -[HomeScreenViewController setRanking:])
+//// HomeScreenViewController~shared2  0x100019f0c..0x100019fa0  (class: called only from HomeScreenViewController)
 //// called by: -[HomeScreenViewController setRanking:], -[HomeScreenViewController setRanking2:]
   0x100019f0c  stp     x22, x21, [sp, #-0x30]!
   0x100019f10  stp     x20, x19, [sp, #0x10]
@@ -1087,7 +1087,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10001af30  adr     x8, #0x100033128                      ; __DATA,__objc_data 0x100033128
   0x10001af34  nop     
   0x10001af38  add     x0, x8, #0x10                         ; class metadata HomeScreenViewController
-  0x10001af3c  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001af3c  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001af40  adr     x8, #0x1000340e0                      ; __DATA,__common 0x1000340e0
   0x10001af44  nop     
   0x10001af48  stlr    x0, [x8]                              ; __DATA,__common 0x1000340e0
@@ -1168,7 +1168,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10001b064  adr     x8, #0x100033128                      ; __DATA,__objc_data 0x100033128
   0x10001b068  nop     
   0x10001b06c  add     x0, x8, #0x10                         ; class metadata HomeScreenViewController
-  0x10001b070  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001b070  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001b074  adr     x8, #0x1000340e0                      ; __DATA,__common 0x1000340e0
   0x10001b078  nop     
   0x10001b07c  stlr    x0, [x8]                              ; __DATA,__common 0x1000340e0
@@ -1903,7 +1903,7 @@ on the straight path into each instruction; the instructions themselves are comp
   0x10001bcb8  adr     x8, #0x100033128                      ; __DATA,__objc_data 0x100033128
   0x10001bcbc  nop     
   0x10001bcc0  add     x0, x8, #0x10                         ; class metadata HomeScreenViewController
-  0x10001bcc4  bl      #0x1000069a8                          ; TableCell.awakeFromNib
+  0x10001bcc4  bl      #0x1000069a8                          ; fn_1000069a8
   0x10001bcc8  adr     x8, #0x1000340e0                      ; __DATA,__common 0x1000340e0
   0x10001bccc  nop     
   0x10001bcd0  stlr    x0, [x8]                              ; __DATA,__common 0x1000340e0
