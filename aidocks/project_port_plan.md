@@ -1,11 +1,11 @@
 ---
 name: project_port_plan
-description: "PLANNED 2026-10-02, every question answered, waiting for the go-ahead: the whole port of Inside The Cave to Windows in Python, in five phases (platform, a SpriteKit stand-in, the game scene, the screens, building and releasing), with the decisions it needs from the dev listed at the end. Phase 1 built 2026-10-02, not yet confirmed; each later phase waits for the dev's go."
+description: "PLANNED 2026-10-02, every question answered, waiting for the go-ahead: the whole port of Inside The Cave to Windows in Python, in five phases (platform, a SpriteKit stand-in, the game scene, the screens, building and releasing), with the decisions it needs from the dev listed at the end. Phase 1 finished 2026-10-02, confirmed by ear; each later phase waits for the dev's go."
 metadata:
   type: project
 ---
 
-**Status: phase 1 built, not yet confirmed (2026-10-02); phases 2 to 5 planned.** Every question answered (1 since made unnecessary by the WAVs). The dev gave the go-ahead for phase 1 on 2026-10-02 ("Let me know when you are done with phase 1. You can start now."); what landed is under Phase 1 below. The dev asked for the whole porting plan to be written now, with the open questions ("Let's write the entire porting plan now, with your open questions"). Nothing is built. Each phase starts only on the dev's go-ahead; the plan is updated first whenever an answer changes it ([[feedback_record_plans_first]]). It is ported from what the disassembly found ([[project_disassembly_plan]], `GAME_STRUCTURE.md`), every port function citing the original's address, every difference recorded in `DIVERGENCES.md` ([[feedback_side_by_side]]).
+**Status: phase 1 FINISHED, confirmed by the dev (2026-10-02: "All interactive tests past."); phases 2 to 5 planned.** Every question answered (1 since made unnecessary by the WAVs). The dev gave the go-ahead for phase 1 on 2026-10-02 ("Let me know when you are done with phase 1. You can start now."); what landed is under Phase 1 below. The dev asked for the whole porting plan to be written now, with the open questions ("Let's write the entire porting plan now, with your open questions"). Nothing is built. Each phase starts only on the dev's go-ahead; the plan is updated first whenever an answer changes it ([[feedback_record_plans_first]]). It is ported from what the disassembly found ([[project_disassembly_plan]], `GAME_STRUCTURE.md`), every port function citing the original's address, every difference recorded in `DIVERGENCES.md` ([[feedback_side_by_side]]).
 
 ## What the port is
 The original is small: one game scene and five screens, 12 sounds, every number a constant in the code. What makes it work is Apple's **SpriteKit**, the iPhone's built-in game framework: it moves the objects over time, tells the game when two of them touch, and plays sounds placed in space. The dev does not have SpriteKit, and does not need it: it is part of iOS, not something to install. The port reproduces the small part of it the game uses, in Python, in its own module (phase 2), fed with the numbers read from the binary.
@@ -24,7 +24,7 @@ The rest follows the reference port in the gitignored `user/` folder ([[feedback
 ## Phase 1: the platform
 Copy and adapt the platform modules, `paths.py`, the key map and its F1 screen, and the test helper `_scratch_save.py`; rename everything from the reference port. Add `sound.py`, which reads each WAV (16-bit PCM, so the standard library's `wave` reads it) into an OpenAL buffer once, at start, mixed down to mono where the sound is placed in space (question 2). Tests: paths, the save, the run loop, speech kept silent, the key map.
 
-**Built 2026-10-02, not yet confirmed by the dev.** Not committed. Nothing of it runs the game, which does not exist yet; it is checked by its tests only.
+**Finished 2026-10-02**: built, committed (`7f80c30`), and confirmed by the dev by ear with `tests/interact/platform_check.py` ("All interactive tests past."). There is no game yet to run it in; the game scene uses it from phase 3.
 - `insidethecave/paths.py`: the game folder (`--game`, `INSIDETHECAVE_GAME`, `game` beside the executable, the repository's `game`; the first holding `sounds`, as `compiler.py`), `sound(name)` by base name in `used` then `unused`, the save in `%APPDATA%\InsideTheCave` or `INSIDETHECAVE_USER_DIR`.
 - `platform/openal.py`: as the reference port's, without the Linux path; HRTF off (one switch, to judge by ear in phase 2), the output limiter on since the roar plays at 3.0.
 - `platform/runloop.py`: **timers only.** The binary makes four one-shot NSTimers (0x10000e0f4, 0x10000e648, 0x1000236ec, 0x10000ea04) and never uses `DispatchQueue` or `performSelector:afterDelay:`, so the reference port's delayed performs were left out. `hold`/`resume` stop the clock for the pause.
@@ -36,6 +36,7 @@ Copy and adapt the platform modules, `paths.py`, the key map and its F1 screen, 
 - `platform/sound.py` (new): `read_wav`, `to_mono` (each frame the average of left and right), `load(name, mono)`, and `SoundBank`, one OpenAL buffer per sound and form.
 - `ui/keybind_screen.py` (the F1 screen) and `ui/focus.py` (leaving the window calls the screen's `pause`).
 - Tests in `tests/case/`: `paths`, `runloop`, `save`, `speech`, `keymap`, `sound`, `language`; 80 tests, all passing on 2026-10-02.
+- `tests/interact/platform_check.py` (added the same day at the dev's request, [[feedback_interactive_tests]]): phase 1 by ear; every check passed for the dev. Moved into its own window the same day so Alt+F4 quits it at any moment (the dev's request).
 - Not in phase 1, though the reference port has them: the stage, menu and screen keyboard handlers (`ui/input.py` and the rest), which come with the game scene and the screens.
 
 ## Phase 2: the SpriteKit stand-in
@@ -43,7 +44,7 @@ Only what `GAME_STRUCTURE.md` shows the game using:
 - **Nodes** with a position, scale and size, in the scene's own units (750 by 1334, origin at the centre), children (the scenery's two sprites ride on the first), and `removeFromParent`.
 - **Actions**, run on a node, advancing with the real clock: `moveToX`/`moveToY` over a duration (linear, as SpriteKit's default), `wait`, `sequence`, `run` (a callback), `repeatForever`, `removeFromParent`, keys (`upScore`) and `removeActionForKey`, pause. Images are not drawn; sprite sizes come from the original's scale factors and image sizes (question 11).
 - **Contacts**: each frame, every pair of bodies whose category and contact mask call for it is tested for overlap (rectangles, with their centre offset, and circles), and a pair that starts touching is reported once, to the scene's `didBeginContact`, with the bodies in the order SpriteKit would give them (question 10). No collisions, no gravity: the original has neither.
-- **Audio nodes**: an `SKAudioNode` becomes an OpenAL source, looped or not, at its node's position, heard by a listener at the player; `play`, `changeVolumeTo`/`changeVolumeBy` over a duration. How a scene position becomes a position in OpenAL is not in the binary (it is in Apple's code), so it is a tunable mapping chosen by ear (question 2).
+- **Audio nodes**: an `SKAudioNode` becomes an OpenAL source, looped or not, at its node's position, heard by a listener at the player; `play`, `changeVolumeTo`/`changeVolumeBy` over a duration. How a scene position becomes a position in OpenAL is not in the binary (it is in Apple's code), so it is a tunable mapping chosen by ear (question 2). OpenAL caps a source's gain at `AL_MAX_GAIN`, 1.0 by default, so each source needs it raised (to at least 3.0) or the roar's and the bats' 3.0 would play at 1.0.
 - Tests: an action chain finishes at the right time and place against the real clock, contacts fire once and in order, a monster's roar fires at the sensor.
 
 ## Phase 3: the game scene

@@ -69,7 +69,7 @@ insidethecave/           the Python package: so far the platform layer and the k
 analysis/                the binary, and its complete disassembly and decoded data
 tools/                   the arm64 Mach-O and disassembly tools that made analysis/
 tests/case/              the automated tests
-tests/interact/          tools to play by ear (none yet)
+tests/interact/          tools to play by ear
 vendor/                  OpenAL Soft and NVDA's controller client, with their licenses
 docks/                   readme.txt, changelog.txt, credits.txt and todo list.txt,
                          which ship in a docks folder beside the game
@@ -134,8 +134,14 @@ and `language`. Run any of them on its own:
 everything away from your screen reader, and sends the audio to OpenAL Soft's null driver
 with no window. Files starting with `_` are helpers, not tests.
 
-`tests/interact/` will hold tools you play rather than tests, which open the real game at
-a chosen point on a save of their own.
+`tests/interact/` holds tools you play rather than tests, each on a save of its own.
+`platform_check.py` plays what the port has so far, before there is a game: the roar and
+the bats placed left, centre and right, every sound the game plays, the tutorial line in a
+Windows voice followed by the key hints, and the volume. It opens a small window: Up and
+Down choose a check, Enter runs it, Escape stops it, and Alt+F4 quits at any moment. Wear
+headphones:
+
+    python tests/interact/platform_check.py
 
 ## Building and releasing
 

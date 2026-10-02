@@ -10,7 +10,7 @@ A Windows port of **Inside The Cave** (`InsideTheCaveBD` 2.32), an iOS audio gam
 
 There is no source code for the original. The port is **recovered from the arm64 binary** `game/InsideTheCave` and rewritten **entirely in Python** ([[project_python_only]]), each module mirroring one original class and citing the binary addresses it came from. It is a solo port by tsatria03 ([[project_provenance]]).
 
-**State on 2026-10-02:** the whole game is disassembled ([[project_disassembly_plan]], finished): the tools are in `tools/`, every function is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes the game from the code, with addresses. Phase 1 of the port, the platform layer, was built the same day and is not yet confirmed by the dev ([[project_port_plan]]); no game function is ported yet.
+**State on 2026-10-02:** the whole game is disassembled ([[project_disassembly_plan]], finished): the tools are in `tools/`, every function is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes the game from the code, with addresses. Phase 1 of the port, the platform layer, was built the same day and confirmed by the dev by ear ([[project_port_plan]]); no game function is ported yet.
 
 ## Layout
 
@@ -18,7 +18,7 @@ There is no source code for the original. The port is **recovered from the arm64
 - **`insidethecave/`**: the Python package. `paths.py` (the game folder, sounds by base name, the save in `%APPDATA%\InsideTheCave`); `platform/` (`openal.py`, `runloop.py` for the NSTimers, `defaults.py` for `save.json` and `settings.json`, `volume.py`, `speech.py` with the SAPI 5 `TutorialVoice`, `language.py`, `keymap.py` for `keys.json`, `sound.py`); `ui/` (the F1 `keybind_screen.py`, `focus.py`). `game/`, one module per original class, comes with phases 2 and 3.
 - **`analysis/`**: `bin/InsideTheCave_arm64` (a copy of the binary), `data/` (the classes, every function's name, every string, the decoded scenes and storyboards) and `disasm/dz_<Class>.txt` (every function, annotated).
 - **`tools/`**: the arm64 Mach-O and disassembly tools that make `analysis/`, standard library plus `capstone` for the disassembly; `tools/README.md` says how to rerun them ([[project_binary_analysis_notes]]).
-- **`tests/`**: `tests/case/` for the automated tests, `tests/interact/` for the by-ear tools ([[project_tests_layout]]). `tests/case/` holds phase 1's tests; `tests/interact/` is empty. Every test must keep off the real save and be silent ([[project_safe_test_run]]).
+- **`tests/`**: `tests/case/` for the automated tests, `tests/interact/` for the by-ear tools ([[project_tests_layout]]). `tests/case/` holds phase 1's tests; `tests/interact/platform_check.py` lets the dev hear phase 1. Write a by-ear tool whenever something can be heard ([[feedback_interactive_tests]]). Every test must keep off the real save and be silent ([[project_safe_test_run]]).
 - **`vendor/`**: `soft_oal.dll` (OpenAL Soft) and `nvdaControllerClient64.dll`, with their licenses. The port is Windows only (the dev, 2026-10-02: no Linux build), and the Linux `libopenal.so.1` was removed the same day.
 - **`docks/`**: the documents a player reads, which a build ships in a `docks` folder beside the executable: `readme.txt`, `changelog.txt`, `credits.txt` and `todo list.txt`. All are empty so far.
 - **`aidocks/`**: the memory notes, plus three developer references: `PORTING_STATUS.md`, `DIVERGENCES.md` and `GAME_STRUCTURE.md`.
