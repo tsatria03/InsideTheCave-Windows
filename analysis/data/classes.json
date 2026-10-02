@@ -1,0 +1,2360 @@
+{
+ "binary": "game/InsideTheCave",
+ "classes": [
+  {
+   "name": "RankingCloud",
+   "raw_name": "_TtC13InsideTheCave12RankingCloud",
+   "address": "0x100033628",
+   "superclass": "SwiftObject",
+   "swift": true,
+   "instance_size": 40,
+   "protocols": [],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "container",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "publicDB",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x20",
+     "name": "rankingTemp",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [],
+   "methods": []
+  },
+  {
+   "name": "WarningViewController",
+   "raw_name": "_TtC13InsideTheCave21WarningViewController",
+   "address": "0x100032a40",
+   "superclass": "UIViewController",
+   "swift": true,
+   "instance_size": 57,
+   "protocols": [],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "alertLabel",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "timer",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x20",
+     "name": "languageId",
+     "type": "",
+     "size": 25
+    }
+   ],
+   "properties": [
+    {
+     "name": "alertLabel",
+     "attributes": "T@\"UILabel\",N,W,ValertLabel"
+    },
+    {
+     "name": "timer",
+     "attributes": "T@\"NSTimer\",N,&,Vtimer"
+    },
+    {
+     "name": "languageId",
+     "attributes": "T@\"NSString\",N,R,VlanguageId"
+    },
+    {
+     "name": "prefersStatusBarHidden",
+     "attributes": "TB,N,R"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[WarningViewController alertLabel]",
+     "selector": "alertLabel",
+     "types": "@16@0:8",
+     "imp": "0x10000e868"
+    },
+    {
+     "name": "-[WarningViewController setAlertLabel:]",
+     "selector": "setAlertLabel:",
+     "types": "v24@0:8@16",
+     "imp": "0x10000e888"
+    },
+    {
+     "name": "-[WarningViewController timer]",
+     "selector": "timer",
+     "types": "@16@0:8",
+     "imp": "0x10000e89c"
+    },
+    {
+     "name": "-[WarningViewController setTimer:]",
+     "selector": "setTimer:",
+     "types": "v24@0:8@16",
+     "imp": "0x10000e8cc"
+    },
+    {
+     "name": "-[WarningViewController languageId]",
+     "selector": "languageId",
+     "types": "@16@0:8",
+     "imp": "0x10000e900"
+    },
+    {
+     "name": "-[WarningViewController viewDidLoad]",
+     "selector": "viewDidLoad",
+     "types": "v16@0:8",
+     "imp": "0x10000eb6c"
+    },
+    {
+     "name": "-[WarningViewController segue]",
+     "selector": "segue",
+     "types": "v16@0:8",
+     "imp": "0x10000eb98"
+    },
+    {
+     "name": "-[WarningViewController touchesBegan:withEvent:]",
+     "selector": "touchesBegan:withEvent:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x10000ed18"
+    },
+    {
+     "name": "-[WarningViewController prefersStatusBarHidden]",
+     "selector": "prefersStatusBarHidden",
+     "types": "B16@0:8",
+     "imp": "0x10000edcc"
+    },
+    {
+     "name": "-[WarningViewController initWithNibName:bundle:]",
+     "selector": "initWithNibName:bundle:",
+     "types": "@32@0:8@16@24",
+     "imp": "0x10000f050"
+    },
+    {
+     "name": "-[WarningViewController initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x10000f174"
+    },
+    {
+     "name": "-[WarningViewController .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x10000ee50"
+    }
+   ]
+  },
+  {
+   "name": "TableCell",
+   "raw_name": "_TtC13InsideTheCave9TableCell",
+   "address": "0x100032b20",
+   "superclass": "UITableViewCell",
+   "swift": true,
+   "instance_size": 40,
+   "protocols": [],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "playerName",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "playerScore",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x20",
+     "name": "position",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [
+    {
+     "name": "playerName",
+     "attributes": "T@\"UILabel\",N,W,VplayerName"
+    },
+    {
+     "name": "playerScore",
+     "attributes": "T@\"UILabel\",N,W,VplayerScore"
+    },
+    {
+     "name": "position",
+     "attributes": "T@\"UILabel\",N,W,Vposition"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[TableCell playerName]",
+     "selector": "playerName",
+     "types": "@16@0:8",
+     "imp": "0x1000141ac"
+    },
+    {
+     "name": "-[TableCell setPlayerName:]",
+     "selector": "setPlayerName:",
+     "types": "v24@0:8@16",
+     "imp": "0x1000141cc"
+    },
+    {
+     "name": "-[TableCell playerScore]",
+     "selector": "playerScore",
+     "types": "@16@0:8",
+     "imp": "0x1000141e0"
+    },
+    {
+     "name": "-[TableCell setPlayerScore:]",
+     "selector": "setPlayerScore:",
+     "types": "v24@0:8@16",
+     "imp": "0x100014200"
+    },
+    {
+     "name": "-[TableCell position]",
+     "selector": "position",
+     "types": "@16@0:8",
+     "imp": "0x100014214"
+    },
+    {
+     "name": "-[TableCell setPosition:]",
+     "selector": "setPosition:",
+     "types": "v24@0:8@16",
+     "imp": "0x100014234"
+    },
+    {
+     "name": "-[TableCell awakeFromNib]",
+     "selector": "awakeFromNib",
+     "types": "v16@0:8",
+     "imp": "0x1000142a8"
+    },
+    {
+     "name": "-[TableCell setSelected:animated:]",
+     "selector": "setSelected:animated:",
+     "types": "v24@0:8B16B20",
+     "imp": "0x100014380"
+    },
+    {
+     "name": "-[TableCell initWithStyle:reuseIdentifier:]",
+     "selector": "initWithStyle:reuseIdentifier:",
+     "types": "@32@0:8q16@24",
+     "imp": "0x1000145c8"
+    },
+    {
+     "name": "-[TableCell initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x100014884"
+    },
+    {
+     "name": "-[TableCell .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x10001447c"
+    }
+   ]
+  },
+  {
+   "name": "GameScene",
+   "raw_name": "_TtC13InsideTheCave9GameScene",
+   "address": "0x100032c08",
+   "superclass": "SKScene",
+   "swift": true,
+   "instance_size": 296,
+   "protocols": [
+    "SKPhysicsContactDelegate"
+   ],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "gameSceneDelegate",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "positionLaneZero",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x20",
+     "name": "positionLaneOne",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x28",
+     "name": "positionLaneTwo",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x30",
+     "name": "actualPositionPlayer",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x38",
+     "name": "player",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x40",
+     "name": "lightTorch",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x48",
+     "name": "throwLightTorch",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x50",
+     "name": "positionLastObstacles",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x58",
+     "name": "countObstacles",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x60",
+     "name": "countSubObstacles",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x68",
+     "name": "countObjectScene",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x70",
+     "name": "objectHeight",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x78",
+     "name": "playerDead",
+     "type": "",
+     "size": 1
+    },
+    {
+     "offset": "0x79",
+     "name": "blockPlayer",
+     "type": "",
+     "size": 1
+    },
+    {
+     "offset": "0x80",
+     "name": "positionX",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x88",
+     "name": "speedMonster",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x90",
+     "name": "roar",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x98",
+     "name": "batSound",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xa0",
+     "name": "coinTinkle",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xa8",
+     "name": "coinSound",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xb0",
+     "name": "getTorchSound",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xb8",
+     "name": "playTorchSound",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xc0",
+     "name": "backgroundTorch",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xc8",
+     "name": "backgroundMusic",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xd0",
+     "name": "movePlayerSound",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xd8",
+     "name": "deadMonster",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xe0",
+     "name": "synth",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xe8",
+     "name": "utterance",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xf0",
+     "name": "falloffSize",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0xf8",
+     "name": "scenario0",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x100",
+     "name": "scenario1",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x108",
+     "name": "scenario2",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x110",
+     "name": "currentScenario",
+     "type": "",
+     "size": 24
+    }
+   ],
+   "properties": [
+    {
+     "name": "gameSceneDelegate",
+     "attributes": "T@\"<_TtP13InsideTheCave16GameOverDelegate_>\",N,&,VgameSceneDelegate"
+    },
+    {
+     "name": "positionLaneZero",
+     "attributes": "Td,N,R,VpositionLaneZero"
+    },
+    {
+     "name": "positionLaneOne",
+     "attributes": "Td,N,R,VpositionLaneOne"
+    },
+    {
+     "name": "positionLaneTwo",
+     "attributes": "Td,N,R,VpositionLaneTwo"
+    },
+    {
+     "name": "actualPositionPlayer",
+     "attributes": "Tq,N,VactualPositionPlayer"
+    },
+    {
+     "name": "player",
+     "attributes": "T@\"SKSpriteNode\",N,&,Vplayer"
+    },
+    {
+     "name": "lightTorch",
+     "attributes": "T@\"SKLightNode\",N,R,VlightTorch"
+    },
+    {
+     "name": "throwLightTorch",
+     "attributes": "T@\"SKLightNode\",N,&,VthrowLightTorch"
+    },
+    {
+     "name": "positionLastObstacles",
+     "attributes": "Tq,N,VpositionLastObstacles"
+    },
+    {
+     "name": "countObstacles",
+     "attributes": "Tq,N,VcountObstacles"
+    },
+    {
+     "name": "countSubObstacles",
+     "attributes": "Tq,N,VcountSubObstacles"
+    },
+    {
+     "name": "countObjectScene",
+     "attributes": "Tq,N,VcountObjectScene"
+    },
+    {
+     "name": "objectHeight",
+     "attributes": "Tq,N,VobjectHeight"
+    },
+    {
+     "name": "playerDead",
+     "attributes": "TB,N,VplayerDead"
+    },
+    {
+     "name": "blockPlayer",
+     "attributes": "TB,N,VblockPlayer"
+    },
+    {
+     "name": "positionX",
+     "attributes": "Td,N,VpositionX"
+    },
+    {
+     "name": "speedMonster",
+     "attributes": "Td,N,VspeedMonster"
+    },
+    {
+     "name": "roar",
+     "attributes": "T@\"SKAudioNode\",N,R,Vroar"
+    },
+    {
+     "name": "batSound",
+     "attributes": "T@\"SKAudioNode\",N,R,VbatSound"
+    },
+    {
+     "name": "coinTinkle",
+     "attributes": "T@\"SKAudioNode\",N,R,VcoinTinkle"
+    },
+    {
+     "name": "coinSound",
+     "attributes": "T@\"SKAudioNode\",N,R,VcoinSound"
+    },
+    {
+     "name": "getTorchSound",
+     "attributes": "T@\"SKAudioNode\",N,R,VgetTorchSound"
+    },
+    {
+     "name": "playTorchSound",
+     "attributes": "T@\"SKAudioNode\",N,R,VplayTorchSound"
+    },
+    {
+     "name": "backgroundTorch",
+     "attributes": "T@\"SKAudioNode\",N,R,VbackgroundTorch"
+    },
+    {
+     "name": "backgroundMusic",
+     "attributes": "T@\"SKAudioNode\",N,R,VbackgroundMusic"
+    },
+    {
+     "name": "movePlayerSound",
+     "attributes": "T@\"SKAudioNode\",N,R,VmovePlayerSound"
+    },
+    {
+     "name": "deadMonster",
+     "attributes": "T@\"SKAudioNode\",N,R,VdeadMonster"
+    },
+    {
+     "name": "synth",
+     "attributes": "T@\"AVSpeechSynthesizer\",N,R,Vsynth"
+    },
+    {
+     "name": "utterance",
+     "attributes": "T@\"AVSpeechUtterance\",N,&,Vutterance"
+    },
+    {
+     "name": "falloffSize",
+     "attributes": "Td,N,VfalloffSize"
+    },
+    {
+     "name": "scenario0",
+     "attributes": "T@\"SKSpriteNode\",N,R,Vscenario0"
+    },
+    {
+     "name": "scenario1",
+     "attributes": "T@\"SKSpriteNode\",N,R,Vscenario1"
+    },
+    {
+     "name": "scenario2",
+     "attributes": "T@\"SKSpriteNode\",N,R,Vscenario2"
+    },
+    {
+     "name": "currentScenario",
+     "attributes": "T@\"NSString\",N,C,VcurrentScenario"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[GameScene createLight]",
+     "selector": "createLight",
+     "types": "v16@0:8",
+     "imp": "0x1000239e0"
+    },
+    {
+     "name": "-[GameScene changeFalloffSize]",
+     "selector": "changeFalloffSize",
+     "types": "v16@0:8",
+     "imp": "0x100023be4"
+    },
+    {
+     "name": "-[GameScene obstacleDidCollideWithPlayer:obstacleE:]",
+     "selector": "obstacleDidCollideWithPlayer:obstacleE:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x100022f68"
+    },
+    {
+     "name": "-[GameScene clear]",
+     "selector": "clear",
+     "types": "v16@0:8",
+     "imp": "0x100022fc8"
+    },
+    {
+     "name": "-[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:]",
+     "selector": "spriteThreeFramesWithImageOne:imageTwo:imageThree:",
+     "types": "@40@0:8@16@24@32",
+     "imp": "0x1000194fc"
+    },
+    {
+     "name": "-[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:]",
+     "selector": "spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:",
+     "types": "@72@0:8@16@24@32@40@48@56@64",
+     "imp": "0x1000195e4"
+    },
+    {
+     "name": "-[GameScene moveObstacleWithBorn]",
+     "selector": "moveObstacleWithBorn",
+     "types": "@16@0:8",
+     "imp": "0x100013d24"
+    },
+    {
+     "name": "-[GameScene moveObstacle]",
+     "selector": "moveObstacle",
+     "types": "@16@0:8",
+     "imp": "0x100013f04"
+    },
+    {
+     "name": "-[GameScene moveCoinSound]",
+     "selector": "moveCoinSound",
+     "types": "@16@0:8",
+     "imp": "0x1000140d0"
+    },
+    {
+     "name": "-[GameScene positionFloat]",
+     "selector": "positionFloat",
+     "types": "d16@0:8",
+     "imp": "0x100014108"
+    },
+    {
+     "name": "-[GameScene didBeginContact:]",
+     "selector": "didBeginContact:",
+     "types": "v24@0:8@16",
+     "imp": "0x1000127f8"
+    },
+    {
+     "name": "-[GameScene torchDidCollideWithObstacle:obstacleE:]",
+     "selector": "torchDidCollideWithObstacle:obstacleE:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x100012804"
+    },
+    {
+     "name": "-[GameScene torchDidCollideWithBat:batB:]",
+     "selector": "torchDidCollideWithBat:batB:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x100012868"
+    },
+    {
+     "name": "-[GameScene playerDidCollideWithTorch:]",
+     "selector": "playerDidCollideWithTorch:",
+     "types": "v24@0:8@16",
+     "imp": "0x1000128c8"
+    },
+    {
+     "name": "-[GameScene playerDidCollideWithCoin:playerP:]",
+     "selector": "playerDidCollideWithCoin:playerP:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x100012924"
+    },
+    {
+     "name": "-[GameScene moveScenario]",
+     "selector": "moveScenario",
+     "types": "@16@0:8",
+     "imp": "0x100011b60"
+    },
+    {
+     "name": "-[GameScene putScenario]",
+     "selector": "putScenario",
+     "types": "v16@0:8",
+     "imp": "0x100011b98"
+    },
+    {
+     "name": "-[GameScene changeScenario]",
+     "selector": "changeScenario",
+     "types": "v16@0:8",
+     "imp": "0x100012718"
+    },
+    {
+     "name": "-[GameScene lineRandom]",
+     "selector": "lineRandom",
+     "types": "q16@0:8",
+     "imp": "0x1000116a4"
+    },
+    {
+     "name": "-[GameScene coinRandom]",
+     "selector": "coinRandom",
+     "types": "q16@0:8",
+     "imp": "0x1000116e0"
+    },
+    {
+     "name": "-[GameScene positionLineWithValue:]",
+     "selector": "positionLineWithValue:",
+     "types": "d24@0:8q16",
+     "imp": "0x10001171c"
+    },
+    {
+     "name": "-[GameScene choiceObstacleLine]",
+     "selector": "choiceObstacleLine",
+     "types": "d16@0:8",
+     "imp": "0x100011744"
+    },
+    {
+     "name": "-[GameScene choiceObstacleCoin]",
+     "selector": "choiceObstacleCoin",
+     "types": "d16@0:8",
+     "imp": "0x1000117c4"
+    },
+    {
+     "name": "-[GameScene createTorch]",
+     "selector": "createTorch",
+     "types": "@16@0:8",
+     "imp": "0x100010f5c"
+    },
+    {
+     "name": "-[GameScene setLightTorch]",
+     "selector": "setLightTorch",
+     "types": "v16@0:8",
+     "imp": "0x1000110f0"
+    },
+    {
+     "name": "-[GameScene throwTorch]",
+     "selector": "throwTorch",
+     "types": "v16@0:8",
+     "imp": "0x100011678"
+    },
+    {
+     "name": "-[GameScene createNodesSounds]",
+     "selector": "createNodesSounds",
+     "types": "v16@0:8",
+     "imp": "0x10001073c"
+    },
+    {
+     "name": "-[GameScene removeNodesSounds]",
+     "selector": "removeNodesSounds",
+     "types": "v16@0:8",
+     "imp": "0x100010838"
+    },
+    {
+     "name": "-[GameScene createBackgroundTorch]",
+     "selector": "createBackgroundTorch",
+     "types": "v16@0:8",
+     "imp": "0x10001097c"
+    },
+    {
+     "name": "-[GameScene createBackgroundMusic]",
+     "selector": "createBackgroundMusic",
+     "types": "v16@0:8",
+     "imp": "0x100010ad4"
+    },
+    {
+     "name": "-[GameScene movePlayerRight]",
+     "selector": "movePlayerRight",
+     "types": "v16@0:8",
+     "imp": "0x10000fb64"
+    },
+    {
+     "name": "-[GameScene movePlayerLeft]",
+     "selector": "movePlayerLeft",
+     "types": "v16@0:8",
+     "imp": "0x10000fe04"
+    },
+    {
+     "name": "-[GameScene soundMovePlayer]",
+     "selector": "soundMovePlayer",
+     "types": "v16@0:8",
+     "imp": "0x10000ff10"
+    },
+    {
+     "name": "-[GameScene touchesBegan:withEvent:]",
+     "selector": "touchesBegan:withEvent:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x10000ff3c"
+    },
+    {
+     "name": "-[GameScene movePlayerTap]",
+     "selector": "movePlayerTap",
+     "types": "v16@0:8",
+     "imp": "0x10000fff0"
+    },
+    {
+     "name": "-[GameScene playMonsterRoarAtPoint:]",
+     "selector": "playMonsterRoarAtPoint:",
+     "types": "v32@0:8{CGPoint=dd}16",
+     "imp": "0x10000f614"
+    },
+    {
+     "name": "-[GameScene playBatSoundAtPoint:]",
+     "selector": "playBatSoundAtPoint:",
+     "types": "v32@0:8{CGPoint=dd}16",
+     "imp": "0x10000f658"
+    },
+    {
+     "name": "-[GameScene tutorial]",
+     "selector": "tutorial",
+     "types": "v16@0:8",
+     "imp": "0x10000e83c"
+    },
+    {
+     "name": "-[GameScene createObjectScene]",
+     "selector": "createObjectScene",
+     "types": "v16@0:8",
+     "imp": "0x10000c9c8"
+    },
+    {
+     "name": "-[GameScene coinTogether]",
+     "selector": "coinTogether",
+     "types": "v16@0:8",
+     "imp": "0x10000c9f4"
+    },
+    {
+     "name": "-[GameScene torchTogether]",
+     "selector": "torchTogether",
+     "types": "v16@0:8",
+     "imp": "0x10000ca00"
+    },
+    {
+     "name": "-[GameScene createMonster]",
+     "selector": "createMonster",
+     "types": "@16@0:8",
+     "imp": "0x10000d180"
+    },
+    {
+     "name": "-[GameScene createBats]",
+     "selector": "createBats",
+     "types": "@16@0:8",
+     "imp": "0x10000d540"
+    },
+    {
+     "name": "-[GameScene createTorchObstacle]",
+     "selector": "createTorchObstacle",
+     "types": "@16@0:8",
+     "imp": "0x10000d834"
+    },
+    {
+     "name": "-[GameScene createCoin]",
+     "selector": "createCoin",
+     "types": "@16@0:8",
+     "imp": "0x10000de70"
+    },
+    {
+     "name": "-[GameScene createPlayer]",
+     "selector": "createPlayer",
+     "types": "v16@0:8",
+     "imp": "0x10000c094"
+    },
+    {
+     "name": "-[GameScene changeSpritePlayer:]",
+     "selector": "changeSpritePlayer:",
+     "types": "v20@0:8B16",
+     "imp": "0x10000c308"
+    },
+    {
+     "name": "-[GameScene createRoarSensor]",
+     "selector": "createRoarSensor",
+     "types": "v16@0:8",
+     "imp": "0x10000c648"
+    },
+    {
+     "name": "-[GameScene gameSceneDelegate]",
+     "selector": "gameSceneDelegate",
+     "types": "@16@0:8",
+     "imp": "0x100014afc"
+    },
+    {
+     "name": "-[GameScene setGameSceneDelegate:]",
+     "selector": "setGameSceneDelegate:",
+     "types": "v24@0:8@16",
+     "imp": "0x100014b2c"
+    },
+    {
+     "name": "-[GameScene positionLaneZero]",
+     "selector": "positionLaneZero",
+     "types": "d16@0:8",
+     "imp": "0x100014b60"
+    },
+    {
+     "name": "-[GameScene positionLaneOne]",
+     "selector": "positionLaneOne",
+     "types": "d16@0:8",
+     "imp": "0x100014b6c"
+    },
+    {
+     "name": "-[GameScene positionLaneTwo]",
+     "selector": "positionLaneTwo",
+     "types": "d16@0:8",
+     "imp": "0x100014b74"
+    },
+    {
+     "name": "-[GameScene actualPositionPlayer]",
+     "selector": "actualPositionPlayer",
+     "types": "q16@0:8",
+     "imp": "0x100014b80"
+    },
+    {
+     "name": "-[GameScene setActualPositionPlayer:]",
+     "selector": "setActualPositionPlayer:",
+     "types": "v24@0:8q16",
+     "imp": "0x100014b90"
+    },
+    {
+     "name": "-[GameScene player]",
+     "selector": "player",
+     "types": "@16@0:8",
+     "imp": "0x100014ba0"
+    },
+    {
+     "name": "-[GameScene setPlayer:]",
+     "selector": "setPlayer:",
+     "types": "v24@0:8@16",
+     "imp": "0x100014bd0"
+    },
+    {
+     "name": "-[GameScene lightTorch]",
+     "selector": "lightTorch",
+     "types": "@16@0:8",
+     "imp": "0x100014c04"
+    },
+    {
+     "name": "-[GameScene throwLightTorch]",
+     "selector": "throwLightTorch",
+     "types": "@16@0:8",
+     "imp": "0x100014c34"
+    },
+    {
+     "name": "-[GameScene setThrowLightTorch:]",
+     "selector": "setThrowLightTorch:",
+     "types": "v24@0:8@16",
+     "imp": "0x100014c64"
+    },
+    {
+     "name": "-[GameScene positionLastObstacles]",
+     "selector": "positionLastObstacles",
+     "types": "q16@0:8",
+     "imp": "0x100014c98"
+    },
+    {
+     "name": "-[GameScene setPositionLastObstacles:]",
+     "selector": "setPositionLastObstacles:",
+     "types": "v24@0:8q16",
+     "imp": "0x100014ca8"
+    },
+    {
+     "name": "-[GameScene countObstacles]",
+     "selector": "countObstacles",
+     "types": "q16@0:8",
+     "imp": "0x100014cb8"
+    },
+    {
+     "name": "-[GameScene setCountObstacles:]",
+     "selector": "setCountObstacles:",
+     "types": "v24@0:8q16",
+     "imp": "0x100014cc8"
+    },
+    {
+     "name": "-[GameScene countSubObstacles]",
+     "selector": "countSubObstacles",
+     "types": "q16@0:8",
+     "imp": "0x100014cd8"
+    },
+    {
+     "name": "-[GameScene setCountSubObstacles:]",
+     "selector": "setCountSubObstacles:",
+     "types": "v24@0:8q16",
+     "imp": "0x100014ce8"
+    },
+    {
+     "name": "-[GameScene countObjectScene]",
+     "selector": "countObjectScene",
+     "types": "q16@0:8",
+     "imp": "0x100014cf8"
+    },
+    {
+     "name": "-[GameScene setCountObjectScene:]",
+     "selector": "setCountObjectScene:",
+     "types": "v24@0:8q16",
+     "imp": "0x100014d08"
+    },
+    {
+     "name": "-[GameScene objectHeight]",
+     "selector": "objectHeight",
+     "types": "q16@0:8",
+     "imp": "0x100014d18"
+    },
+    {
+     "name": "-[GameScene setObjectHeight:]",
+     "selector": "setObjectHeight:",
+     "types": "v24@0:8q16",
+     "imp": "0x100014d28"
+    },
+    {
+     "name": "-[GameScene playerDead]",
+     "selector": "playerDead",
+     "types": "B16@0:8",
+     "imp": "0x100014d38"
+    },
+    {
+     "name": "-[GameScene setPlayerDead:]",
+     "selector": "setPlayerDead:",
+     "types": "v20@0:8B16",
+     "imp": "0x100014d5c"
+    },
+    {
+     "name": "-[GameScene blockPlayer]",
+     "selector": "blockPlayer",
+     "types": "B16@0:8",
+     "imp": "0x100014d9c"
+    },
+    {
+     "name": "-[GameScene setBlockPlayer:]",
+     "selector": "setBlockPlayer:",
+     "types": "v20@0:8B16",
+     "imp": "0x100014dc0"
+    },
+    {
+     "name": "-[GameScene positionX]",
+     "selector": "positionX",
+     "types": "d16@0:8",
+     "imp": "0x100014e00"
+    },
+    {
+     "name": "-[GameScene setPositionX:]",
+     "selector": "setPositionX:",
+     "types": "v24@0:8d16",
+     "imp": "0x100014e10"
+    },
+    {
+     "name": "-[GameScene speedMonster]",
+     "selector": "speedMonster",
+     "types": "d16@0:8",
+     "imp": "0x100014e20"
+    },
+    {
+     "name": "-[GameScene setSpeedMonster:]",
+     "selector": "setSpeedMonster:",
+     "types": "v24@0:8d16",
+     "imp": "0x100014e30"
+    },
+    {
+     "name": "-[GameScene roar]",
+     "selector": "roar",
+     "types": "@16@0:8",
+     "imp": "0x100014e40"
+    },
+    {
+     "name": "-[GameScene batSound]",
+     "selector": "batSound",
+     "types": "@16@0:8",
+     "imp": "0x100014e70"
+    },
+    {
+     "name": "-[GameScene coinTinkle]",
+     "selector": "coinTinkle",
+     "types": "@16@0:8",
+     "imp": "0x100014ea0"
+    },
+    {
+     "name": "-[GameScene coinSound]",
+     "selector": "coinSound",
+     "types": "@16@0:8",
+     "imp": "0x100014ed0"
+    },
+    {
+     "name": "-[GameScene getTorchSound]",
+     "selector": "getTorchSound",
+     "types": "@16@0:8",
+     "imp": "0x100014f00"
+    },
+    {
+     "name": "-[GameScene playTorchSound]",
+     "selector": "playTorchSound",
+     "types": "@16@0:8",
+     "imp": "0x100014f30"
+    },
+    {
+     "name": "-[GameScene backgroundTorch]",
+     "selector": "backgroundTorch",
+     "types": "@16@0:8",
+     "imp": "0x100014f60"
+    },
+    {
+     "name": "-[GameScene backgroundMusic]",
+     "selector": "backgroundMusic",
+     "types": "@16@0:8",
+     "imp": "0x100014f90"
+    },
+    {
+     "name": "-[GameScene movePlayerSound]",
+     "selector": "movePlayerSound",
+     "types": "@16@0:8",
+     "imp": "0x100014fc0"
+    },
+    {
+     "name": "-[GameScene deadMonster]",
+     "selector": "deadMonster",
+     "types": "@16@0:8",
+     "imp": "0x100014ff0"
+    },
+    {
+     "name": "-[GameScene synth]",
+     "selector": "synth",
+     "types": "@16@0:8",
+     "imp": "0x100015020"
+    },
+    {
+     "name": "-[GameScene utterance]",
+     "selector": "utterance",
+     "types": "@16@0:8",
+     "imp": "0x100015050"
+    },
+    {
+     "name": "-[GameScene setUtterance:]",
+     "selector": "setUtterance:",
+     "types": "v24@0:8@16",
+     "imp": "0x100015080"
+    },
+    {
+     "name": "-[GameScene falloffSize]",
+     "selector": "falloffSize",
+     "types": "d16@0:8",
+     "imp": "0x1000150b4"
+    },
+    {
+     "name": "-[GameScene setFalloffSize:]",
+     "selector": "setFalloffSize:",
+     "types": "v24@0:8d16",
+     "imp": "0x1000150c4"
+    },
+    {
+     "name": "-[GameScene scenario0]",
+     "selector": "scenario0",
+     "types": "@16@0:8",
+     "imp": "0x1000150d4"
+    },
+    {
+     "name": "-[GameScene scenario1]",
+     "selector": "scenario1",
+     "types": "@16@0:8",
+     "imp": "0x100015104"
+    },
+    {
+     "name": "-[GameScene scenario2]",
+     "selector": "scenario2",
+     "types": "@16@0:8",
+     "imp": "0x100015134"
+    },
+    {
+     "name": "-[GameScene currentScenario]",
+     "selector": "currentScenario",
+     "types": "@16@0:8",
+     "imp": "0x100015164"
+    },
+    {
+     "name": "-[GameScene setCurrentScenario:]",
+     "selector": "setCurrentScenario:",
+     "types": "v24@0:8@16",
+     "imp": "0x1000151c0"
+    },
+    {
+     "name": "-[GameScene didMoveToView:]",
+     "selector": "didMoveToView:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001523c"
+    },
+    {
+     "name": "-[GameScene createScene]",
+     "selector": "createScene",
+     "types": "v16@0:8",
+     "imp": "0x100015280"
+    },
+    {
+     "name": "-[GameScene startGame]",
+     "selector": "startGame",
+     "types": "v16@0:8",
+     "imp": "0x1000152e4"
+    },
+    {
+     "name": "-[GameScene startScore]",
+     "selector": "startScore",
+     "types": "v16@0:8",
+     "imp": "0x1000155a4"
+    },
+    {
+     "name": "-[GameScene upScore]",
+     "selector": "upScore",
+     "types": "v16@0:8",
+     "imp": "0x1000155f4"
+    },
+    {
+     "name": "-[GameScene update:]",
+     "selector": "update:",
+     "types": "v24@0:8d16",
+     "imp": "0x10001561c"
+    },
+    {
+     "name": "-[GameScene initWithSize:]",
+     "selector": "initWithSize:",
+     "types": "@32@0:8{CGSize=dd}16",
+     "imp": "0x100015d54"
+    },
+    {
+     "name": "-[GameScene init]",
+     "selector": "init",
+     "types": "@16@0:8",
+     "imp": "0x100016470"
+    },
+    {
+     "name": "-[GameScene initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x100016514"
+    },
+    {
+     "name": "-[GameScene .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x1000165b8"
+    }
+   ]
+  },
+  {
+   "name": "GameViewController",
+   "raw_name": "_TtC13InsideTheCave18GameViewController",
+   "address": "0x100032f48",
+   "superclass": "UIViewController",
+   "swift": true,
+   "instance_size": 40,
+   "protocols": [
+    "_TtP13InsideTheCave16GameOverDelegate_"
+   ],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "coinLabel",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "scoreLabel",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x20",
+     "name": "CoinCounter",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [
+    {
+     "name": "coinLabel",
+     "attributes": "T@\"UILabel\",N,W,VcoinLabel"
+    },
+    {
+     "name": "scoreLabel",
+     "attributes": "T@\"UILabel\",N,W,VscoreLabel"
+    },
+    {
+     "name": "CoinCounter",
+     "attributes": "T@\"UIImageView\",N,W,VCoinCounter"
+    },
+    {
+     "name": "shouldAutorotate",
+     "attributes": "TB,N,R"
+    },
+    {
+     "name": "supportedInterfaceOrientations",
+     "attributes": "TQ,N,R"
+    },
+    {
+     "name": "prefersStatusBarHidden",
+     "attributes": "TB,N,R"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[GameViewController coinLabel]",
+     "selector": "coinLabel",
+     "types": "@16@0:8",
+     "imp": "0x1000178e8"
+    },
+    {
+     "name": "-[GameViewController setCoinLabel:]",
+     "selector": "setCoinLabel:",
+     "types": "v24@0:8@16",
+     "imp": "0x100017908"
+    },
+    {
+     "name": "-[GameViewController scoreLabel]",
+     "selector": "scoreLabel",
+     "types": "@16@0:8",
+     "imp": "0x10001791c"
+    },
+    {
+     "name": "-[GameViewController setScoreLabel:]",
+     "selector": "setScoreLabel:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001793c"
+    },
+    {
+     "name": "-[GameViewController CoinCounter]",
+     "selector": "CoinCounter",
+     "types": "@16@0:8",
+     "imp": "0x100017950"
+    },
+    {
+     "name": "-[GameViewController setCoinCounter:]",
+     "selector": "setCoinCounter:",
+     "types": "v24@0:8@16",
+     "imp": "0x100017970"
+    },
+    {
+     "name": "-[GameViewController unwindToGameSegue:]",
+     "selector": "unwindToGameSegue:",
+     "types": "v24@0:8@16",
+     "imp": "0x100017984"
+    },
+    {
+     "name": "-[GameViewController viewDidLoad]",
+     "selector": "viewDidLoad",
+     "types": "v16@0:8",
+     "imp": "0x100017db8"
+    },
+    {
+     "name": "-[GameViewController shouldAutorotate]",
+     "selector": "shouldAutorotate",
+     "types": "B16@0:8",
+     "imp": "0x100017de4"
+    },
+    {
+     "name": "-[GameViewController supportedInterfaceOrientations]",
+     "selector": "supportedInterfaceOrientations",
+     "types": "Q16@0:8",
+     "imp": "0x100017e08"
+    },
+    {
+     "name": "-[GameViewController didReceiveMemoryWarning]",
+     "selector": "didReceiveMemoryWarning",
+     "types": "v16@0:8",
+     "imp": "0x100017f58"
+    },
+    {
+     "name": "-[GameViewController prefersStatusBarHidden]",
+     "selector": "prefersStatusBarHidden",
+     "types": "B16@0:8",
+     "imp": "0x100017fb8"
+    },
+    {
+     "name": "-[GameViewController gameOverDelegateFunc]",
+     "selector": "gameOverDelegateFunc",
+     "types": "v16@0:8",
+     "imp": "0x100017fdc"
+    },
+    {
+     "name": "-[GameViewController prepareForSegue:sender:]",
+     "selector": "prepareForSegue:sender:",
+     "types": "v32@0:8@16@24",
+     "imp": "0x100018138"
+    },
+    {
+     "name": "-[GameViewController clearScene]",
+     "selector": "clearScene",
+     "types": "v16@0:8",
+     "imp": "0x100018318"
+    },
+    {
+     "name": "-[GameViewController scoreUpWithValue:]",
+     "selector": "scoreUpWithValue:",
+     "types": "v24@0:8q16",
+     "imp": "0x100018350"
+    },
+    {
+     "name": "-[GameViewController coinUpWithValue:]",
+     "selector": "coinUpWithValue:",
+     "types": "v24@0:8q16",
+     "imp": "0x1000184b8"
+    },
+    {
+     "name": "-[GameViewController changeCoinCounterWithScenario:]",
+     "selector": "changeCoinCounterWithScenario:",
+     "types": "v24@0:8@16",
+     "imp": "0x1000184ec"
+    },
+    {
+     "name": "-[GameViewController initWithNibName:bundle:]",
+     "selector": "initWithNibName:bundle:",
+     "types": "@32@0:8@16@24",
+     "imp": "0x1000186fc"
+    },
+    {
+     "name": "-[GameViewController initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x100018908"
+    },
+    {
+     "name": "-[GameViewController .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x100018598"
+    }
+   ]
+  },
+  {
+   "name": "AppDelegate",
+   "raw_name": "_TtC13InsideTheCave11AppDelegate",
+   "address": "0x100033080",
+   "superclass": "UIResponder",
+   "swift": true,
+   "instance_size": 24,
+   "protocols": [
+    "UIApplicationDelegate"
+   ],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "window",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [
+    {
+     "name": "window",
+     "attributes": "T@\"UIWindow\",N,&,Vwindow"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[AppDelegate window]",
+     "selector": "window",
+     "types": "@16@0:8",
+     "imp": "0x1000190d0"
+    },
+    {
+     "name": "-[AppDelegate setWindow:]",
+     "selector": "setWindow:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019100"
+    },
+    {
+     "name": "-[AppDelegate application:didFinishLaunchingWithOptions:]",
+     "selector": "application:didFinishLaunchingWithOptions:",
+     "types": "B32@0:8@16@24",
+     "imp": "0x100019134"
+    },
+    {
+     "name": "-[AppDelegate applicationWillResignActive:]",
+     "selector": "applicationWillResignActive:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001921c"
+    },
+    {
+     "name": "-[AppDelegate applicationDidEnterBackground:]",
+     "selector": "applicationDidEnterBackground:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019220"
+    },
+    {
+     "name": "-[AppDelegate applicationWillEnterForeground:]",
+     "selector": "applicationWillEnterForeground:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019224"
+    },
+    {
+     "name": "-[AppDelegate applicationDidBecomeActive:]",
+     "selector": "applicationDidBecomeActive:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019228"
+    },
+    {
+     "name": "-[AppDelegate applicationWillTerminate:]",
+     "selector": "applicationWillTerminate:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001922c"
+    },
+    {
+     "name": "-[AppDelegate init]",
+     "selector": "init",
+     "types": "@16@0:8",
+     "imp": "0x10001930c"
+    },
+    {
+     "name": "-[AppDelegate .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x100019290"
+    }
+   ]
+  },
+  {
+   "name": "HomeScreenViewController",
+   "raw_name": "_TtC13InsideTheCave24HomeScreenViewController",
+   "address": "0x100033138",
+   "superclass": "UIViewController",
+   "swift": true,
+   "instance_size": 32,
+   "protocols": [],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "ranking",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "ranking2",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [
+    {
+     "name": "ranking",
+     "attributes": "T@\"NSArray\",N,C,Vranking"
+    },
+    {
+     "name": "ranking2",
+     "attributes": "T@\"NSArray\",N,C,Vranking2"
+    },
+    {
+     "name": "prefersStatusBarHidden",
+     "attributes": "TB,N,R"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[HomeScreenViewController ranking]",
+     "selector": "ranking",
+     "types": "@16@0:8",
+     "imp": "0x100019e64"
+    },
+    {
+     "name": "-[HomeScreenViewController setRanking:]",
+     "selector": "setRanking:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019e70"
+    },
+    {
+     "name": "-[HomeScreenViewController ranking2]",
+     "selector": "ranking2",
+     "types": "@16@0:8",
+     "imp": "0x100019e7c"
+    },
+    {
+     "name": "-[HomeScreenViewController setRanking2:]",
+     "selector": "setRanking2:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019f00"
+    },
+    {
+     "name": "-[HomeScreenViewController unwindToHomeScreenSegue:]",
+     "selector": "unwindToHomeScreenSegue:",
+     "types": "v24@0:8@16",
+     "imp": "0x100019fa0"
+    },
+    {
+     "name": "-[HomeScreenViewController viewDidLoad]",
+     "selector": "viewDidLoad",
+     "types": "v16@0:8",
+     "imp": "0x10001a360"
+    },
+    {
+     "name": "-[HomeScreenViewController prefersStatusBarHidden]",
+     "selector": "prefersStatusBarHidden",
+     "types": "B16@0:8",
+     "imp": "0x10001a38c"
+    },
+    {
+     "name": "-[HomeScreenViewController initWithNibName:bundle:]",
+     "selector": "initWithNibName:bundle:",
+     "types": "@32@0:8@16@24",
+     "imp": "0x10001afc4"
+    },
+    {
+     "name": "-[HomeScreenViewController initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x10001b0e8"
+    },
+    {
+     "name": "-[HomeScreenViewController .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x10001a410"
+    }
+   ]
+  },
+  {
+   "name": "ResultViewController",
+   "raw_name": "_TtC13InsideTheCave20ResultViewController",
+   "address": "0x100033208",
+   "superclass": "UIViewController",
+   "swift": true,
+   "instance_size": 88,
+   "protocols": [
+    "UITextFieldDelegate"
+   ],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "score",
+     "type": "",
+     "size": 9
+    },
+    {
+     "offset": "0x20",
+     "name": "coin",
+     "type": "",
+     "size": 9
+    },
+    {
+     "offset": "0x30",
+     "name": "superView",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x38",
+     "name": "coinLabel",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x40",
+     "name": "scoreLabel",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x48",
+     "name": "textName",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x50",
+     "name": "BD",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [
+    {
+     "name": "superView",
+     "attributes": "T@\"UIView\",N,&,VsuperView"
+    },
+    {
+     "name": "coinLabel",
+     "attributes": "T@\"UILabel\",N,W,VcoinLabel"
+    },
+    {
+     "name": "scoreLabel",
+     "attributes": "T@\"UILabel\",N,W,VscoreLabel"
+    },
+    {
+     "name": "textName",
+     "attributes": "T@\"UITextField\",N,W,VtextName"
+    },
+    {
+     "name": "prefersStatusBarHidden",
+     "attributes": "TB,N,R"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[ResultViewController superView]",
+     "selector": "superView",
+     "types": "@16@0:8",
+     "imp": "0x10001be40"
+    },
+    {
+     "name": "-[ResultViewController setSuperView:]",
+     "selector": "setSuperView:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001be70"
+    },
+    {
+     "name": "-[ResultViewController coinLabel]",
+     "selector": "coinLabel",
+     "types": "@16@0:8",
+     "imp": "0x10001bea4"
+    },
+    {
+     "name": "-[ResultViewController setCoinLabel:]",
+     "selector": "setCoinLabel:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001bec4"
+    },
+    {
+     "name": "-[ResultViewController scoreLabel]",
+     "selector": "scoreLabel",
+     "types": "@16@0:8",
+     "imp": "0x10001bed8"
+    },
+    {
+     "name": "-[ResultViewController setScoreLabel:]",
+     "selector": "setScoreLabel:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001bef8"
+    },
+    {
+     "name": "-[ResultViewController textName]",
+     "selector": "textName",
+     "types": "@16@0:8",
+     "imp": "0x10001bf0c"
+    },
+    {
+     "name": "-[ResultViewController setTextName:]",
+     "selector": "setTextName:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001bf2c"
+    },
+    {
+     "name": "-[ResultViewController viewDidLoad]",
+     "selector": "viewDidLoad",
+     "types": "v16@0:8",
+     "imp": "0x10001c278"
+    },
+    {
+     "name": "-[ResultViewController checkName]",
+     "selector": "checkName",
+     "types": "v16@0:8",
+     "imp": "0x10001d630"
+    },
+    {
+     "name": "-[ResultViewController checkRank]",
+     "selector": "checkRank",
+     "types": "v16@0:8",
+     "imp": "0x10001e2d4"
+    },
+    {
+     "name": "-[ResultViewController replay:]",
+     "selector": "replay:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001e300"
+    },
+    {
+     "name": "-[ResultViewController prefersStatusBarHidden]",
+     "selector": "prefersStatusBarHidden",
+     "types": "B16@0:8",
+     "imp": "0x10001e448"
+    },
+    {
+     "name": "-[ResultViewController backMenu:]",
+     "selector": "backMenu:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001e46c"
+    },
+    {
+     "name": "-[ResultViewController textFieldShouldReturn:]",
+     "selector": "textFieldShouldReturn:",
+     "types": "B24@0:8@16",
+     "imp": "0x10001e63c"
+    },
+    {
+     "name": "-[ResultViewController textField:shouldChangeCharactersInRange:replacementString:]",
+     "selector": "textField:shouldChangeCharactersInRange:replacementString:",
+     "types": "B48@0:8@16{_NSRange=QQ}24@40",
+     "imp": "0x10001e668"
+    },
+    {
+     "name": "-[ResultViewController keyboardWillShowWithNotification:]",
+     "selector": "keyboardWillShowWithNotification:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001ea1c"
+    },
+    {
+     "name": "-[ResultViewController keyboardWillHideWithNotification:]",
+     "selector": "keyboardWillHideWithNotification:",
+     "types": "v24@0:8@16",
+     "imp": "0x10001ea28"
+    },
+    {
+     "name": "-[ResultViewController initWithNibName:bundle:]",
+     "selector": "initWithNibName:bundle:",
+     "types": "@32@0:8@16@24",
+     "imp": "0x10001ece4"
+    },
+    {
+     "name": "-[ResultViewController initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x10001ef98"
+    },
+    {
+     "name": "-[ResultViewController .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x10001f03c"
+    }
+   ]
+  },
+  {
+   "name": "RankingViewController",
+   "raw_name": "_TtC13InsideTheCave21RankingViewController",
+   "address": "0x1000333b0",
+   "superclass": "UIViewController",
+   "swift": true,
+   "instance_size": 48,
+   "protocols": [
+    "UITableViewDataSource",
+    "UITableViewDelegate"
+   ],
+   "ivars": [
+    {
+     "offset": "0x10",
+     "name": "tableRanking",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x18",
+     "name": "loadIndicador",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x20",
+     "name": "selectTable",
+     "type": "",
+     "size": 8
+    },
+    {
+     "offset": "0x28",
+     "name": "BD",
+     "type": "",
+     "size": 8
+    }
+   ],
+   "properties": [
+    {
+     "name": "tableRanking",
+     "attributes": "T@\"UITableView\",N,W,VtableRanking"
+    },
+    {
+     "name": "loadIndicador",
+     "attributes": "T@\"UIActivityIndicatorView\",N,W,VloadIndicador"
+    },
+    {
+     "name": "selectTable",
+     "attributes": "Tq,N,VselectTable"
+    },
+    {
+     "name": "prefersStatusBarHidden",
+     "attributes": "TB,N,R"
+    }
+   ],
+   "methods": [
+    {
+     "name": "-[RankingViewController tableRanking]",
+     "selector": "tableRanking",
+     "types": "@16@0:8",
+     "imp": "0x100020dd8"
+    },
+    {
+     "name": "-[RankingViewController setTableRanking:]",
+     "selector": "setTableRanking:",
+     "types": "v24@0:8@16",
+     "imp": "0x100020df8"
+    },
+    {
+     "name": "-[RankingViewController loadIndicador]",
+     "selector": "loadIndicador",
+     "types": "@16@0:8",
+     "imp": "0x100020e0c"
+    },
+    {
+     "name": "-[RankingViewController setLoadIndicador:]",
+     "selector": "setLoadIndicador:",
+     "types": "v24@0:8@16",
+     "imp": "0x100020e2c"
+    },
+    {
+     "name": "-[RankingViewController selectTable]",
+     "selector": "selectTable",
+     "types": "q16@0:8",
+     "imp": "0x100020e40"
+    },
+    {
+     "name": "-[RankingViewController setSelectTable:]",
+     "selector": "setSelectTable:",
+     "types": "v24@0:8q16",
+     "imp": "0x100020e50"
+    },
+    {
+     "name": "-[RankingViewController viewDidLoad]",
+     "selector": "viewDidLoad",
+     "types": "v16@0:8",
+     "imp": "0x100020f24"
+    },
+    {
+     "name": "-[RankingViewController tableView:numberOfRowsInSection:]",
+     "selector": "tableView:numberOfRowsInSection:",
+     "types": "q32@0:8@16q24",
+     "imp": "0x100020f50"
+    },
+    {
+     "name": "-[RankingViewController tableView:cellForRowAtIndexPath:]",
+     "selector": "tableView:cellForRowAtIndexPath:",
+     "types": "@32@0:8@16@24",
+     "imp": "0x100020fa4"
+    },
+    {
+     "name": "-[RankingViewController menuBack:]",
+     "selector": "menuBack:",
+     "types": "v24@0:8@16",
+     "imp": "0x100021018"
+    },
+    {
+     "name": "-[RankingViewController changeValue:]",
+     "selector": "changeValue:",
+     "types": "v24@0:8@16",
+     "imp": "0x100021164"
+    },
+    {
+     "name": "-[RankingViewController prefersStatusBarHidden]",
+     "selector": "prefersStatusBarHidden",
+     "types": "B16@0:8",
+     "imp": "0x1000211a8"
+    },
+    {
+     "name": "-[RankingViewController initWithNibName:bundle:]",
+     "selector": "initWithNibName:bundle:",
+     "types": "@32@0:8@16@24",
+     "imp": "0x100021494"
+    },
+    {
+     "name": "-[RankingViewController initWithCoder:]",
+     "selector": "initWithCoder:",
+     "types": "@24@0:8@16",
+     "imp": "0x100021708"
+    },
+    {
+     "name": "-[RankingViewController .cxx_destruct]",
+     "selector": ".cxx_destruct",
+     "types": "@?",
+     "imp": "0x10002122c"
+    }
+   ]
+  }
+ ],
+ "swift_fields": [
+  {
+   "type": "C13InsideTheCave12RankingCloud",
+   "fields": [
+    {
+     "name": "container",
+     "type": "CSo11CKContainer"
+    },
+    {
+     "name": "publicDB",
+     "type": "CSo10CKDatabase"
+    },
+    {
+     "name": "rankingTemp",
+     "type": "GSaGVs10DictionarySSSS__"
+    }
+   ]
+  },
+  {
+   "type": "CSo11CKContainer",
+   "fields": []
+  },
+  {
+   "type": "CSo10CKDatabase",
+   "fields": []
+  },
+  {
+   "type": "CSo8NSString",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave21WarningViewController",
+   "fields": [
+    {
+     "name": "alertLabel",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "timer",
+     "type": "CSo5Timer"
+    },
+    {
+     "name": "languageId",
+     "type": "GSqSS_"
+    }
+   ]
+  },
+  {
+   "type": "CSo7UILabel",
+   "fields": []
+  },
+  {
+   "type": "CSo5Timer",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave9TableCell",
+   "fields": [
+    {
+     "name": "playerName",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "playerScore",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "position",
+     "type": "XwGSQCSo7UILabel_"
+    }
+   ]
+  },
+  {
+   "type": "V13InsideTheCave15PhysicsCategory",
+   "fields": []
+  },
+  {
+   "type": "V13InsideTheCave8Scenario",
+   "fields": []
+  },
+  {
+   "type": "P13InsideTheCave16GameOverDelegate_",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave9GameScene",
+   "fields": [
+    {
+     "name": "gameSceneDelegate",
+     "type": "GSqP13InsideTheCave16GameOverDelegate__"
+    },
+    {
+     "name": "positionLaneZero",
+     "type": "Sd"
+    },
+    {
+     "name": "positionLaneOne",
+     "type": "Sd"
+    },
+    {
+     "name": "positionLaneTwo",
+     "type": "Sd"
+    },
+    {
+     "name": "actualPositionPlayer",
+     "type": "Si"
+    },
+    {
+     "name": "player",
+     "type": "CSo12SKSpriteNode"
+    },
+    {
+     "name": "lightTorch",
+     "type": "CSo11SKLightNode"
+    },
+    {
+     "name": "throwLightTorch",
+     "type": "CSo11SKLightNode"
+    },
+    {
+     "name": "positionLastObstacles",
+     "type": "Si"
+    },
+    {
+     "name": "countObstacles",
+     "type": "Si"
+    },
+    {
+     "name": "countSubObstacles",
+     "type": "Si"
+    },
+    {
+     "name": "countObjectScene",
+     "type": "Si"
+    },
+    {
+     "name": "objectHeight",
+     "type": "Si"
+    },
+    {
+     "name": "playerDead",
+     "type": "Sb"
+    },
+    {
+     "name": "blockPlayer",
+     "type": "Sb"
+    },
+    {
+     "name": "positionX",
+     "type": "Sd"
+    },
+    {
+     "name": "speedMonster",
+     "type": "Sd"
+    },
+    {
+     "name": "roar",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "batSound",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "coinTinkle",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "coinSound",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "getTorchSound",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "playTorchSound",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "backgroundTorch",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "backgroundMusic",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "movePlayerSound",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "deadMonster",
+     "type": "CSo11SKAudioNode"
+    },
+    {
+     "name": "synth",
+     "type": "CSo19AVSpeechSynthesizer"
+    },
+    {
+     "name": "utterance",
+     "type": "CSo17AVSpeechUtterance"
+    },
+    {
+     "name": "falloffSize",
+     "type": "Sd"
+    },
+    {
+     "name": "scenario0",
+     "type": "CSo12SKSpriteNode"
+    },
+    {
+     "name": "scenario1",
+     "type": "CSo12SKSpriteNode"
+    },
+    {
+     "name": "scenario2",
+     "type": "CSo12SKSpriteNode"
+    },
+    {
+     "name": "currentScenario",
+     "type": "SS"
+    }
+   ]
+  },
+  {
+   "type": "CSo12SKSpriteNode",
+   "fields": []
+  },
+  {
+   "type": "CSo11SKLightNode",
+   "fields": []
+  },
+  {
+   "type": "CSo11SKAudioNode",
+   "fields": []
+  },
+  {
+   "type": "CSo19AVSpeechSynthesizer",
+   "fields": []
+  },
+  {
+   "type": "CSo17AVSpeechUtterance",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave18GameViewController",
+   "fields": [
+    {
+     "name": "coinLabel",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "scoreLabel",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "CoinCounter",
+     "type": "XwGSQCSo11UIImageView_"
+    }
+   ]
+  },
+  {
+   "type": "CSo11UIImageView",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave11AppDelegate",
+   "fields": [
+    {
+     "name": "window",
+     "type": "GSqCSo8UIWindow_"
+    }
+   ]
+  },
+  {
+   "type": "CSo8UIWindow",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave24HomeScreenViewController",
+   "fields": [
+    {
+     "name": "ranking",
+     "type": "GSaGVs10DictionarySSSS__"
+    },
+    {
+     "name": "ranking2",
+     "type": "GSaGVs10DictionarySSSS__"
+    }
+   ]
+  },
+  {
+   "type": "C13InsideTheCave20ResultViewController",
+   "fields": [
+    {
+     "name": "score",
+     "type": "GSQSi_"
+    },
+    {
+     "name": "coin",
+     "type": "GSQSi_"
+    },
+    {
+     "name": "superView",
+     "type": "GSQCSo6UIView_"
+    },
+    {
+     "name": "coinLabel",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "scoreLabel",
+     "type": "XwGSQCSo7UILabel_"
+    },
+    {
+     "name": "textName",
+     "type": "XwGSQCSo11UITextField_"
+    },
+    {
+     "name": "BD",
+     "type": "C13InsideTheCave12RankingCloud"
+    }
+   ]
+  },
+  {
+   "type": "CSo6UIView",
+   "fields": []
+  },
+  {
+   "type": "CSo11UITextField",
+   "fields": []
+  },
+  {
+   "type": "C13InsideTheCave21RankingViewController",
+   "fields": [
+    {
+     "name": "tableRanking",
+     "type": "XwGSQCSo11UITableView_"
+    },
+    {
+     "name": "loadIndicador",
+     "type": "XwGSQCSo23UIActivityIndicatorView_"
+    },
+    {
+     "name": "selectTable",
+     "type": "Si"
+    },
+    {
+     "name": "BD",
+     "type": "C13InsideTheCave12RankingCloud"
+    }
+   ]
+  },
+  {
+   "type": "CSo11UITableView",
+   "fields": []
+  },
+  {
+   "type": "CSo23UIActivityIndicatorView",
+   "fields": []
+  }
+ ]
+}

@@ -48,7 +48,7 @@ Modelled on the reference port's tools in the gitignored `user/` folder ([[feedb
 - `tools/README.md`: how to rerun everything, and the arm64 address rule.
 
 ## Order of work
-1. Check capstone is installed; install it only if not (the dev, 2026-10-02).
+1. Check capstone is installed; install it only if not (the dev, 2026-10-02). **Done 2026-10-02:** capstone 5.0.9 was already installed in the dev's Python 3.12 (`C:\Users\tonys\AppData\Local\Programs\Python\Python312`), so nothing was installed. Checked that it decodes this binary: at 0x1000157d8 it reads `adr x0, #0x100025efe`, the address of "Rugido.mp3", matching the hand decode.
 2. `macho.py` and `classes.py`, checked against what is already known by hand: 9 classes, the section map, 198 selector references.
 3. `names.py`, `dz.py`, `listings.py`, then `coverage.py` until it reports nothing missing.
 4. `strings.py` and `archive.py`.
@@ -62,4 +62,4 @@ Modelled on the reference port's tools in the gitignored `user/` folder ([[feedb
 
 ## Commits
 - This note, with its `MEMORY.md` pointer and the rule in `CLAUDE.md`, is committed on its own first, and **not pushed** until the whole plan is built and tested ([[feedback_record_plans_first]]).
-- The tools and listings follow as their own commits, one per part, when the dev asks.
+- **Nothing is pushed until the full game is disassembled** (the dev, 2026-10-02: "Do not push anything. I want the full game to be disasembled first, or at least what can be disasembled. You can make commits for now."). Commit each part as it lands, without asking each time, and leave every commit local. "What can be disassembled" allows for parts that turn out not to be readable; say which, and why, rather than stopping on them.
