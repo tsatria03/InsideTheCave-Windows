@@ -139,6 +139,9 @@ class ObjCClass:
         self.instance_size = 0
         self.methods: list[ObjCMethod] = []
         self.ivars: list[tuple[int, str, str, int]] = []      # (offset, name, type, size)
+        #: Where each ivar's offset is kept: Swift reads a stored property of a class with an Objective-C
+        #: ancestor through this global, so a load from it names the field.  (address -> ivar name)
+        self.ivar_offset_slots: dict[int, str] = {}
         self.properties: list[tuple[str, str]] = []           # (name, attributes)
         self.protocols: list[str] = []
         self.swift = False
@@ -468,6 +471,8 @@ class MachO:
                     typ = self.cstr(self.u64(e + 16)) if self.u64(e + 16) else ''
                     size = self.u32(e + 28)
                     c.ivars.append((offset, name, typ, size))
+                    if off_ptr:
+                        c.ivar_offset_slots[off_ptr] = name
             props_va = self.u64(ro + 64)
             if props_va:
                 entsize, count = self.u32(props_va), self.u32(props_va + 4)
