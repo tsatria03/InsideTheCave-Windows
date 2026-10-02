@@ -1,35 +1,419 @@
 # Porting status
 
-What is done, what is stubbed, what has not been started. Kept honest: "done" means
-ported from the disassembly method by method, with the address recorded in the code.
+What is done, what is stubbed, what has not been started. Kept honest: "done" means ported from the
+disassembly method by method, with the address recorded in the code.
+
+**Status, 2026-10-02: the disassembly is complete; nothing is ported.** Every function of the game is listed
+below, generated from `analysis/data/functions.txt` (by `tools/names.py`), with its address and size. As a
+function is ported, mark it here: **ported** (with the Python module), **stubbed**, or **left out** (with why).
+The mechanism they make up is in `GAME_STRUCTURE.md`; the listings are in `analysis/disasm/dz_<Class>.txt`.
+
+`RankingCloud` has no Objective-C methods; its CloudKit code is among the shared functions at the end, called
+from `ResultViewController.checkRank` and `RankingViewController.changeValue:`, and cannot work in a port.
 
 ---
 
-## Done
+## AppDelegate (11 functions)
 
-Nothing yet (2026-10-02).
+- `0x1000190d0` -[AppDelegate window], 48 bytes: not ported
+- `0x100019100` -[AppDelegate setWindow:], 52 bytes: not ported
+- `0x100019134` -[AppDelegate application:didFinishLaunchingWithOptions:], 232 bytes: not ported
+- `0x10001921c` -[AppDelegate applicationWillResignActive:], 4 bytes: not ported
+- `0x100019220` -[AppDelegate applicationDidEnterBackground:], 4 bytes: not ported
+- `0x100019224` -[AppDelegate applicationWillEnterForeground:], 4 bytes: not ported
+- `0x100019228` -[AppDelegate applicationDidBecomeActive:], 4 bytes: not ported
+- `0x10001922c` -[AppDelegate applicationWillTerminate:], 4 bytes: not ported
+- `0x100019290` -[AppDelegate .cxx_destruct], 16 bytes: not ported
+- `0x1000192a0` AppDelegate.vtable[9], 108 bytes: not ported
+- `0x10001930c` -[AppDelegate init], 108 bytes: not ported
 
-## Stubbed: present, body empty, call sites intact
+## WarningViewController (22 functions)
 
-Nothing yet.
+- `0x10000e868` -[WarningViewController alertLabel], 32 bytes: not ported
+- `0x10000e888` -[WarningViewController setAlertLabel:], 20 bytes: not ported
+- `0x10000e89c` -[WarningViewController timer], 48 bytes: not ported
+- `0x10000e8cc` -[WarningViewController setTimer:], 52 bytes: not ported
+- `0x10000e900` -[WarningViewController languageId], 108 bytes: not ported
+- `0x10000e96c` WarningViewController.viewDidLoad, 512 bytes: not ported
+- `0x10000eb6c` -[WarningViewController viewDidLoad], 44 bytes: not ported
+- `0x10000eb98` -[WarningViewController segue], 312 bytes: not ported
+- `0x10000ecd0` WarningViewController.vtable[8], 72 bytes: not ported
+- `0x10000ed18` -[WarningViewController touchesBegan:withEvent:], 180 bytes: not ported
+- `0x10000edcc` -[WarningViewController prefersStatusBarHidden], 28 bytes: not ported
+- `0x10000ede8` WarningViewController.vtable[9], 8 bytes: not ported
+- `0x10000ee50` -[WarningViewController .cxx_destruct], 96 bytes: not ported
+- `0x10000eeb0` WarningViewController.initWithNibName:bundle:, 416 bytes: not ported
+- `0x10000f050` -[WarningViewController initWithNibName:bundle:], 132 bytes: not ported
+- `0x10000f0d4` WarningViewController.vtable[11], 112 bytes: not ported
+- `0x10000f144` WarningViewController.vtable[12], 48 bytes: not ported
+- `0x10000f174` -[WarningViewController initWithCoder:], 68 bytes: not ported
+- `0x10000f2fc` WarningViewController~shared1, 304 bytes: not ported
+- `0x10000f42c` WarningViewController.initWithCoder:, 292 bytes: not ported
+- `0x10000f580` WarningViewController~shared2, 108 bytes: not ported
+- `0x10000f604` -[WarningViewController segue]~closure1, 4 bytes: not ported
 
-## Not ported
+## HomeScreenViewController (18 functions)
 
-Everything. The original's nine classes, from `GAME_STRUCTURE.md`:
+- `0x100019e64` -[HomeScreenViewController ranking], 12 bytes: not ported
+- `0x100019e70` -[HomeScreenViewController setRanking:], 12 bytes: not ported
+- `0x100019e7c` -[HomeScreenViewController ranking2], 12 bytes: not ported
+- `0x100019e88` HomeScreenViewController~shared1, 120 bytes: not ported
+- `0x100019f00` -[HomeScreenViewController setRanking2:], 12 bytes: not ported
+- `0x100019f0c` HomeScreenViewController~shared2, 148 bytes: not ported
+- `0x100019fa0` -[HomeScreenViewController unwindToHomeScreenSegue:], 4 bytes: not ported
+- `0x100019fa4` HomeScreenViewController.viewDidLoad, 956 bytes: not ported
+- `0x10001a360` -[HomeScreenViewController viewDidLoad], 44 bytes: not ported
+- `0x10001a38c` -[HomeScreenViewController prefersStatusBarHidden], 28 bytes: not ported
+- `0x10001a3a8` HomeScreenViewController.vtable[8], 8 bytes: not ported
+- `0x10001a410` -[HomeScreenViewController .cxx_destruct], 56 bytes: not ported
+- `0x10001a448` HomeScreenViewController.initWithNibName:bundle:, 2940 bytes: not ported
+- `0x10001afc4` -[HomeScreenViewController initWithNibName:bundle:], 132 bytes: not ported
+- `0x10001b048` HomeScreenViewController.vtable[10], 112 bytes: not ported
+- `0x10001b0b8` HomeScreenViewController.vtable[11], 48 bytes: not ported
+- `0x10001b0e8` -[HomeScreenViewController initWithCoder:], 68 bytes: not ported
+- `0x10001b220` HomeScreenViewController.initWithCoder:, 2796 bytes: not ported
 
-- `AppDelegate`
-- `WarningViewController`
-- `HomeScreenViewController`
-- `GameViewController`
-- `GameScene`
-- `ResultViewController`
-- `RankingViewController` and `TableCell`
-- `RankingCloud` (CloudKit; cannot work as it was)
+## GameViewController (38 functions)
 
-## The platform layer
+- `0x1000178e8` -[GameViewController coinLabel], 32 bytes: not ported
+- `0x100017908` -[GameViewController setCoinLabel:], 20 bytes: not ported
+- `0x10001791c` -[GameViewController scoreLabel], 32 bytes: not ported
+- `0x10001793c` -[GameViewController setScoreLabel:], 20 bytes: not ported
+- `0x100017950` -[GameViewController CoinCounter], 32 bytes: not ported
+- `0x100017970` -[GameViewController setCoinCounter:], 20 bytes: not ported
+- `0x100017984` -[GameViewController unwindToGameSegue:], 64 bytes: not ported
+- `0x1000179c4` GameViewController~shared1, 1012 bytes: not ported
+- `0x100017db8` -[GameViewController viewDidLoad], 44 bytes: not ported
+- `0x100017de4` -[GameViewController shouldAutorotate], 28 bytes: not ported
+- `0x100017e00` GameViewController.vtable[11], 8 bytes: not ported
+- `0x100017e08` -[GameViewController supportedInterfaceOrientations], 140 bytes: not ported
+- `0x100017e94` GameViewController.vtable[12], 100 bytes: not ported
+- `0x100017ef8` GameViewController.vtable[13], 96 bytes: not ported
+- `0x100017f58` -[GameViewController didReceiveMemoryWarning], 96 bytes: not ported
+- `0x100017fb8` -[GameViewController prefersStatusBarHidden], 28 bytes: not ported
+- `0x100017fd4` GameViewController.vtable[14], 8 bytes: not ported
+- `0x100017fdc` -[GameViewController gameOverDelegateFunc], 312 bytes: not ported
+- `0x100018114` GameViewController.vtable[16], 36 bytes: not ported
+- `0x100018138` -[GameViewController prepareForSegue:sender:], 148 bytes: not ported
+- `0x1000181cc` GameViewController.clearScene, 332 bytes: not ported
+- `0x100018318` -[GameViewController clearScene], 44 bytes: not ported
+- `0x100018344` GameViewController.scoreUpWithValue:, 12 bytes: not ported
+- `0x100018350` -[GameViewController scoreUpWithValue:], 52 bytes: not ported
+- `0x100018384` GameViewController.coinUpWithValue:, 12 bytes: not ported
+- `0x100018390` GameViewController~shared2, 296 bytes: not ported
+- `0x1000184b8` -[GameViewController coinUpWithValue:], 52 bytes: not ported
+- `0x1000184ec` -[GameViewController changeCoinCounterWithScenario:], 76 bytes: not ported
+- `0x100018598` -[GameViewController .cxx_destruct], 72 bytes: not ported
+- `0x1000185e0` GameViewController.initWithNibName:bundle:, 284 bytes: not ported
+- `0x1000186fc` -[GameViewController initWithNibName:bundle:], 132 bytes: not ported
+- `0x100018780` GameViewController.vtable[22], 212 bytes: not ported
+- `0x100018854` GameViewController.vtable[23], 180 bytes: not ported
+- `0x100018908` -[GameViewController initWithCoder:], 200 bytes: not ported
+- `0x100018b0c` GameViewController.prepareForSegue:sender:, 764 bytes: not ported
+- `0x100018e08` GameViewController.changeCoinCounterWithScenario:, 532 bytes: not ported
+- `0x10001904c` -[GameViewController gameOverDelegateFunc]~closure1, 108 bytes: not ported
+- `0x10001f220` GameViewController.prepareForSegue:sender:~call1, 56 bytes: not ported
 
-Not started: OpenAL, the run loop (for `SKAction` waits and sequences, `Timer` and the scene's `update:`), the save (for `UserDefaults`), speech (for `AVSpeechSynthesizer`), the key map and the key-bindings screen.
+## GameScene (166 functions)
 
-## The analysis
+- `0x10000be10` GameScene.createPlayer, 644 bytes: not ported
+- `0x10000c094` -[GameScene createPlayer], 44 bytes: not ported
+- `0x10000c0c0` GameScene.changeSpritePlayer:, 584 bytes: not ported
+- `0x10000c308` -[GameScene changeSpritePlayer:], 60 bytes: not ported
+- `0x10000c344` GameScene.createRoarSensor, 772 bytes: not ported
+- `0x10000c648` -[GameScene createRoarSensor], 44 bytes: not ported
+- `0x10000c674` GameScene.createObjectScene, 852 bytes: not ported
+- `0x10000c9c8` -[GameScene createObjectScene], 44 bytes: not ported
+- `0x10000c9f4` -[GameScene coinTogether], 12 bytes: not ported
+- `0x10000ca00` -[GameScene torchTogether], 12 bytes: not ported
+- `0x10000ca0c` GameScene~shared1, 236 bytes: not ported
+- `0x10000caf8` GameScene.createMonster, 1672 bytes: not ported
+- `0x10000d180` -[GameScene createMonster], 56 bytes: not ported
+- `0x10000d1b8` GameScene.createBats, 904 bytes: not ported
+- `0x10000d540` -[GameScene createBats], 56 bytes: not ported
+- `0x10000d578` GameScene.createTorchObstacle, 700 bytes: not ported
+- `0x10000d834` -[GameScene createTorchObstacle], 56 bytes: not ported
+- `0x10000d86c` GameScene.createCoin, 1540 bytes: not ported
+- `0x10000de70` -[GameScene createCoin], 56 bytes: not ported
+- `0x10000dea8` GameScene.tutorial, 2452 bytes: not ported
+- `0x10000e83c` -[GameScene tutorial], 44 bytes: not ported
+- `0x10000f614` -[GameScene playMonsterRoarAtPoint:], 68 bytes: not ported
+- `0x10000f658` -[GameScene playBatSoundAtPoint:], 68 bytes: not ported
+- `0x10000f69c` GameScene.playMonsterRoarAtPoint:, 296 bytes: not ported
+- `0x10000f7c4` GameScene.playBatSoundAtPoint:, 288 bytes: not ported
+- `0x10000f8e4` GameScene.movePlayerRight, 640 bytes: not ported
+- `0x10000fb64` -[GameScene movePlayerRight], 44 bytes: not ported
+- `0x10000fb90` GameScene.movePlayerLeft, 628 bytes: not ported
+- `0x10000fe04` -[GameScene movePlayerLeft], 44 bytes: not ported
+- `0x10000fe30` GameScene.soundMovePlayer, 224 bytes: not ported
+- `0x10000ff10` -[GameScene soundMovePlayer], 44 bytes: not ported
+- `0x10000ff3c` -[GameScene touchesBegan:withEvent:], 180 bytes: not ported
+- `0x10000fff0` -[GameScene movePlayerTap], 120 bytes: not ported
+- `0x100010068` -[GameScene touchesBegan:withEvent:]~call1~call1, 348 bytes: not ported
+- `0x1000101c4` -[GameScene touchesBegan:withEvent:]~call1~call1~call1, 268 bytes: not ported
+- `0x1000102d0` -[GameScene touchesBegan:withEvent:]~call1~call2, 368 bytes: not ported
+- `0x100010440` -[GameScene touchesBegan:withEvent:]~call1, 368 bytes: not ported
+- `0x1000105b0` GameScene.createNodesSounds, 396 bytes: not ported
+- `0x10001073c` -[GameScene createNodesSounds], 44 bytes: not ported
+- `0x100010768` GameScene.removeNodesSounds, 208 bytes: not ported
+- `0x100010838` -[GameScene removeNodesSounds], 44 bytes: not ported
+- `0x100010864` GameScene.createBackgroundTorch, 280 bytes: not ported
+- `0x10001097c` -[GameScene createBackgroundTorch], 44 bytes: not ported
+- `0x1000109a8` GameScene.createBackgroundMusic, 300 bytes: not ported
+- `0x100010ad4` -[GameScene createBackgroundMusic], 44 bytes: not ported
+- `0x100010b00` GameScene.createTorch, 1116 bytes: not ported
+- `0x100010f5c` -[GameScene createTorch], 56 bytes: not ported
+- `0x100010f94` GameScene.setLightTorch, 348 bytes: not ported
+- `0x1000110f0` -[GameScene setLightTorch], 44 bytes: not ported
+- `0x10001111c` GameScene.throwTorch, 1372 bytes: not ported
+- `0x100011678` -[GameScene throwTorch], 44 bytes: not ported
+- `0x1000116a4` -[GameScene lineRandom], 60 bytes: not ported
+- `0x1000116e0` -[GameScene coinRandom], 60 bytes: not ported
+- `0x10001171c` -[GameScene positionLineWithValue:], 40 bytes: not ported
+- `0x100011744` -[GameScene choiceObstacleLine], 128 bytes: not ported
+- `0x1000117c4` -[GameScene choiceObstacleCoin], 124 bytes: not ported
+- `0x100011840` GameScene.moveScenario, 800 bytes: not ported
+- `0x100011b60` -[GameScene moveScenario], 56 bytes: not ported
+- `0x100011b98` -[GameScene putScenario], 136 bytes: not ported
+- `0x100011c20` GameScene.changeScenario, 2808 bytes: not ported
+- `0x100012718` -[GameScene changeScenario], 44 bytes: not ported
+- `0x100012774` GameScene.moveScenario~closure1, 48 bytes: not ported
+- `0x1000127bc` GameScene.moveScenario~closure2, 48 bytes: not ported
+- `0x1000127f8` -[GameScene didBeginContact:], 12 bytes: not ported
+- `0x100012804` -[GameScene torchDidCollideWithObstacle:obstacleE:], 100 bytes: not ported
+- `0x100012868` -[GameScene torchDidCollideWithBat:batB:], 96 bytes: not ported
+- `0x1000128c8` -[GameScene playerDidCollideWithTorch:], 12 bytes: not ported
+- `0x1000128d4` GameScene~shared2, 80 bytes: not ported
+- `0x100012924` -[GameScene playerDidCollideWithCoin:playerP:], 96 bytes: not ported
+- `0x100012984` -[GameScene didBeginContact:]~closure1, 2612 bytes: not ported
+- `0x1000133b8` GameScene.torchDidCollideWithObstacle:obstacleE:, 436 bytes: not ported
+- `0x10001356c` GameScene.torchDidCollideWithBat:batB:, 588 bytes: not ported
+- `0x1000137b8` -[GameScene playerDidCollideWithTorch:]~closure1, 340 bytes: not ported
+- `0x10001390c` GameScene.playerDidCollideWithCoin:playerP:, 336 bytes: not ported
+- `0x100013a5c` GameScene.moveObstacleWithBorn, 712 bytes: not ported
+- `0x100013d24` -[GameScene moveObstacleWithBorn], 56 bytes: not ported
+- `0x100013d5c` GameScene.moveObstacle, 424 bytes: not ported
+- `0x100013f04` -[GameScene moveObstacle], 56 bytes: not ported
+- `0x100013f3c` GameScene.moveCoinSound, 404 bytes: not ported
+- `0x1000140d0` -[GameScene moveCoinSound], 56 bytes: not ported
+- `0x100014108` -[GameScene positionFloat], 44 bytes: not ported
+- `0x100014164` GameScene.moveObstacleWithBorn~closure1, 48 bytes: not ported
+- `0x100014a40` GameScene.didMoveToView:~call1, 188 bytes: not ported
+- `0x100014afc` -[GameScene gameSceneDelegate], 48 bytes: not ported
+- `0x100014b2c` -[GameScene setGameSceneDelegate:], 52 bytes: not ported
+- `0x100014b60` -[GameScene positionLaneZero], 12 bytes: not ported
+- `0x100014b6c` -[GameScene positionLaneOne], 8 bytes: not ported
+- `0x100014b74` -[GameScene positionLaneTwo], 12 bytes: not ported
+- `0x100014b80` -[GameScene actualPositionPlayer], 16 bytes: not ported
+- `0x100014b90` -[GameScene setActualPositionPlayer:], 16 bytes: not ported
+- `0x100014ba0` -[GameScene player], 48 bytes: not ported
+- `0x100014bd0` -[GameScene setPlayer:], 52 bytes: not ported
+- `0x100014c04` -[GameScene lightTorch], 48 bytes: not ported
+- `0x100014c34` -[GameScene throwLightTorch], 48 bytes: not ported
+- `0x100014c64` -[GameScene setThrowLightTorch:], 52 bytes: not ported
+- `0x100014c98` -[GameScene positionLastObstacles], 16 bytes: not ported
+- `0x100014ca8` -[GameScene setPositionLastObstacles:], 16 bytes: not ported
+- `0x100014cb8` -[GameScene countObstacles], 16 bytes: not ported
+- `0x100014cc8` -[GameScene setCountObstacles:], 16 bytes: not ported
+- `0x100014cd8` -[GameScene countSubObstacles], 16 bytes: not ported
+- `0x100014ce8` -[GameScene setCountSubObstacles:], 16 bytes: not ported
+- `0x100014cf8` -[GameScene countObjectScene], 16 bytes: not ported
+- `0x100014d08` -[GameScene setCountObjectScene:], 16 bytes: not ported
+- `0x100014d18` -[GameScene objectHeight], 16 bytes: not ported
+- `0x100014d28` -[GameScene setObjectHeight:], 16 bytes: not ported
+- `0x100014d38` -[GameScene playerDead], 36 bytes: not ported
+- `0x100014d5c` -[GameScene setPlayerDead:], 64 bytes: not ported
+- `0x100014d9c` -[GameScene blockPlayer], 36 bytes: not ported
+- `0x100014dc0` -[GameScene setBlockPlayer:], 64 bytes: not ported
+- `0x100014e00` -[GameScene positionX], 16 bytes: not ported
+- `0x100014e10` -[GameScene setPositionX:], 16 bytes: not ported
+- `0x100014e20` -[GameScene speedMonster], 16 bytes: not ported
+- `0x100014e30` -[GameScene setSpeedMonster:], 16 bytes: not ported
+- `0x100014e40` -[GameScene roar], 48 bytes: not ported
+- `0x100014e70` -[GameScene batSound], 48 bytes: not ported
+- `0x100014ea0` -[GameScene coinTinkle], 48 bytes: not ported
+- `0x100014ed0` -[GameScene coinSound], 48 bytes: not ported
+- `0x100014f00` -[GameScene getTorchSound], 48 bytes: not ported
+- `0x100014f30` -[GameScene playTorchSound], 48 bytes: not ported
+- `0x100014f60` -[GameScene backgroundTorch], 48 bytes: not ported
+- `0x100014f90` -[GameScene backgroundMusic], 48 bytes: not ported
+- `0x100014fc0` -[GameScene movePlayerSound], 48 bytes: not ported
+- `0x100014ff0` -[GameScene deadMonster], 48 bytes: not ported
+- `0x100015020` -[GameScene synth], 48 bytes: not ported
+- `0x100015050` -[GameScene utterance], 48 bytes: not ported
+- `0x100015080` -[GameScene setUtterance:], 52 bytes: not ported
+- `0x1000150b4` -[GameScene falloffSize], 16 bytes: not ported
+- `0x1000150c4` -[GameScene setFalloffSize:], 16 bytes: not ported
+- `0x1000150d4` -[GameScene scenario0], 48 bytes: not ported
+- `0x100015104` -[GameScene scenario1], 48 bytes: not ported
+- `0x100015134` -[GameScene scenario2], 48 bytes: not ported
+- `0x100015164` -[GameScene currentScenario], 92 bytes: not ported
+- `0x1000151c0` -[GameScene setCurrentScenario:], 88 bytes: not ported
+- `0x100015218` GameScene.vtable[48], 36 bytes: not ported
+- `0x10001523c` -[GameScene didMoveToView:], 68 bytes: not ported
+- `0x100015280` -[GameScene createScene], 100 bytes: not ported
+- `0x1000152e4` -[GameScene startGame], 72 bytes: not ported
+- `0x10001532c` GameScene.startScore, 632 bytes: not ported
+- `0x1000155a4` -[GameScene startScore], 44 bytes: not ported
+- `0x1000155d0` GameScene.vtable[52], 36 bytes: not ported
+- `0x1000155f4` -[GameScene upScore], 36 bytes: not ported
+- `0x10001561c` -[GameScene update:], 4 bytes: not ported
+- `0x100015620` GameScene.initWithSize:, 1844 bytes: not ported
+- `0x100015d54` -[GameScene initWithSize:], 4 bytes: not ported
+- `0x100015d58` GameScene.init, 1816 bytes: not ported
+- `0x100016470` -[GameScene init], 4 bytes: not ported
+- `0x100016474` GameScene.vtable[56], 112 bytes: not ported
+- `0x1000164e4` GameScene.vtable[57], 48 bytes: not ported
+- `0x100016514` -[GameScene initWithCoder:], 68 bytes: not ported
+- `0x1000165b8` -[GameScene .cxx_destruct], 348 bytes: not ported
+- `0x10001696c` GameScene.didMoveToView:, 2024 bytes: not ported
+- `0x100017154` GameScene.initWithCoder:, 1828 bytes: not ported
+- `0x1000178a8` GameScene.startScore~closure1, 40 bytes: not ported
+- `0x1000194fc` -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:], 232 bytes: not ported
+- `0x1000195e4` -[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:], 404 bytes: not ported
+- `0x100019778` -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:]~call1, 684 bytes: not ported
+- `0x100019a24` -[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:]~call1, 1088 bytes: not ported
+- `0x100022f08` GameScene~shared3, 32 bytes: not ported
+- `0x100022f68` -[GameScene obstacleDidCollideWithPlayer:obstacleE:], 96 bytes: not ported
+- `0x100022fc8` -[GameScene clear], 116 bytes: not ported
+- `0x10002303c` GameScene~shared4, 136 bytes: not ported
+- `0x1000230c4` GameScene.obstacleDidCollideWithPlayer:obstacleE:, 1660 bytes: not ported
+- `0x100023740` GameScene.createLight, 672 bytes: not ported
+- `0x1000239e0` -[GameScene createLight], 44 bytes: not ported
+- `0x100023a0c` GameScene.changeFalloffSize, 472 bytes: not ported
+- `0x100023be4` -[GameScene changeFalloffSize], 44 bytes: not ported
 
-Not started: no arm64 tools, no disassembly listings yet (see `project_binary_analysis_notes.md`).
+## ResultViewController (70 functions)
+
+- `0x100005a14` ResultViewController.checkRank~call3~closure1~call1, 136 bytes: not ported
+- `0x100005a9c` ResultViewController.checkRank~call3~closure1~call1~call1~call2~closure1, 88 bytes: not ported
+- `0x100005af4` ResultViewController.checkRank~call3~closure1~call1~call1~call2~closure1~call1~closure1, 40 bytes: not ported
+- `0x100005b1c` ResultViewController~shared1, 100 bytes: not ported
+- `0x100005b80` ResultViewController.checkRank~call3~closure1~call1~call1~call1~closure1, 40 bytes: not ported
+- `0x100007504` ResultViewController~shared2, 52 bytes: not ported
+- `0x100007538` ResultViewController~shared3, 232 bytes: not ported
+- `0x100007880` ResultViewController.checkRank~call3~closure1~call1~call1~call6, 136 bytes: not ported
+- `0x100008cb4` ResultViewController.checkRank~call3~closure1~call1~call1~call3, 16 bytes: not ported
+- `0x100008cc4` ResultViewController.checkRank~call3~closure1~call1~call1~call4, 16 bytes: not ported
+- `0x100008cd4` ResultViewController.checkRank~call3~closure1~call1~call1~call5, 16 bytes: not ported
+- `0x100009e20` ResultViewController.checkRank~call3, 448 bytes: not ported
+- `0x10000a030` ResultViewController.checkRank~call3~closure1, 164 bytes: not ported
+- `0x10000a0ec` ResultViewController.checkRank~call3~closure1~call1~call1~call1, 432 bytes: not ported
+- `0x10000a29c` ResultViewController.checkRank~call3~closure1~call1~call1~call2, 620 bytes: not ported
+- `0x10000a508` ResultViewController.checkRank~call3~closure1~call1~call1, 4860 bytes: not ported
+- `0x10000b804` ResultViewController.checkRank~call3~closure1~call1~call1~call2~closure1~call1, 356 bytes: not ported
+- `0x10000b968` ResultViewController.checkRank~call3~closure1~call1~call1~call2~closure1~call1~closure1~call1, 244 bytes: not ported
+- `0x10000ba5c` ResultViewController.checkRank~call3~closure1~call1~call1~call1~closure1~call1, 320 bytes: not ported
+- `0x10000bd34` ResultViewController.checkRank~call3~closure1~call1~call1~call1~closure2, 4 bytes: not ported
+- `0x10000bd60` ResultViewController.checkRank~call3~closure1~call1~call1~closure1, 4 bytes: not ported
+- `0x10000bd64` ResultViewController.checkRank~call3~closure1~call1~call1~closure2, 4 bytes: not ported
+- `0x10001bd0c` ResultViewController.checkRank~closure1, 108 bytes: not ported
+- `0x10001be40` -[ResultViewController superView], 48 bytes: not ported
+- `0x10001be70` -[ResultViewController setSuperView:], 52 bytes: not ported
+- `0x10001bea4` -[ResultViewController coinLabel], 32 bytes: not ported
+- `0x10001bec4` -[ResultViewController setCoinLabel:], 20 bytes: not ported
+- `0x10001bed8` -[ResultViewController scoreLabel], 32 bytes: not ported
+- `0x10001bef8` -[ResultViewController setScoreLabel:], 20 bytes: not ported
+- `0x10001bf0c` -[ResultViewController textName], 32 bytes: not ported
+- `0x10001bf2c` -[ResultViewController setTextName:], 20 bytes: not ported
+- `0x10001bf40` ResultViewController.viewDidLoad, 824 bytes: not ported
+- `0x10001c278` -[ResultViewController viewDidLoad], 44 bytes: not ported
+- `0x10001c2a4` ResultViewController.checkName, 5004 bytes: not ported
+- `0x10001d630` -[ResultViewController checkName], 44 bytes: not ported
+- `0x10001d65c` ResultViewController.checkRank, 2588 bytes: not ported
+- `0x10001e078` ResultViewController.checkRank~closure2, 380 bytes: not ported
+- `0x10001e1f4` ResultViewController.checkRank~closure2~closure1, 4 bytes: not ported
+- `0x10001e1f8` ResultViewController.checkRank~closure2~closure2, 220 bytes: not ported
+- `0x10001e2d4` -[ResultViewController checkRank], 44 bytes: not ported
+- `0x10001e300` -[ResultViewController replay:], 328 bytes: not ported
+- `0x10001e448` -[ResultViewController prefersStatusBarHidden], 28 bytes: not ported
+- `0x10001e464` ResultViewController.vtable[25], 8 bytes: not ported
+- `0x10001e46c` -[ResultViewController backMenu:], 464 bytes: not ported
+- `0x10001e63c` -[ResultViewController textFieldShouldReturn:], 44 bytes: not ported
+- `0x10001e668` -[ResultViewController textField:shouldChangeCharactersInRange:replacementString:], 152 bytes: not ported
+- `0x10001e700` ResultViewController~shared4, 796 bytes: not ported
+- `0x10001ea1c` -[ResultViewController keyboardWillShowWithNotification:], 12 bytes: not ported
+- `0x10001ea28` -[ResultViewController keyboardWillHideWithNotification:], 12 bytes: not ported
+- `0x10001ea34` ResultViewController~shared5, 80 bytes: not ported
+- `0x10001ea84` ResultViewController.initWithNibName:bundle:, 608 bytes: not ported
+- `0x10001ece4` -[ResultViewController initWithNibName:bundle:], 132 bytes: not ported
+- `0x10001ed68` ResultViewController.vtable[32], 512 bytes: not ported
+- `0x10001ef68` ResultViewController.vtable[33], 48 bytes: not ported
+- `0x10001ef98` -[ResultViewController initWithCoder:], 68 bytes: not ported
+- `0x10001f03c` -[ResultViewController .cxx_destruct], 104 bytes: not ported
+- `0x10001f258` ResultViewController~shared6, 996 bytes: not ported
+- `0x10001f63c` ResultViewController~shared7, 368 bytes: not ported
+- `0x10001f7ac` ResultViewController.checkRank~closure1~call1, 1060 bytes: not ported
+- `0x10001fbd0` ResultViewController.checkName~call1, 516 bytes: not ported
+- `0x10001fdd4` ResultViewController.checkRank~call1, 476 bytes: not ported
+- `0x10001ffb0` ResultViewController.checkRank~call2~call1, 632 bytes: not ported
+- `0x100020228` ResultViewController.checkRank~call2, 144 bytes: not ported
+- `0x1000202b8` ResultViewController.textField:shouldChangeCharactersInRange:replacementString:, 560 bytes: not ported
+- `0x1000204e8` -[ResultViewController keyboardWillShowWithNotification:]~closure1, 660 bytes: not ported
+- `0x10002077c` -[ResultViewController keyboardWillHideWithNotification:]~closure1, 660 bytes: not ported
+- `0x100020a10` ResultViewController.initWithCoder:, 472 bytes: not ported
+- `0x100020c30` -[ResultViewController backMenu:]~closure1, 16 bytes: not ported
+- `0x100020c40` -[ResultViewController replay:]~closure1, 16 bytes: not ported
+- `0x100020c50` ResultViewController~shared8, 120 bytes: not ported
+
+## RankingViewController (33 functions)
+
+- `0x100005764` RankingViewController.changeValue:~closure2~call1, 124 bytes: not ported
+- `0x100008280` RankingViewController.changeValue:~closure2~call1~call1, 2516 bytes: not ported
+- `0x100014a08` RankingViewController.tableView:cellForRowAtIndexPath:~call1, 56 bytes: not ported
+- `0x100020dd8` -[RankingViewController tableRanking], 32 bytes: not ported
+- `0x100020df8` -[RankingViewController setTableRanking:], 20 bytes: not ported
+- `0x100020e0c` -[RankingViewController loadIndicador], 32 bytes: not ported
+- `0x100020e2c` -[RankingViewController setLoadIndicador:], 20 bytes: not ported
+- `0x100020e40` -[RankingViewController selectTable], 16 bytes: not ported
+- `0x100020e50` -[RankingViewController setSelectTable:], 16 bytes: not ported
+- `0x100020e60` RankingViewController.viewDidLoad, 196 bytes: not ported
+- `0x100020f24` -[RankingViewController viewDidLoad], 44 bytes: not ported
+- `0x100020f50` -[RankingViewController tableView:numberOfRowsInSection:], 84 bytes: not ported
+- `0x100020fa4` -[RankingViewController tableView:cellForRowAtIndexPath:], 116 bytes: not ported
+- `0x100021018` -[RankingViewController menuBack:], 332 bytes: not ported
+- `0x100021164` -[RankingViewController changeValue:], 68 bytes: not ported
+- `0x1000211a8` -[RankingViewController prefersStatusBarHidden], 28 bytes: not ported
+- `0x1000211c4` RankingViewController.vtable[17], 8 bytes: not ported
+- `0x10002122c` -[RankingViewController .cxx_destruct], 72 bytes: not ported
+- `0x100021274` RankingViewController.initWithNibName:bundle:, 544 bytes: not ported
+- `0x100021494` -[RankingViewController initWithNibName:bundle:], 132 bytes: not ported
+- `0x100021518` RankingViewController.vtable[19], 448 bytes: not ported
+- `0x1000216d8` RankingViewController.vtable[20], 48 bytes: not ported
+- `0x100021708` -[RankingViewController initWithCoder:], 68 bytes: not ported
+- `0x10002189c` RankingViewController.tableView:numberOfRowsInSection:, 512 bytes: not ported
+- `0x100021a9c` RankingViewController.tableView:cellForRowAtIndexPath:, 2444 bytes: not ported
+- `0x100022428` RankingViewController.changeValue:, 836 bytes: not ported
+- `0x10002276c` RankingViewController.changeValue:~closure1~call1, 468 bytes: not ported
+- `0x100022940` RankingViewController.changeValue:~closure1~call1~closure1~call1, 436 bytes: not ported
+- `0x100022af4` RankingViewController.initWithCoder:, 408 bytes: not ported
+- `0x100022cbc` RankingViewController.changeValue:~closure1, 84 bytes: not ported
+- `0x100022d80` RankingViewController.changeValue:~closure2, 124 bytes: not ported
+- `0x100022e14` RankingViewController.changeValue:~closure1~call1~closure1, 60 bytes: not ported
+- `0x100022e50` -[RankingViewController menuBack:]~closure1, 108 bytes: not ported
+
+## TableCell (16 functions)
+
+- `0x1000141ac` -[TableCell playerName], 32 bytes: not ported
+- `0x1000141cc` -[TableCell setPlayerName:], 20 bytes: not ported
+- `0x1000141e0` -[TableCell playerScore], 32 bytes: not ported
+- `0x100014200` -[TableCell setPlayerScore:], 20 bytes: not ported
+- `0x100014214` -[TableCell position], 32 bytes: not ported
+- `0x100014234` -[TableCell setPosition:], 20 bytes: not ported
+- `0x100014248` TableCell.vtable[9], 96 bytes: not ported
+- `0x1000142a8` -[TableCell awakeFromNib], 96 bytes: not ported
+- `0x100014308` TableCell.vtable[10], 120 bytes: not ported
+- `0x100014380` -[TableCell setSelected:animated:], 156 bytes: not ported
+- `0x10001447c` -[TableCell .cxx_destruct], 72 bytes: not ported
+- `0x1000144c4` TableCell.vtable[11], 260 bytes: not ported
+- `0x1000145c8` -[TableCell initWithStyle:reuseIdentifier:], 308 bytes: not ported
+- `0x1000146fc` TableCell.vtable[12], 212 bytes: not ported
+- `0x1000147d0` TableCell.vtable[13], 180 bytes: not ported
+- `0x100014884` -[TableCell initWithCoder:], 200 bytes: not ported
+
+## Not owned by one class (201 functions)
+
+Swift's own machinery (type metadata accessors, value and protocol witness tables, retain and release
+helpers, trampolines), helpers several classes share, and `RankingCloud`'s CloudKit code. Port only what
+a game function needs; see `analysis/disasm/dz_other.txt`.
+

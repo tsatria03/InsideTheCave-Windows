@@ -3,14 +3,14 @@
 The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidocks/<name>.md`. Add a one-line pointer here for every new memory. "Memory" or "memories" always means this folder, never the `~/.claude` store.
 
 ## Reference documents (not memory notes)
-- [Porting status](PORTING_STATUS.md), [Divergences](DIVERGENCES.md) and [Game structure](GAME_STRUCTURE.md): the three developer references. What is ported, where the port differs from the original, and the game's mechanism as read from the binary. On 2026-10-02 nothing is ported, and the game structure is inferred from strings only.
+- [Porting status](PORTING_STATUS.md), [Divergences](DIVERGENCES.md) and [Game structure](GAME_STRUCTURE.md): the three developer references. What is ported, where the port differs from the original, and the game's mechanism as read from the binary. On 2026-10-02 nothing is ported; the game structure is read from the full disassembly, with addresses.
 - The player documents, `readme.txt`, `changelog.txt` and `todo list.txt`, live in the repo's `docks/` folder; all three are empty on 2026-10-02.
 
 ## Project: what the port is and how to work on it
 - [Provenance](project_provenance.md): the original was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife (MacMagazine, 2016-09-06, confirmed by the dev); it is no longer on the App Store. The port is solo, by tsatria03, with no contributors now or planned.
 - [Python only](project_python_only.md): pygame, OpenAL Soft through ctypes, NVDA or Prism; the insidethecave/ package with game, platform and ui. Windows only: no Linux build (the dev has no WSL).
 - [Binary analysis notes](project_binary_analysis_notes.md): a thin arm64 Mach-O, unencrypted, Swift 3 with stripped symbols. File offset = address - 0x100000000. The section map, and why 32-bit Thumb tooling will not work unchanged.
-- [Disassembly plan](project_disassembly_plan.md): PLANNED 2026-10-02. The whole game is disassembled before any porting: arm64 tools in tools/ (capstone), every function in __text named where possible and listed in analysis/, coverage proved, the .sks scenes, storyboards and strings decoded, GAME_STRUCTURE.md verified from it.
+- [Disassembly plan](project_disassembly_plan.md): BUILT, NOT YET CONFIRMED 2026-10-02. The whole game is disassembled before any porting: arm64 tools in tools/ (capstone), all 575 functions listed in analysis/disasm with coverage proved, the scenes, storyboards and strings decoded, GAME_STRUCTURE.md rewritten from the code with addresses, PORTING_STATUS.md listing every function. Nothing pushed until the dev confirms.
 - [Build scripts](project_build_scripts.md): compiler.py and releaser.py adapted 2026-10-02 at the dev's go-ahead; built, not yet confirmed. The compiler finds game\ and game\sounds itself, ships only the sounds, and refuses to build until InsideTheCave.py and the package exist.
 - [Safe test run](project_safe_test_run.md): the design every test follows from the first one: a _scratch_save helper, silent, off the real save, headless. Plain scripts, run in PowerShell, skipping _*.py.
 - [Tests layout](project_tests_layout.md): tests/case for the automated tests, tests/interact for the by-ear tools Claude never runs.

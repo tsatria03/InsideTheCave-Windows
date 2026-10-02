@@ -1,11 +1,11 @@
 ---
 name: project_disassembly_plan
-description: "PLANNED 2026-10-02: disassemble the whole game before any porting - every function in __text named where possible and listed in analysis/, plus the .sks scenes, the storyboards and all strings - with arm64 tools in tools/ (capstone), a coverage check that nothing was skipped, and GAME_STRUCTURE.md filled from the result. No port code until it is done."
+description: "BUILT, NOT YET CONFIRMED 2026-10-02: disassemble the whole game before any porting - every function in __text named where possible and listed in analysis/, plus the .sks scenes, the storyboards and all strings - with arm64 tools in tools/ (capstone), a coverage check that nothing was skipped, and GAME_STRUCTURE.md filled from the result. No port code until it is done."
 metadata:
   type: project
 ---
 
-**Status: planned (2026-10-02).** The dev agreed the plan and asked for it to be written first ("Write the plan first"). Nothing is built yet. It becomes "built, not yet confirmed" once the tools and listings land, and "finished" only when the dev says so ([[feedback_record_plans_first]]).
+**Status: built, not yet confirmed (2026-10-02).** The dev agreed the plan and asked for it to be written first ("Write the plan first"). Every step through 5 is done (below): the tools, the complete listings, the strings, scenes and storyboards, and `GAME_STRUCTURE.md` read from the code. It becomes "finished" only when the dev says so ([[feedback_record_plans_first]]); until then nothing is pushed, and no port code is written.
 
 ## The rule behind it
 **The whole game is disassembled before anything is ported** (the dev, 2026-10-02: "We need to fully disesembel the entire game first before we do anything related to porting it."). No code goes into `insidethecave/` or `InsideTheCave.py` until this plan is finished. Every port line will cite an address from these listings ([[feedback_side_by_side]]).
@@ -52,7 +52,7 @@ Modelled on the reference port's tools in the gitignored `user/` folder ([[feedb
 2. `macho.py` and `classes.py`, checked against what is already known by hand: 9 classes, the section map, 198 selector references. **Done 2026-10-02**, all three matching; also 575 function starts, no data in code, and Swift 3's 12-byte field descriptor (no superclass pointer), read from the bytes after a first guess looped.
 3. `names.py`, `dz.py`, `listings.py`, then `coverage.py` until it reports nothing missing. **Done 2026-10-02.** 532 of 575 functions named (208 objc, 69 thunk bodies, 71 by caller, 75 by what they do, 96 by data tables, 12 class helpers, `main`); 43 shared helpers stay `fn_`. **`coverage.py`: COMPLETE**, all 31,019 words of `__text` listed exactly once, every one decoded by capstone. Checked against the hand decode: the sound loads at 0x1000157d8 and the rest match.
 4. `strings.py` and `archive.py`. **Done 2026-10-02.** The French, Russian and Chinese tutorial lines are in `__ustring`, loaded by `GameScene.tutorial`. The `.sks` scenes and the NIBArchive storyboards decode in full. `tools/README.md` explains how to rerun everything.
-5. Read the listings class by class, `GameScene` first, writing `GAME_STRUCTURE.md` as each part is verified.
+5. Read the listings class by class, `GameScene` first, writing `GAME_STRUCTURE.md` as each part is verified. **Done 2026-10-02.** Three readers covered the scene's setup, input and light; what comes at the player, contacts and scenarios; and the other screens, the save and the ranking. Their key claims were checked by hand at the instruction level (the speed-up, the scenario thresholds, the roar's volumes, the monster's body, the empty `update:`, the tutorial count, the snow, and the result screen's crash), and the checks caught two naming mistakes in `names.py`, fixed. `GAME_STRUCTURE.md` is rewritten from the code, with addresses; `PORTING_STATUS.md` lists all 575 functions by class. Headline findings: no boss in 2.32; the tutorial line in six languages; bats cannot be killed; the coin jingle and the snow are never used; the 2016 game-over crash is `checkName` trapping on device names under 10 characters.
 6. Report to the dev; they confirm, and the plan is marked finished. Only then does porting start.
 
 ## Checks
