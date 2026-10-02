@@ -1,11 +1,11 @@
 ---
 name: project_port_plan
-description: "PLANNED 2026-10-02, every question answered, waiting for the go-ahead: the whole port of Inside The Cave to Windows in Python, in five phases (platform, a SpriteKit stand-in, the game scene, the screens, building and releasing), with the decisions it needs from the dev listed at the end. No port code until the dev answers and says go."
+description: "PLANNED 2026-10-02, every question answered, waiting for the go-ahead: the whole port of Inside The Cave to Windows in Python, in five phases (platform, a SpriteKit stand-in, the game scene, the screens, building and releasing), with the decisions it needs from the dev listed at the end. Phase 1 built 2026-10-02, not yet confirmed; each later phase waits for the dev's go."
 metadata:
   type: project
 ---
 
-**Status: planned (2026-10-02); every question answered** (1 since made unnecessary by the WAVs). Waiting for the dev's go-ahead to start phase 1. The dev asked for the whole porting plan to be written now, with the open questions ("Let's write the entire porting plan now, with your open questions"). Nothing is built. Each phase starts only on the dev's go-ahead; the plan is updated first whenever an answer changes it ([[feedback_record_plans_first]]). It is ported from what the disassembly found ([[project_disassembly_plan]], `GAME_STRUCTURE.md`), every port function citing the original's address, every difference recorded in `DIVERGENCES.md` ([[feedback_side_by_side]]).
+**Status: phase 1 built, not yet confirmed (2026-10-02); phases 2 to 5 planned.** Every question answered (1 since made unnecessary by the WAVs). The dev gave the go-ahead for phase 1 on 2026-10-02 ("Let me know when you are done with phase 1. You can start now."); what landed is under Phase 1 below. The dev asked for the whole porting plan to be written now, with the open questions ("Let's write the entire porting plan now, with your open questions"). Nothing is built. Each phase starts only on the dev's go-ahead; the plan is updated first whenever an answer changes it ([[feedback_record_plans_first]]). It is ported from what the disassembly found ([[project_disassembly_plan]], `GAME_STRUCTURE.md`), every port function citing the original's address, every difference recorded in `DIVERGENCES.md` ([[feedback_side_by_side]]).
 
 ## What the port is
 The original is small: one game scene and five screens, 12 sounds, every number a constant in the code. What makes it work is Apple's **SpriteKit**, the iPhone's built-in game framework: it moves the objects over time, tells the game when two of them touch, and plays sounds placed in space. The dev does not have SpriteKit, and does not need it: it is part of iOS, not something to install. The port reproduces the small part of it the game uses, in Python, in its own module (phase 2), fed with the numbers read from the binary.
@@ -15,7 +15,7 @@ The rest follows the reference port in the gitignored `user/` folder ([[feedback
 ## Layout
 - `InsideTheCave.py`: the entry point and the screen loop, standing in for the storyboard's navigation (Warning, menu, game, result, ranking).
 - `insidethecave/paths.py`: `game\sounds` in the repository or beside the executable, `INSIDETHECAVE_GAME`, the save in `%APPDATA%\InsideTheCave` (`INSIDETHECAVE_USER_DIR` for tests). A sound is found by its base name, in `game\sounds\used` first, then `game\sounds\unused`: the binary's `"dash.aiff"` is `used\dash.wav` ([[project_build_scripts]], `DIVERGENCES.md`).
-- `insidethecave/platform/`: adapted from the reference port. `openal.py` (OpenAL Soft through ctypes), `runloop.py` (timers and delayed calls, for the NSTimers and `DispatchQueue` the original uses), `defaults.py` (UserDefaults: the save), `speech.py` (NVDA, Prism, a Windows voice; silent in tests), `keymap.py` (rebindable keys), `sound.py` (loading the WAVs with the `wave` module, and mixing a positioned sound down to mono; new), `volume.py` if volume knobs are wanted.
+- `insidethecave/platform/`: adapted from the reference port. `openal.py` (OpenAL Soft through ctypes), `runloop.py` (timers, for the original's four NSTimers; it uses no `DispatchQueue`), `language.py` (Windows' display language), `defaults.py` (UserDefaults: the save), `speech.py` (NVDA, Prism, a Windows voice; silent in tests), `keymap.py` (rebindable keys), `sound.py` (loading the WAVs with the `wave` module, and mixing a positioned sound down to mono; new), `volume.py` if volume knobs are wanted.
 - `insidethecave/scene/`: the SpriteKit stand-in (phase 2).
 - `insidethecave/game/`: one module per original class: `app_delegate.py`, `warning_view_controller.py`, `home_screen_view_controller.py`, `game_view_controller.py`, `game_scene.py`, `result_view_controller.py`, `ranking_view_controller.py`, `ranking_cloud.py` only if anything of it survives (question 9).
 - `insidethecave/ui/`: the keyboard for the game and for the screens, the F1 key-bindings screen, and pausing on focus loss, adapted.
@@ -23,6 +23,20 @@ The rest follows the reference port in the gitignored `user/` folder ([[feedback
 
 ## Phase 1: the platform
 Copy and adapt the platform modules, `paths.py`, the key map and its F1 screen, and the test helper `_scratch_save.py`; rename everything from the reference port. Add `sound.py`, which reads each WAV (16-bit PCM, so the standard library's `wave` reads it) into an OpenAL buffer once, at start, mixed down to mono where the sound is placed in space (question 2). Tests: paths, the save, the run loop, speech kept silent, the key map.
+
+**Built 2026-10-02, not yet confirmed by the dev.** Not committed. Nothing of it runs the game, which does not exist yet; it is checked by its tests only.
+- `insidethecave/paths.py`: the game folder (`--game`, `INSIDETHECAVE_GAME`, `game` beside the executable, the repository's `game`; the first holding `sounds`, as `compiler.py`), `sound(name)` by base name in `used` then `unused`, the save in `%APPDATA%\InsideTheCave` or `INSIDETHECAVE_USER_DIR`.
+- `platform/openal.py`: as the reference port's, without the Linux path; HRTF off (one switch, to judge by ear in phase 2), the output limiter on since the roar plays at 3.0.
+- `platform/runloop.py`: **timers only.** The binary makes four one-shot NSTimers (0x10000e0f4, 0x10000e648, 0x1000236ec, 0x10000ea04) and never uses `DispatchQueue` or `performSelector:afterDelay:`, so the reference port's delayed performs were left out. `hold`/`resume` stop the clock for the pause.
+- `platform/defaults.py`: `save.json` (`rank`, `countTutorial`, the binary's own key names) and `settings.json` (`MASTERVOLUME`, `MUSICVOLUME`); a damaged file is kept aside and its backup used.
+- `platform/volume.py`: the two percentages, squared into the gain; Page Up and Page Down step the master by ten and save it; the master is meant for OpenAL's listener gain, the music's on top of its 0.2 (`changeVolumeTo:0.2` at 0x100010a6c, checked; the music node is also positional, 0x1000109e8).
+- `platform/speech.py`: `Speech` as the reference port's (NVDA, Prism's screen readers, a voice), and the new `TutorialVoice`: SAPI 5 through Prism, `choose(language)` picks an installed voice of that language or says English (default voice), `speak` at rate 0.5, `speaking`. Without SAPI, `speak` returns False so phase 3 can hand the line to `Speech`.
+- `platform/language.py` (new): Windows' display language (`GetUserDefaultUILanguage`, `LCIDToLocaleName`) in two letters, English when unreadable; `pick` against the tutorial's six languages and the warning's two.
+- `platform/keymap.py`: the four actions (move_left A/Left, move_right D/Right, throw W/Up, pause P), `keys.json`, chords kept from the reference; fixed F1, Escape, Page Up, Page Down; `hint_keys(action)` for the key hints ("A or Left Arrow").
+- `platform/sound.py` (new): `read_wav`, `to_mono` (each frame the average of left and right), `load(name, mono)`, and `SoundBank`, one OpenAL buffer per sound and form.
+- `ui/keybind_screen.py` (the F1 screen) and `ui/focus.py` (leaving the window calls the screen's `pause`).
+- Tests in `tests/case/`: `paths`, `runloop`, `save`, `speech`, `keymap`, `sound`, `language`; 80 tests, all passing on 2026-10-02.
+- Not in phase 1, though the reference port has them: the stage, menu and screen keyboard handlers (`ui/input.py` and the rest), which come with the game scene and the screens.
 
 ## Phase 2: the SpriteKit stand-in
 Only what `GAME_STRUCTURE.md` shows the game using:

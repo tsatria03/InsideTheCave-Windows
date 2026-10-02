@@ -65,10 +65,10 @@ and `aidocks/GAME_STRUCTURE.md` records it as it is read out of the binary.
 game/                    the original app bundle, unpacked
   sounds/used/           the 12 sounds version 2.32 plays, as WAV, under their own names
   sounds/unused/         14 sounds from the game's older versions
-insidethecave/           the Python package (not yet written)
+insidethecave/           the Python package: so far the platform layer and the key screen
 analysis/                the binary, and its complete disassembly and decoded data
 tools/                   the arm64 Mach-O and disassembly tools that made analysis/
-tests/case/              the automated tests (none yet)
+tests/case/              the automated tests
 tests/interact/          tools to play by ear (none yet)
 vendor/                  OpenAL Soft and NVDA's controller client, with their licenses
 docks/                   readme.txt, changelog.txt, credits.txt and todo list.txt,
@@ -81,9 +81,14 @@ requirements.txt         the two packages it needs
 VERSION                  the date version, such as 26.10.02-1
 ```
 
-The package will have one module per original class in `insidethecave/game/`, the
-platform layer in `insidethecave/platform/` (OpenAL, timers, the save, speech and the
-key bindings), and the keyboard in `insidethecave/ui/`.
+The platform layer is in `insidethecave/platform/`: OpenAL, the timers, the save, the
+volume settings, speech and the tutorial's Windows voice, the display language, the key
+bindings and the sounds. The F1 key-binding screen is in `insidethecave/ui/`. The game
+itself will have one module per original class in `insidethecave/game/`.
+
+The save lives in `%APPDATA%\InsideTheCave`: `save.json` (the local top five and the
+tutorial count), `settings.json` (the master and music volumes) and `keys.json` (the key
+bindings).
 
 ### `game/`: the original's data
 
@@ -117,9 +122,10 @@ the original will be written down in `aidocks/DIVERGENCES.md`.
 
 ## Tests
 
-`tests/case/` will hold the tests: plain scripts, each checking one part of the game
-against the original and printing `ok` or `FAIL` for every check, then a total. Run any of
-them on its own:
+`tests/case/` holds the tests: plain scripts, each checking one part of the game
+against the original and printing `ok` or `FAIL` for every check, then a total. So far
+they cover the platform layer: `paths`, `runloop`, `save`, `speech`, `keymap`, `sound`
+and `language`. Run any of them on its own:
 
     python tests/case/<name>.py
 

@@ -3,7 +3,9 @@
 What is done, what is stubbed, what has not been started. Kept honest: "done" means ported from the
 disassembly method by method, with the address recorded in the code.
 
-**Status, 2026-10-02: the disassembly is complete; nothing is ported.** Every function of the game is listed
+**Status, 2026-10-02: the disassembly is complete; no game function is ported yet.** The platform layer the
+game will run on (OpenAL, the NSTimers, UserDefaults, speech, the keys, the sounds) is built in
+`insidethecave/platform/`, phase 1 of `project_port_plan.md`; it stands in for iOS, not for any function below. Every function of the game is listed
 below, generated from `analysis/data/functions.txt` (by `tools/names.py`), with its address and size. As a
 function is ported, mark it here: **ported** (with the Python module), **stubbed**, or **left out** (with why).
 The mechanism they make up is in `GAME_STRUCTURE.md`; the listings are in `analysis/disasm/dz_<Class>.txt`.

@@ -15,13 +15,19 @@ Nothing yet (2026-10-02).
 
 ## Where the port differs on purpose
 
-Nothing yet.
+### Volume settings (port addition, built 2026-10-02)
+The original's gains are constants (the music at 0.2, `changeVolumeTo:0.2` at 0x100010a6c). The port keeps every one and adds two settings on top, in `settings.json`: `MASTERVOLUME`, which Page Up and Page Down step by ten, and `MUSICVOLUME`. Both default to 100, the original's mix (`platform/volume.py`; `project_port_plan.md`, question 12). The game does not apply them yet; the SpriteKit stand-in will.
+
+### The tutorial line's voice (built 2026-10-02, not yet spoken by the game)
+The original speaks it through `AVSpeechSynthesizer` in "en-US", "pt-BR", "es-ES", "zh-CN", "ru-RU" or "fr-FR", at 0.55 for English, 0.6 for Portuguese, Spanish and Chinese, 0.5 for Russian and French (`GameScene.tutorial`, 0x10000dea8). The port speaks it in a SAPI 5 voice through Prism, chosen by Windows' display language rather than the device's (`platform/language.py`), at Prism's rate 0.5, its normal, for every language (the dev: "Yes, it should use rate 0.5, no higher."). With no installed voice for the language, the English line is spoken in SAPI's default voice, so no line is read in a voice for another language (`platform/speech.py`, `TutorialVoice`; `project_port_plan.md`, questions 6 and 7). Where the original crashes on a device with no language (`brk` at 0x10000e830), the port says English.
 
 ## Where the port necessarily differs
 
 Expected, not yet written up in detail:
 
-- **Input.** Swipes and taps become keys that can be rebound.
+- **Input.** Swipes and taps become keys that can be rebound. Built 2026-10-02 (`platform/keymap.py`, the F1 screen in `ui/keybind_screen.py`): move left A or Left Arrow (the swipe left, 0x100016ee8), move right D or Right Arrow (the swipe right, 0x100016e34), throw W or Up Arrow (the swipe up, 0x100016f98), pause P; F1, Escape, Page Up and Page Down fixed. A tap, which went left or right by where it landed (0x10000fff0), has no key of its own: the two move keys are its two halves. Kept in `keys.json`.
+- **The save.** `UserDefaults` becomes `save.json` (`rank`, `countTutorial`, under the binary's own key names) and `settings.json` in `%APPDATA%\InsideTheCave` (`platform/defaults.py`, built 2026-10-02). `rankWorld` is not saved: there is no world ranking.
+- **Timers.** The original's four `NSTimer`s run on the port's own run loop (`platform/runloop.py`, built 2026-10-02), on the wall clock, as the original's.
 - **Speech.** `AVSpeechSynthesizer` becomes NVDA, another screen reader through Prism, or a Windows voice.
 - **The screens.** UIKit screens become lists of rows read aloud.
 - **The ranking.** CloudKit's world ranking cannot work.
