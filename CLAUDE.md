@@ -29,7 +29,7 @@ There is no source code for the original. The port is **recovered from the arm64
 
 ## Running and building
 
-**The dev runs and builds, not Claude.** Never build unless told. The tests may be run without asking, always the safe way, but only the scripts that cover the Python files changed; the full suite runs only when the dev asks. Ask before running the game, `compiler.py`, `releaser.py`, or anything else that executes game code or speaks ([[feedback_dont_run_or_build]]).
+**The dev runs and builds, not Claude.** Never build unless told. The tests may be run without asking, always the safe way, but only the scripts that cover the Python files changed; the full suite runs only when the dev asks, or by itself every 10 to 20 commits ([[feedback_git_commits]]). Ask before running the game, `compiler.py`, `releaser.py`, or anything else that executes game code or speaks ([[feedback_dont_run_or_build]]).
 
 The game will need 64-bit Python 3.12 or newer, `pygame` (not `pygame-ce`) and `prismatoid`: `pip install -r requirements.txt`.
 

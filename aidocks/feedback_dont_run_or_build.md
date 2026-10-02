@@ -11,6 +11,7 @@ metadata:
 **The tests may be run without asking, always the safe way** ([[project_safe_test_run]]): silent, off the real save, headless. Once tests exist:
 - **Only the tests that match what changed.** When a Python file changes and a test script covers it, run only that script.
 - **During a batch of fixes, run no tests between the commits.** Run the full suite once at the end, and only when the dev gives the go-ahead.
+- **The exception: every 10 to 20 commits, the full suite runs without asking** (the dev, 2026-10-02), counted as [[feedback_git_commits]] says.
 
 **Still ask first before running:**
 - the game itself, including headless runs
