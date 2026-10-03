@@ -56,7 +56,7 @@ Your footsteps run with you from your lane, a walk at first, then a run after ab
 Your torch
 
 Your torch burns down as you go, and its burning sound gets a little quieter as it does.
-Your screen reader says Torch low when it starts to dim, and soon after that it goes out.
+Your screen reader says Torch low when it starts to dim, and soon after that it goes out, with a sound of its own.
 Torches lie on the path, and running into one gives you a fresh torch.
 Throwing your torch kills a monster in your lane, but it uses the torch up, and you score nothing for it.
 A bat that your torch hits only dodges into another lane.

@@ -1,4 +1,5 @@
 unrelease:
+A sound plays when your torch burns all the way out.
 Your footsteps run with you from your lane: a walk at first, and a run after about a minute and a half, as the cave speeds up.
 The game's music now plays at full volume, much louder than before, and Page Down in a game turns it down.
 The main menu, the Score screen and the result screen have music, from the game's early versions. It stops when a game starts, and does not play on the pause menu.

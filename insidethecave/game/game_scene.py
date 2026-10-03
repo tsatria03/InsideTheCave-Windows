@@ -25,7 +25,8 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
   ``soundWall``), and the music's volume can change during a game (``applyMusicVolume``);
 * footsteps loop from your lane, a walk, then a run as the cave speeds up
   (``updateFootsteps``);
-* "Torch low" is spoken as the torch starts to dim (``changeFalloffSize``);
+* "Torch low" is spoken as the torch starts to dim, and a sound plays when it burns out
+  (``changeFalloffSize``);
 * the tutorial line in a Windows voice, then the key hints, then the first slot
   (``tutorial``);
 * the pause, and ``--debug``, where nothing can kill the player.
@@ -88,6 +89,9 @@ KEY_HINTS = (('Press {move_left} to move left, and {move_right} to move right.',
 HINT_CHARS_PER_SECOND = 14.0
 #: PORT ADDITION: what is said as the torch starts to dim (question 3).
 TORCH_LOW = 'Torch low'
+#: PORT ADDITION: played once when the torch burns all the way out, not when it is thrown
+#: (the dev, for the third release: tocha_acende, "a torch lighting", from version 2.02).
+TORCH_OUT = 'tocha_acende.wav'
 #: PORT ADDITION: the jingle each coin carries, at SpriteKit's default volume (question 4).
 JINGLE_VOLUME = 1.0
 #: The music's gain, before MUSICVOLUME.  The original's is 0.2 (``changeVolumeTo:0.2`` at
@@ -635,6 +639,7 @@ class GameScene(Scene):
             self.lightTorch.falloff = FALLOFF_OUT
             self.changeSpritePlayer(False)
             self.backgroundTorch.removeFromParent()
+            self.runAction(A.playSoundFileNamed(TORCH_OUT, False))     # PORT ADDITION
 
     # GameScene.createTorch 0x100010b00
     def createTorch(self):

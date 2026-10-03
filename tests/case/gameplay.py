@@ -467,6 +467,32 @@ def test_the_torch_burns_out_and_says_torch_low_once():
     assert s.player.texture.startswith('sem_tocha') or True
 
 
+def test_a_sound_plays_when_the_torch_burns_out_but_not_when_it_is_thrown():
+    """The dev: tocha_acende when the torch gets fully burned out."""
+    from insidethecave.scene import actions
+
+    def played(s):
+        return [a.name for a in s._sounds if isinstance(a, actions.PlaySoundFile)]
+
+    for burn in (True, False):
+        g = _Game(debug=True)
+        g.start()
+        s = g.scene
+        s._sounds = []
+        real = s.runAction
+        s.runAction = lambda action, key=None: (s._sounds.append(action), real(action, key))
+        if burn:
+            while s.falloffSize < G.FALLOFF_OUT:
+                s.changeFalloffSize()
+            s.changeFalloffSize()                       # out already: not again
+            assert played(s) == [G.TORCH_OUT], played(s)
+        else:
+            s.throwTorch()
+            for _ in range(5):
+                s.changeFalloffSize()
+            assert G.TORCH_OUT not in played(s), 'a thrown torch did not burn out'
+
+
 def test_torch_low_comes_as_the_light_starts_to_dim():
     g = _Game()
     s = g.scene
