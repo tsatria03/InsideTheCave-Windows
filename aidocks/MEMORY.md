@@ -16,6 +16,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Safe test run](project_safe_test_run.md): the design every test follows from the first one: a _scratch_save helper, silent, off the real save, headless. Plain scripts, run in PowerShell, skipping _*.py.
 - [Tests layout](project_tests_layout.md): tests/case for the automated tests, tests/interact for the by-ear tools Claude never runs: platform_check, scene_check, stage_chooser and screens_check hear phases 1 to 4, and torch_check, coin_check, bat_check and speed_check the torch, the coins, the bats and any speed.
 - [Player readme and credits](project_player_readme.md): docks/readme.txt (how to play) and docks/credits.txt (makers, licenses), written 2026-10-02 in the reference port's style and confirmed by the dev; keep the readme in step with the game in the same commit.
+- [Tutorial plan](project_tutorial_plan.md): PLANNED 2026-10-03, waiting for the go-ahead: a Tutorial row after Play, speed held at 5.0, one thing at a time, everything announced in an English Windows voice as it appears, nothing saved; Play's key hints on the first 2 games only, the original's line gone.
 - [Torch key plan](project_torch_key_plan.md): PLANNED 2026-10-03, waiting for the go-ahead: a rebindable T saying the torch in five slot-based levels (full, half, low, almost out, none), and the throw key saying "No torch to throw.".
 - [Developer tasks](project_dev_tasks.md): repository, tool, analysis, test, build and docs tasks, open and finished; one open, tests/case/release.py.
 
