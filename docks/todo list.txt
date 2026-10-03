@@ -1,6 +1,7 @@
 ##Unfinished.
 
-Nothing is waiting here right now. New bugs, planned changes and anything still to be decided will be listed here as they come up.
+Add a T key that says how much torch you have left, or that you have none.
+Make the throw key, W or Up Arrow by default, say that you have no torch to throw, instead of doing nothing.
 
 ##Finished.
 
