@@ -4,6 +4,7 @@ Nothing is waiting here right now. New bugs, planned changes and anything still 
 
 ##Finished.
 
+The earphone warning is said by a Windows voice, and the main menu waits for it to finish.
 The cave speeds up by 0.1 at a time, so its speeds run in even tenths.
 A bat that dodges your torch is heard going to its new lane.
 A bat your torch hits dodges into another lane and stays there.

@@ -10,8 +10,9 @@ The game says so itself when it starts.
 
 Starting the game
 
-The game opens on the original's earphone warning, in Portuguese if Windows is in Portuguese, and in English otherwise.
-After three seconds it goes on to the main menu, and any key goes on at once.
+The game opens on the original's earphone warning, said by a Windows voice, in Portuguese if Windows is in Portuguese and a Portuguese voice is installed, and in English otherwise.
+After three seconds, once the voice has finished, it goes on to the main menu, and any key goes on at once.
+If no Windows voice can be used, your screen reader says the warning instead.
 
 The main menu
 

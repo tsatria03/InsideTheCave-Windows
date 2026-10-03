@@ -90,6 +90,80 @@ def test_any_key_skips_the_warning_and_stops_its_timer():
     assert w.next == 'menu' and not w.timer.isValid()
 
 
+class _Voice:
+    """The Windows voice: speaks until told it has finished; knows the languages given."""
+
+    def __init__(self, languages=('en', 'pt')):
+        self.languages = languages
+        self.lines = []
+        self.speaking = False
+
+    def choose(self, lang):
+        return lang if lang in self.languages else 'en'
+
+    def speak(self, text):
+        self.lines.append(text)
+        self.speaking = True
+        return True
+
+    def stop(self):
+        self.speaking = False
+
+
+def test_the_warning_is_said_by_the_windows_voice_not_the_screen_reader():
+    """The dev: "the headphone warning should speak with a window voice, not my screen
+    reader. I always tend to miss it." """
+    said, voice = _Said(), _Voice()
+    w = WarningViewController(said, runloop.RunLoop(clock_fn=lambda: 0.0), 'pt', voice=voice)
+    w.viewDidLoad()
+    assert voice.lines == ['Coloque o fone para uma melhor experiência'] and said.lines == []
+
+
+def test_without_a_voice_for_the_language_the_warning_is_said_in_english():
+    voice = _Voice(languages=('en',))
+    w = WarningViewController(_Said(), runloop.RunLoop(clock_fn=lambda: 0.0), 'pt',
+                              voice=voice)
+    w.viewDidLoad()
+    assert voice.lines == ['Put the earphone on for a better experience']
+
+
+def test_without_a_windows_voice_the_screen_reader_says_the_warning():
+    class Mute(_Voice):
+        def speak(self, text):
+            return False
+    said = _Said()
+    w = WarningViewController(said, runloop.RunLoop(clock_fn=lambda: 0.0), 'en', voice=Mute())
+    w.viewDidLoad()
+    assert said.lines == ['Put the earphone on for a better experience']
+
+
+def test_the_menu_waits_for_the_voice_to_finish_the_warning():
+    t = [0.0]
+    loop = runloop.RunLoop(clock_fn=lambda: t[0])
+    voice = _Voice()
+    w = WarningViewController(_Said(), loop, 'en', voice=voice)
+    w.viewDidLoad()
+    t[0] = 3.0
+    loop.pump()
+    assert w.next is None, 'the voice is still speaking'
+    t[0] = 3.5
+    loop.pump()
+    assert w.next is None
+    voice.speaking = False
+    t[0] = 3.6
+    loop.pump()
+    assert w.next == 'menu'
+
+
+def test_a_key_cuts_the_voice_off_and_goes_on():
+    voice = _Voice()
+    w = WarningViewController(_Said(), runloop.RunLoop(clock_fn=lambda: 0.0), 'en',
+                              voice=voice)
+    w.viewDidLoad()
+    w.key('x', 'x')
+    assert w.next == 'menu' and not voice.speaking and not w.timer.isValid()
+
+
 # ---- the menu ------------------------------------------------------------------------------
 
 def test_the_menu_makes_a_new_save_s_ranking_and_tutorial_count():

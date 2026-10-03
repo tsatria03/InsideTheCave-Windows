@@ -117,7 +117,8 @@ class App:
             self.start_game()
             return
         if kind == 'warning':
-            self.page = WarningViewController(self.speech, self.loop, self.language_code)
+            self.page = WarningViewController(self.speech, self.loop, self.language_code,
+                                              voice=self.voice)
         elif kind == 'menu':
             self.page = HomeScreenViewController(self.defaults, self.speech)
         elif kind == 'ranking':
