@@ -1,11 +1,11 @@
 ---
 name: project_build_scripts
-description: "compiler.py and releaser.py were adapted to Inside The Cave on 2026-10-02 at the dev's go-ahead: built, not yet confirmed, and they cannot be until the port has an entry script. The compiler finds game\\ and game\\sounds itself, ships only the sounds, and refuses to build while InsideTheCave.py or the insidethecave package is missing."
+description: "compiler.py and releaser.py were adapted to Inside The Cave on 2026-10-02 at the dev's go-ahead, and FINISHED the same day: the dev built and released a test build with them and it worked. The compiler finds game\\ and game\\sounds itself, ships every sound (used and unused, the dev's choice), and refuses to build while InsideTheCave.py or the insidethecave package is missing."
 metadata:
   type: project
 ---
 
-**Status: built, not yet confirmed (2026-10-02).** The dev gave the go-ahead that day ("Modify the build scripts."), after first asking for them to be left alone until then. Checked only by parsing both files and by a search for leftovers. Neither has been run: never run either ([[feedback_dont_run_or_build]]). Neither can make a real build until `InsideTheCave.py` and the `insidethecave` package exist, and the compiler says so instead of starting PyInstaller. It becomes "finished" only once the dev has built and released with them ([[feedback_record_plans_first]]).
+**Status: FINISHED, confirmed by the dev (2026-10-02).** The dev gave the go-ahead that day ("Modify the build scripts."), after first asking for them to be left alone until then. Once the port had its entry script and phase 4 was in, the dev built and released a test build with them, and it worked: "You can mark the compiler/releaser thing as finished because I compiled and released a test build of the game, and it worked. The release has been deleted from github releases." The test release left nothing in the repository (no release commit, no tag, `VERSION` and the changelog's `unrelease:` block as they were). Never run either script yourself ([[feedback_dont_run_or_build]]).
 
 Both came from the reference port's scripts in the gitignored `user/` folder ([[feedback_no_other_games]]).
 
@@ -30,4 +30,3 @@ Check, then set the date version `YY.MM.DD-N` in `VERSION`, file `unrelease:` in
 ## Still to do
 - A `tests/case/release.py` for the releaser's version numbering, changelog filing and archive names, which builds nothing and touches no network ([[project_dev_tasks]]).
 - Bring back a `--test` build once the game writes a log and a `crash.txt`.
-- The first real build, by the dev, once the port has an entry script; then confirm and mark this finished.

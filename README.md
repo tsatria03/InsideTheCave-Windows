@@ -33,7 +33,7 @@ and `aidocks/DIVERGENCES.md` of every place the port differs on purpose.
 
 ## Requirements
 
-To run it from source, once there is something to run: 64-bit Python 3.12 or newer on
+To run it from source: 64-bit Python 3.12 or newer on
 Windows 10 or later, and two packages:
 
     pip install -r requirements.txt
@@ -189,8 +189,8 @@ know what the Score screen should say:
 
 Both scripts open a numbered menu when double-clicked, and wait for Enter at the end.
 Building needs PyInstaller (`pip install pyinstaller`); releasing also needs the GitHub
-CLI, signed in with `gh auth login`. Both are set up for this game, but **there is no game
-to build yet**: until the port's entry script exists, the compiler says so and stops.
+CLI, signed in with `gh auth login`. Both are set up for this game, and have built and
+released it.
 
 - **`compiler.py`** only builds. It never zips and never changes the repository. Everything
   lands in `dist\InsideTheCave-Windows`, around `InsideTheCave.exe`. It makes a folder build, with the
