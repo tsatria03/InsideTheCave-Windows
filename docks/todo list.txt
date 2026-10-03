@@ -4,8 +4,9 @@ Add three keys that say, during a game, your score with S, your coins with C, an
 Make Play ask for a difficulty, Easy, Medium or Hard, each with its own speeds, torch length and best five.
 Add a Tutorial to the main menu, after Play, where the cave never speeds up and a Windows voice tells you what each thing is and what to do.
 Make Play say your keys only on your first two games, instead of the original's instructions on your first three.
-Make the result screen also say how long you survived and the top speed you reached.
-Add lifetime stats to the Score screen: games played, total coins and your longest run.
+Make the result screen a list of rows, with your score, coins, how long you survived and the speed you reached.
+Make each saved score also say its coins and time, and rename Score on the main menu to Scores.
+Add a Stats row to the main menu, with your games, runs, coins, torches, and the monsters and bats you killed, frightened and dodged, for each difficulty and all time.
 Add a T key that says how much torch you have left, or that you have none.
 Make the throw key, W or Up Arrow by default, say that you have no torch to throw, instead of doing nothing.
 

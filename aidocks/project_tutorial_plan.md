@@ -10,7 +10,7 @@ metadata:
 **Why:** the original's tutorial is one sentence on the first three games, speaking of swipes and taps, then never again. The dev: "Please add a tutorial option in the main menu after play. In this mode, the speed will not go below 5.0. You can still die ... Also, for special items, like coins and torches, it will announce what it is, and where you need to go to get it. This will also use your windows voice. ... This ilimenates the origenal quick tutorial you'll here for the first 3 games."
 
 ## The Tutorial row
-- On the main menu right after Play: Play, Tutorial, Score, Quit.
+- On the main menu right after Play: Play, Tutorial, Scores, Stats, Quit ([[project_scores_stats_plan]]).
 
 ## Starting it
 - From the main menu: the welcome, in the Windows voice (`TutorialVoice`), then the key hints from the player's own bindings, as now, then the first slot once both are done. The welcome (the dev chose a new line over the original's, which speaks of swipes and taps):
