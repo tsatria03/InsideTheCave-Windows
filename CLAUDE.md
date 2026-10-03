@@ -10,7 +10,7 @@ A Windows port of **Inside The Cave** (`InsideTheCaveBD` 2.32), an iOS audio gam
 
 There is no source code for the original. The port is **recovered from the arm64 binary** `game/InsideTheCave` and rewritten **entirely in Python** ([[project_python_only]]), each module mirroring one original class and citing the binary addresses it came from. It is a solo port by tsatria03 ([[project_provenance]]).
 
-**State on 2026-10-02:** the whole game is disassembled ([[project_disassembly_plan]], finished): the tools are in `tools/`, every function is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes the game from the code, with addresses. The port is in phases ([[project_port_plan]]): 1, the platform layer, and 2, the SpriteKit stand-in, are finished and confirmed by ear; 3, the game itself (`GameScene` and `GameViewController`), is built and playable, not yet confirmed; 4, the screens, and 5, building and releasing, are to come.
+**State on 2026-10-02:** the whole game is disassembled ([[project_disassembly_plan]], finished): the tools are in `tools/`, every function is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes the game from the code, with addresses. The port is in phases ([[project_port_plan]]): 1, the platform layer, 2, the SpriteKit stand-in, and 3, the game itself (`GameScene` and `GameViewController`), are finished and confirmed by the dev; 4, the screens, and 5, building and releasing, are to come.
 
 ## Layout
 

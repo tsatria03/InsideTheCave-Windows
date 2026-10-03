@@ -4,7 +4,7 @@ What is done, what is stubbed, what has not been started. Kept honest: "done" me
 disassembly method by method, with the address recorded in the code.
 
 **Status, 2026-10-02: `GameScene` and `GameViewController` are ported** (phase 3 of `project_port_plan.md`,
-not yet confirmed by the dev): 181 functions ported, 5 stubbed until the result screen, 18 left out with the
+confirmed by the dev): 181 functions ported, 5 stubbed until the result screen, 18 left out with the
 reason beside each. The screens' classes are phase 4. The platform layer (OpenAL, the NSTimers, UserDefaults,
 speech, the keys, the sounds) and the SpriteKit stand-in, `insidethecave/platform/` and `insidethecave/scene/`,
 stand in for iOS and SpriteKit, not for any function below. Every function of the game is listed
