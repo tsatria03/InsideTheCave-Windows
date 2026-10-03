@@ -16,7 +16,7 @@ the port's own.
 
 The keys: on a screen, Up and Down, Enter, Escape to go back; in a game, your bindings to
 move and throw, P or Escape to pause, Home and End for the master volume.  Everywhere, F1
-lists and changes the keys, Page Up and Page Down set the volume, and Alt+F4 quits.
+lists and changes the keys, Page Up and Page Down set the music volume, and Alt+F4 quits.
 Leaving the window pauses a game.
 """
 from __future__ import annotations
@@ -40,7 +40,7 @@ TITLE = 'Inside The Cave'
 FPS = 120
 LINES, LINE_HEIGHT = 19, 22
 KEY_LINES = ['Keys: your move and throw keys, P or Escape pause, F1 key bindings,',
-             'Page Up / Page Down volume, Home / End master volume, Alt+F4 quit.']
+             'Page Up / Page Down track volume, Home / End master volume, Alt+F4 quit.']
 
 
 class App:
@@ -162,10 +162,12 @@ class App:
         self.over = (score, coins)
 
     # ---- keys -------------------------------------------------------------------------
-    def change_volume(self, step):
-        now = self.volume.change_master(self.defaults, step)
-        self.set_master()
-        self.speech.speak('Volume %d percent.' % now)
+    def change_music(self, step):
+        """Page Up or Page Down: the game's music, the track, heard at once in a game."""
+        now = self.volume.change_music(self.defaults, step)
+        if self.game.scene is not None:
+            self.game.scene.applyMusicVolume()
+        self.speech.speak('Track volume %d percent.' % now)
 
     def change_master(self, step):
         """Home or End, while a game is running: everything's volume."""
@@ -206,7 +208,7 @@ class App:
             self.open_keys()
             return
         if name in ('page up', 'page down'):
-            self.change_volume(+1 if name == 'page up' else -1)
+            self.change_music(+1 if name == 'page up' else -1)
             return
         if name in ('home', 'end') and self.game_running():
             self.change_master(+1 if name == 'home' else -1)

@@ -13,8 +13,8 @@ The keys the original saves (GAME_STRUCTURE.md section 12):
 
 and the port's own settings, PORT ADDITIONS (``volume.py``):
 
-    MASTERVOLUME    everything the game plays, which Page Up and Page Down set
-    MUSICVOLUME     the music, on top of the original's 0.2
+    MASTERVOLUME    everything the game plays, which Home and End set during a game
+    MUSICVOLUME     the game's music, on top of the original's 0.2 (Page Up and Page Down)
 
 The original keeps everything in one plist.  The port keeps two files, routed by key name,
 beside ``keys.json`` (``keymap.py``):

@@ -75,10 +75,14 @@ def test_the_keys_move_pause_and_change_the_volume():
         assert app.game.scene.paused_by_player
         _press(app, pg.K_ESCAPE)
         assert not app.game.scene.paused_by_player
-        before = app.volume.percents['MASTERVOLUME']
+        p = app.volume.percents
+        master, music = p['MASTERVOLUME'], p['MUSICVOLUME']
         _press(app, pg.K_PAGEDOWN)
-        assert app.volume.percents['MASTERVOLUME'] == max(0, before - 10)
+        assert p['MUSICVOLUME'] == max(0, music - 10) and p['MASTERVOLUME'] == master
+        heard = app.game.scene.backgroundMusic.volume
+        assert abs(heard - 0.2 * (p['MUSICVOLUME'] / 100.0) ** 2) < 1e-9, 'heard at once'
         _press(app, pg.K_PAGEUP)
+        assert p['MUSICVOLUME'] == music
     finally:
         app.close()
 

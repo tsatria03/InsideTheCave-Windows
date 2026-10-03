@@ -74,7 +74,7 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
 A or Left Arrow and D or Right Arrow move, W or Up Arrow throws, and P or Escape pauses,
 opening a pause menu with Resume, Restart and Quit to menu, where Escape or P resumes.
 While a game runs, Home and End set the master volume. Everywhere, Page Up and Page Down
-set the volume, F1 lists and changes the keys, and
+set the music volume, F1 lists and changes the keys, and
 Alt+F4 quits. Leaving the window pauses. On your first three games a Windows voice says
 the original's line in your language, and your screen reader then says the keys.
 

@@ -49,10 +49,10 @@ DEFAULTS = {a[0]: [tuple(b) for b in a[2]] for a in ACTIONS}
 
 # Not rebindable, on purpose: bind over these and there is no way back into the game or
 # into the binding screen without deleting the save.
-#: Escape pauses a game and goes back everywhere else; Page Up and Page Down set the master
-#: volume, and Home and End too, during a game (volume.py).
+#: Escape pauses a game and goes back everywhere else; Page Up and Page Down set the music
+#: volume, and Home and End the master volume during a game (volume.py).
 FIXED = {'f1': 'Key bindings', 'escape': 'Pause, or back',
-         'page up': 'Louder', 'page down': 'Quieter',
+         'page up': 'Music louder', 'page down': 'Music quieter',
          'home': 'Master louder, in a game', 'end': 'Master quieter, in a game'}
 
 # pygame's names are terse and some of them read badly; these are for speech.

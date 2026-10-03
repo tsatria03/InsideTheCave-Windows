@@ -22,7 +22,7 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
 * the coin's collect sound is heard at the player, not from the middle lane
   (``createNodesSounds``);
 * the dash and the wall come from the lane, left, middle or right (``soundMovePlayer``,
-  ``soundWall``);
+  ``soundWall``), and the music's volume can change during a game (``applyMusicVolume``);
 * "Torch low" is spoken as the torch starts to dim (``changeFalloffSize``);
 * the tutorial line in a Windows voice, then the key hints, then the first slot
   (``tutorial``);
@@ -88,6 +88,8 @@ HINT_CHARS_PER_SECOND = 14.0
 TORCH_LOW = 'Torch low'
 #: PORT ADDITION: the jingle each coin carries, at SpriteKit's default volume (question 4).
 JINGLE_VOLUME = 1.0
+#: The music's gain (``changeVolumeTo:0.2`` at 0x100010a6c), before MUSICVOLUME.
+MUSIC_GAIN = 0.2
 
 
 class GameScene(Scene):
@@ -494,10 +496,14 @@ class GameScene(Scene):
         m.autoplayLooped = True
         m.positional = True
         m.position = self.player.position
-        target = volume.music(0.2)                                     # 0.2 at 0x100010a6c
+        target = volume.music(MUSIC_GAIN)
         m.set_volume(target)        # at once, not a frame late: no loud first instant
         m.runAction(A.changeVolumeTo(target, 0.0))
         self.addChild(m)
+
+    def applyMusicVolume(self):
+        """PORT ADDITION: Page Up or Page Down changed ``MUSICVOLUME``; heard at once."""
+        self.backgroundMusic.set_volume(volume.music(MUSIC_GAIN))
 
     # GameScene.soundMovePlayer 0x10000fe30
     def soundMovePlayer(self, fraction=0.0):

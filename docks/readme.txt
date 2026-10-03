@@ -39,7 +39,7 @@ P or Escape pauses the game.
 Switching away from the game window pauses the game as well.
 F1 opens the key bindings.
 Home and End make the whole game louder and quieter while you play, in steps of ten percent, and your screen reader says the new master volume.
-Page Up and Page Down do the same everywhere, and your screen reader says the new volume.
+Page Up and Page Down make the music louder and quieter, and your screen reader says the new track volume.
 Alt+F4 quits the game at any moment.
 
 How to play
@@ -104,7 +104,8 @@ Your save
 Your best five scores and how many games have heard the instructions are saved in save.json, your volumes in settings.json, and your keys in keys.json.
 All three are in the InsideTheCave folder in your AppData Roaming folder, which you can open by typing %APPDATA%\InsideTheCave into the Windows Run box.
 In settings.json you can set two volumes, from 0 for silent to 100, the original's mix.
-MASTERVOLUME is everything, which Page Up and Page Down also change, and MUSICVOLUME is the music.
+MASTERVOLUME is everything, which Home and End also change during a game.
+MUSICVOLUME is the music in a game, the track, which Page Up and Page Down change.
 Change a number in Notepad, save the file and start the game again to hear it.
 If save.json or settings.json is ever damaged, the game keeps it with .damaged on the end of its name and carries on from a backup.
 If keys.json is damaged, the game uses the usual keys and leaves the file as it is.

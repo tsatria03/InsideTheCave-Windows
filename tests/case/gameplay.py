@@ -284,6 +284,19 @@ def test_the_dash_and_the_wall_come_from_the_lane():
     assert [round(a.lane_x / W, 2) for a in sounds] == [0.3, -0.3]
 
 
+def test_the_music_volume_changes_during_a_game():
+    from insidethecave.platform import volume
+    g = _Game()
+    m = g.scene.backgroundMusic
+    assert abs(m.volume - 0.2) < 1e-9
+    volume.percents[volume.MUSIC_KEY] = 50
+    try:
+        g.scene.applyMusicVolume()
+        assert abs(m.volume - 0.2 * 0.25) < 1e-9
+    finally:
+        volume.percents[volume.MUSIC_KEY] = 100
+
+
 def test_every_coin_carries_its_own_jingle():
     """The port's addition: the original's tilintar, looped, riding down with the coin."""
     g = _Game()

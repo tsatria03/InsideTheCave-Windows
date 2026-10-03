@@ -6,8 +6,12 @@ address it was read from: the roar at 3.0 or 1.0 (0x10000f738), a coin at 0.2, t
 are, so the mix is still the original's.  On top of them sit two settings, percentages kept
 in settings.json:
 
-    MASTERVOLUME    everything the game plays; Page Up and Page Down set it, in steps of ten
-    MUSICVOLUME     the music, on top of its 0.2; set by editing settings.json
+    MASTERVOLUME    everything the game plays; Home and End set it during a game, in steps
+                    of ten
+    MUSICVOLUME     the game's music, the track, on top of its 0.2; Page Up and Page Down
+                    set it, saying "Track volume"
+
+(the dev, 2026-10-02, for the second release).
 
 Each is a whole number from 0 to 100; 100, the default, is the original's mix, and anything
 else counts as 100.  The percentage is squared into the gain (``percent_gain``), so each
@@ -24,7 +28,7 @@ MUSIC_KEY = 'MUSICVOLUME'
 VOLUME_KEYS = (MASTER_KEY, MUSIC_KEY)
 
 DEFAULT_PERCENT = 100
-#: How far Page Up and Page Down move the master volume.
+#: How far one press of a volume key moves its volume.
 STEP = 10
 
 #: What ``load`` last read, by key; every one is 100 until then.
@@ -92,14 +96,24 @@ def load(defaults):
     return wrote
 
 
-def change_master(defaults, step):
-    """Page Up (+1) or Page Down (-1): the master volume's next step, saved at once.
-    Returns the new percentage."""
-    now = step_percent(percents[MASTER_KEY], step)
-    percents[MASTER_KEY] = now
-    defaults.setInteger_forKey_(now, MASTER_KEY)
+def change(defaults, key, step):
+    """Up (+1) or down (-1): the next step of the volume ``key``, saved at once.  Returns
+    the new percentage."""
+    now = step_percent(percents[key], step)
+    percents[key] = now
+    defaults.setInteger_forKey_(now, key)
     defaults.synchronize()
     return now
+
+
+def change_master(defaults, step):
+    """Home (+1) or End (-1) during a game: the master volume."""
+    return change(defaults, MASTER_KEY, step)
+
+
+def change_music(defaults, step):
+    """Page Up (+1) or Page Down (-1) in a game: the track's volume."""
+    return change(defaults, MUSIC_KEY, step)
 
 
 def master_gain() -> float:
