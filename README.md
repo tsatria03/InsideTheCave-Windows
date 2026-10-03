@@ -207,6 +207,12 @@ or more of them, and a torch that never burns down.
 
     python tests/interact/coin_check.py
 
+`bat_check.py` starts the real game with only bats coming down, either able to kill you
+or in debug mode. Throw your torch at one: your screen reader says which lane it dodged
+to, and your torch is lit again a second later.
+
+    python tests/interact/bat_check.py
+
 `speed_check.py`, a developer tool, is the full game at a speed you set yourself: Minus
 makes it faster and Equals slower, by 0.1 at a time, and it never speeds up on its own.
 
