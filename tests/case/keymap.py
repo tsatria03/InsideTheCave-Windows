@@ -69,6 +69,8 @@ def test_the_defaults_are_the_agreed_keys():
     assert km.bindings['throw'] == [('w',), ('up',)]
     assert km.bindings['pause'] == [('p',)]
     assert km.bindings['torch'] == [('t',)], 'the torch key (the dev, fourth release)'
+    assert (km.bindings['score'], km.bindings['coins'], km.bindings['speed']) == \
+        ([('s',)], [('c',)], [('e',)]), 'the status keys (the dev, fourth release)'
 
 
 def test_every_default_key_acts_at_once():
@@ -76,7 +78,8 @@ def test_every_default_key_acts_at_once():
     km = _fresh()
     for name, action in (('a', 'move_left'), ('left', 'move_left'), ('d', 'move_right'),
                          ('right', 'move_right'), ('w', 'throw'), ('up', 'throw'),
-                         ('p', 'pause'), ('t', 'torch')):
+                         ('p', 'pause'), ('t', 'torch'), ('s', 'score'), ('c', 'coins'),
+                         ('e', 'speed')):
         assert km.press(name) == (action, False), name
         km.release(name)
 
@@ -107,13 +110,14 @@ def _old_file(bindings):
     return path
 
 
-def test_an_older_key_file_gains_the_torch_key():
+def test_an_older_key_file_gains_the_new_keys():
     path = _old_file({'move_left': [['a'], ['left']], 'move_right': [['d'], ['right']],
                       'throw': [['w'], ['up']], 'pause': [['p']]})
     km = KeyMap()
-    assert km.bindings['torch'] == [('t',)]
+    assert km.bindings['torch'] == [('t',)] and km.bindings['speed'] == [('e',)]
     with open(path, encoding='utf-8') as f:
-        assert json.load(f)['torch'] == [['t']], 'not written back'
+        saved = json.load(f)
+    assert saved['torch'] == [['t']] and saved['score'] == [['s']], 'not written back'
 
 
 def test_a_new_key_never_takes_one_the_player_already_uses():

@@ -5,7 +5,8 @@ swipe right ``movePlayerRight``, swipe left ``movePlayerLeft``, swipe up ``throw
 and a tap, left or right by where it lands.  Here the player's bindings
 (``platform/keymap.py``) call the same methods; a tap's two halves are the two move keys.
 
-The rest is the port's own: T says how much torch is left (``GameScene.sayTorch``), and P
+The rest is the port's own: T says how much torch is left (``GameScene.sayTorch``), S, C
+and E the score, the coins and the speed (``sayScore``, ``sayCoins``, ``saySpeed``), and P
 (and Escape, fixed) pause and open the pause menu
 (``ui/pause_menu.py``), where the same keys resume.  The menu's Restart and Quit to menu are
 left in ``request`` for the screen loop.
@@ -92,6 +93,12 @@ class GameInput:
             s.throwTorch()
         elif action == 'torch':
             s.sayTorch()                        # PORT ADDITION: T, the torch's state
+        elif action == 'score':
+            s.sayScore()                        # PORT ADDITION: S, C and E, the status
+        elif action == 'coins':
+            s.sayCoins()
+        elif action == 'speed':
+            s.saySpeed()
 
     # ---- the pause menu ---------------------------------------------------------------
     def menu_key(self, name):

@@ -105,6 +105,11 @@ TORCH_STATES = ((FALLOFF_HALF, 'Torch full.'), (FALLOFF_DIM, 'Torch half.'),
 NO_TORCH = 'No torch.'
 #: PORT ADDITION: the throw key with no torch, where the original does nothing (the dev).
 NO_TORCH_TO_THROW = 'No torch to throw.'
+#: PORT ADDITION: the status keys, S, C and E (the dev, for the fourth release;
+#: aidocks/project_status_keys_plan.md).  E says how many times the cave has sped up, counted
+#: from 5.0 whatever speed a game starts at, so the planned Medium opens on 10 and Hard on 20.
+SAY_SCORE, SAY_COINS, SAY_SPEED = 'Score, %d.', 'Coins, %d.', 'Speed, %d.'
+SPEED_COUNT_FROM = 5.0
 #: PORT ADDITION: the sound each coin and each torch on the path carries, looped, at
 #: SpriteKit's default volume (question 4).  The coins had tilintar until the dev gave it to
 #: the torches, and the coins the early versions' coin.wav (for the third release).
@@ -713,6 +718,27 @@ class GameScene(Scene):
         reader; nothing once the player is dead."""
         if not self.playerDead:
             self.say(self.torchState())
+
+    # ---- PORT ADDITION: the status keys -------------------------------------------------
+    def speedCount(self):
+        """How many times the cave has sped up: 0 at 5.0, 40 at the top, 1.0."""
+        return int(round((SPEED_COUNT_FROM - self.speedMonster) / SPEED_STEP))
+
+    def _status(self, name):
+        """The score or the coins, kept by GameViewController."""
+        return getattr(self.gameSceneDelegate, name, 0)
+
+    def sayScore(self):
+        if not self.playerDead:
+            self.say(SAY_SCORE % self._status('score'))
+
+    def sayCoins(self):
+        if not self.playerDead:
+            self.say(SAY_COINS % self._status('coins'))
+
+    def saySpeed(self):
+        if not self.playerDead:
+            self.say(SAY_SPEED % self.speedCount())
 
     # GameScene.throwTorch 0x10001111c
     def throwTorch(self):

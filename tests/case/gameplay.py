@@ -691,6 +691,40 @@ def test_the_throw_key_says_when_there_is_no_torch():
     assert g.speech.lines.count(G.NO_TORCH_TO_THROW) == n
 
 
+def test_s_c_and_e_say_the_score_the_coins_and_the_speed():
+    """The status keys (the dev): "Score, 412.", "Coins, 7.", "Speed, 0." to "Speed, 40."."""
+    g = _Game()
+    g.start()
+    s = g.scene
+    g.vc.score, g.vc.coins = 412, 7
+    s.sayScore()
+    s.sayCoins()
+    s.saySpeed()
+    assert g.speech.lines[-3:] == ['Score, 412.', 'Coins, 7.', 'Speed, 0.'], g.speech.lines
+
+
+def test_the_speed_count_is_the_speed_ups_from_5():
+    g = _Game()
+    s = g.scene
+    for speed, count in ((5.0, 0), (4.9, 1), (4.0, 10), (3.0, 20), (2.0, 30), (1.0, 40)):
+        s.speedMonster = speed
+        assert s.speedCount() == count, (speed, s.speedCount())
+    s.speedMonster, s.countObjectScene = G.START_SPEED, 0
+    for _ in range(140):
+        s.createObjectScene()                   # 7 speed-ups, the run's slot 155 near
+    assert s.speedCount() == 7, s.speedCount()
+
+
+def test_the_status_keys_say_nothing_after_death():
+    g = _Game()
+    g.start()
+    _crash(g)
+    before = list(g.speech.lines)
+    for say in (g.scene.sayScore, g.scene.sayCoins, g.scene.saySpeed):
+        say()
+    assert g.speech.lines == before
+
+
 def test_in_debug_mode_nothing_kills_you():
     g = _Game(debug=True)
     g.start()

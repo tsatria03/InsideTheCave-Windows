@@ -365,6 +365,15 @@ class _Scene:
     def sayTorch(self):
         self.moves.append('torch')
 
+    def sayScore(self):
+        self.moves.append('score')
+
+    def sayCoins(self):
+        self.moves.append('coins')
+
+    def saySpeed(self):
+        self.moves.append('speed')
+
 
 def _game_input():
     said = _Said()
@@ -373,15 +382,17 @@ def _game_input():
     return gi, said
 
 
-def test_t_asks_for_the_torch_in_a_game_but_not_on_the_pause_menu():
+def test_t_s_c_and_e_reach_the_game_but_not_the_pause_menu():
     gi, said = _game_input()
-    gi.press('t')
-    gi.release('t')
-    assert gi.scene.moves == ['torch']
+    for k in ('t', 's', 'c', 'e'):
+        gi.press(k)
+        gi.release(k)
+    assert gi.scene.moves == ['torch', 'score', 'coins', 'speed']
     gi.press('escape')
-    gi.press('t')
-    gi.release('t')
-    assert gi.scene.moves == ['torch'], 'T reached the game while paused'
+    for k in ('t', 's', 'c', 'e'):
+        gi.press(k)
+        gi.release(k)
+    assert len(gi.scene.moves) == 4, 'reached the game while paused'
 
 
 def test_pausing_opens_the_menu_and_escape_or_p_resumes():

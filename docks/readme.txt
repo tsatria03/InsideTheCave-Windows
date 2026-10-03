@@ -38,6 +38,7 @@ D or Right Arrow moves you one lane to the right.
 Each move sounds from the lane you move into, and trying to go past the left or right lane bumps into the cave wall on that side.
 W or Up Arrow throws your torch up your lane.
 T says how much torch you have left.
+S says your score, C your coins, and E the speed: how many times the cave has sped up, from 0 at the start to 40 at its fastest.
 P or Escape pauses the game.
 Switching away from the game window pauses the game as well.
 F1 opens the key bindings.

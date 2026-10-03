@@ -13,6 +13,10 @@ rebind them from the screen F1 opens:
     pause        P                    the port's own: the original has no pause
     torch        T                    the port's own: says how much torch is left
                                       (aidocks/project_torch_key_plan.md)
+    score        S                    the port's own: says the score
+    coins        C                    the port's own: says the coins
+    speed        E                    the port's own: says how many times the cave has
+                                      sped up (aidocks/project_status_keys_plan.md)
 
 Keys are stored by pygame's name for them ("left", "a"), not by keycode, so a saved keymap
 survives a pygame update.
@@ -44,6 +48,9 @@ ACTIONS = (
     ('throw', 'Throw the torch', (('w',), ('up',))),
     ('pause', 'Pause', (('p',),)),
     ('torch', 'Say the torch', (('t',),)),
+    ('score', 'Say the score', (('s',),)),
+    ('coins', 'Say the coins', (('c',),)),
+    ('speed', 'Say the speed', (('e',),)),
 )
 
 ACTION_IDS = [a[0] for a in ACTIONS]

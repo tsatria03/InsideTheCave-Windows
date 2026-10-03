@@ -1,11 +1,13 @@
 ---
 name: project_status_keys_plan
-description: "PLANNED 2026-10-03, waiting for the go-ahead: three rebindable keys in a game, S \"Score, 412.\", C \"Coins, 7.\", E \"Speed, 0.\" to \"Speed, 40.\" (speed-ups so far); in the tutorial C as usual, S \"No score to report.\", E \"No speed to report.\"."
+description: "FINISHED 2026-10-03, confirmed by the dev, except the tutorial's answers, which come with the tutorial: three rebindable keys in a game, S \"Score, 412.\", C \"Coins, 7.\", E \"Speed, 0.\" to \"Speed, 40.\" (speed-ups so far); in the tutorial C as usual, S \"No score to report.\", E \"No speed to report.\"."
 metadata:
   type: project
 ---
 
-**Status: planned, agreed with the dev on 2026-10-03 ("Yes please."), not built.** Settled one question at a time. Built only on the dev's go-ahead ([[feedback_record_plans_first]]). Goes with [[project_torch_key_plan]] (T) and [[project_tutorial_plan]].
+**Status: FINISHED 2026-10-03, confirmed by the dev by ear ("Everything works.", trying them in the speed check too), built on the dev's go-ahead ("Yes.").** Agreed the same day ("Yes please."), settled one question at a time ([[feedback_record_plans_first]]). **The tutorial's part (S and E saying there is nothing to report) is built with the tutorial**, since the tutorial does not exist yet.
+
+**As built:** `keymap.py` (`score` S, `coins` C, `speed` E, "Say the score", "Say the coins", "Say the speed"; an older `keys.json` gains them), `game_input.py`, `game_scene.py` (`SAY_SCORE`, `SAY_COINS`, `SAY_SPEED`, `SPEED_COUNT_FROM` 5.0, `speedCount`, `sayScore`, `sayCoins`, `saySpeed`; the score and coins read from `GameViewController`). Tests: `gameplay.py` (the words, the count at each whole speed and after 140 slots, nothing after death), `keymap.py`, `screens.py` (the keys reach the game, not the pause menu). Goes with [[project_torch_key_plan]] (T) and [[project_tutorial_plan]].
 
 **Why:** a player cannot hear the score, the coins or the speed mid-run; the original showed them on screen, and the port's window shows them only to a sighted helper.
 
