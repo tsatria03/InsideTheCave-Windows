@@ -50,7 +50,8 @@ platform_check.SAVE_NAME = 'scene_check'
 Window.TITLE = 'Inside The Cave - scene check'
 
 #: The binary's numbers (GAME_STRUCTURE.md sections 2, 5 and 6).
-SPEED = 4.0                     # speedMonster at the start, seconds top to bottom
+SPEED = 4.0                     # the original's speedMonster at the start, seconds top to
+                                # bottom (the port's game starts at 5.0, GameScene.START_SPEED)
 LANES = (('Left', -0.3), ('Centre', 0.0), ('Right', 0.3))
 
 

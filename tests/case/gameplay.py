@@ -144,8 +144,9 @@ def test_without_a_windows_voice_the_screen_reader_says_the_line():
 
 # ---- the slots ---------------------------------------------------------------------------
 
-def test_a_slot_every_0_66_seconds_at_the_start():
-    """0.165 x speedMonster 4.0 apart, to the moment, whatever the frames."""
+def test_a_slot_every_0_825_seconds_at_the_start():
+    """0.165 x speedMonster 5.0 apart (the original's 4.0 gave 0.66; the dev's 5.0), to the
+    moment, whatever the frames."""
     g = _Game(debug=True)
     times = []
     real = g.scene.createObjectScene
@@ -155,34 +156,38 @@ def test_a_slot_every_0_66_seconds_at_the_start():
         real()
     g.scene.createObjectScene = wrap
     g.start()
-    g.run(4.0, dt=0.037)
+    g.run(5.0, dt=0.037)
     assert len(times) >= 6, times
     for k in range(1, 6):
-        assert abs(times[k] - times[0] - 0.66 * k) < 1e-6, (k, times[k] - times[0])
+        assert abs(times[k] - times[0] - 0.825 * k) < 1e-6, (k, times[k] - times[0])
 
 
 def test_the_game_speeds_up_every_twenty_slots():
     g = _Game(debug=True)
+    assert g.scene.speedMonster == G.START_SPEED == 5.0
     g.start()
     while g.scene.countObjectScene < 20:
         g.run(0.1)
-    assert abs(g.scene.speedMonster - 3.88) < 1e-9, g.scene.speedMonster
+    assert abs(g.scene.speedMonster - 4.88) < 1e-9, g.scene.speedMonster
     while g.scene.countObjectScene < 40:
         g.run(0.1)
-    assert abs(g.scene.speedMonster - 3.76) < 1e-9
+    assert abs(g.scene.speedMonster - 4.76) < 1e-9
 
 
-def test_the_speed_never_goes_below_2():
-    """The original reaches 1.96 at slot 340; the port stops at 2.0 (the dev)."""
+def test_the_speed_steps_down_to_1_and_stays():
+    """The original stops stepping below 2.0, at 1.96; the port goes on to 1.0, reached at
+    slot 680 (the dev: 5 the slowest, 1 the fastest)."""
     g = _Game(debug=True)
     g.start()
     s = g.scene
-    s.speedMonster, s.countObjectScene = 2.08, 339
-    s.createObjectScene()                       # the 340th slot
-    assert s.speedMonster == G.TOP_SPEED == 2.0, s.speedMonster
-    for _ in range(60):
-        s.createObjectScene()                   # and every 20th after it
-    assert s.speedMonster == 2.0, s.speedMonster
+    s.speedMonster, s.countObjectScene = G.START_SPEED, 0
+    reached = None
+    for _ in range(800):
+        s.createObjectScene()
+        if reached is None and s.speedMonster == G.TOP_SPEED:
+            reached = s.countObjectScene
+    assert G.TOP_SPEED == 1.0 and reached == 680, reached
+    assert s.speedMonster == 1.0, s.speedMonster
 
 
 def test_every_seventh_obstacle_is_bats_and_the_rest_monsters():

@@ -6,10 +6,10 @@ Nothing is waiting here right now. New bugs, planned changes and anything still 
 
 A bat that dodges your torch is heard going to its new lane.
 A bat your torch hits dodges into another lane and stays there.
-The cave stops speeding up at 2.0, its top speed.
+The cave starts at speed 5.0, its slowest, and speeds up to 1.0, its fastest.
 Torches on the path jingle from their lane, and coins ding with the early versions' coin sound.
 A sound plays when your torch burns all the way out.
-Footsteps loop from your lane, a walk at first, then a run from about a minute and a half in.
+Footsteps loop from your lane, a walk at first, then a run from about two minutes in.
 Home and End change the master volume while a game is running, and say master volume.
 Page Up and Page Down change the menu music on the menus and the game's music in a game, and say menu volume or track volume.
 The menu music plays on the main menu, the Score screen and the result screen, and not while a game is paused.

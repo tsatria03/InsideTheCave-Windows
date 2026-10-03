@@ -65,7 +65,7 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
 - **Coins** come down too, each dinging from its lane: ten points each. The score also
   goes up four times a second while you live.
 - Your **footsteps** follow you from your lane: a walk at first, then a run once the cave
-  has sped up, from about a minute and a half in.
+  has sped up, from about two minutes in.
 - The cave **speeds up** every twenty things that come down, until it reaches its top
   speed, and turns from rock to water and then ice as you go deeper.
 - After a game you type your name, and a score that beats your fifth best goes into your

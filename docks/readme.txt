@@ -51,7 +51,7 @@ As a monster comes within reach it roars from its lane, about a second before it
 Move out of its lane before it gets there.
 Bats come down the same way, with a sound of their own, and every seventh thing in your way is bats.
 The cave speeds up as you go deeper, until it reaches its top speed.
-Your footsteps run with you from your lane, a walk at first, then a run after about a minute and a half.
+Your footsteps run with you from your lane, a walk at first, then a run after about two minutes.
 
 Your torch
 

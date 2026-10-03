@@ -7,22 +7,23 @@ headphones.
 
 A small window asks how to start, then the game itself takes the window:
 
-    Enter           start, at speed 4.0, the game's own start
+    Enter           start, at speed 5.0, the game's own start
     D               debug mode on or off (off at first; on: nothing can kill you)
     Escape          quit, here; in the game, pause
     Alt+F4          quit, at any moment
 
 In the game, besides the game's own keys:
 
-    Minus (-)       faster: the speed down by 0.1, as 4.0, 3.9, 3.8 ...
+    Minus (-)       faster: the speed down by 0.1, as 5.0, 4.9, 4.8 ...
     Equals (=)      slower: the speed up by 0.1
 
 The speed is the game's ``speedMonster``: the seconds a thing takes to fall the whole
-height of the cave.  The game starts at 4.0 and, left to itself, steps down by 0.12 every
-20 slots until 2.0, at slot 340, and stays there.  Here it never changes by itself: it
-stays where you put it, anywhere from 0.1 to 10.0, above 4.0 and below 2.0 included.  A
-slot comes every 0.165 x the speed seconds, and a roar comes about 0.26 x the speed seconds
-before its monster reaches you: about 1 s at 4.0, half a second at 2.0.
+height of the cave.  The game starts at 5.0 and, left to itself, steps down by 0.12 every
+20 slots until 1.0, at slot 680, and stays there.  Here it never changes by itself: it
+stays where you put it, from 5.0, the slowest, to 1.0, the fastest, the game's own limits
+(the dev: "the speed checker script should cap to those speeds as well.").  A slot comes
+every 0.165 x the speed seconds, and a roar comes about 0.26 x the speed seconds before its
+monster reaches you: about 1.3 s at 5.0, a quarter of a second at 1.0.
 
 A change applies to the next slot and what it brings; things already coming keep the
 speed they set off at.  The speed carries over a Restart, a Replay or a new game.  The
@@ -49,9 +50,15 @@ from platform_check import Quit, Window                          # noqa: E402
 platform_check.SAVE_NAME = 'speed_check'
 Window.TITLE = 'Inside The Cave - speed check'
 
-START_SPEED = 4.0               # the game's own start (0x1000157bc)
+
+def limits():
+    """The game's own speeds: it starts at its slowest and speeds up to its fastest
+    (``GameScene.START_SPEED``, ``TOP_SPEED``), read only once the save is our own."""
+    from insidethecave.game.game_scene import START_SPEED, TOP_SPEED
+    return START_SPEED, TOP_SPEED
+
+
 STEP = 0.1
-SLOWEST, FASTEST = 10.0, 0.1
 FASTER, SLOWER = ('-', '[-]'), ('=', '[+]')     # pygame's names, the keypad's too
 
 
@@ -61,6 +68,7 @@ def choose():
     speech = Speech.shared()
     window = Window()
     debug = False
+    start, _ = limits()
 
     def say(text):
         print(text)
@@ -68,8 +76,8 @@ def choose():
         speech.speak(text)
 
     try:
-        say('Speed check. Enter to start at speed 4.0, D for debug mode, Escape to quit. '
-            'In the game, minus is faster and equals is slower. Debug mode is off.')
+        say('Speed check. Enter to start at speed %.1f, D for debug mode, Escape to quit. '
+            'In the game, minus is faster and equals is slower. Debug mode is off.' % start)
         while True:
             for name in window.keys():
                 if name == 'escape':
@@ -103,9 +111,10 @@ def main():
         verbose = False
 
     Args.debug = debug
+    SLOWEST, FASTEST = limits()     # the game starts at its slowest
 
     class SpeedApp(InsideTheCave.App):
-        speed = START_SPEED
+        speed = SLOWEST
 
         def start_game(self):
             self.defaults.setInteger_forKey_(3, 'countTutorial')
