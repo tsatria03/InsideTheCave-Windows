@@ -7,11 +7,11 @@ Make Play say your keys only on your first two games, instead of the original's 
 Make the result screen a list of rows, with your score, coins, how long you survived and the speed you reached.
 Make each saved score also say its coins and time, and rename Score on the main menu to Scores.
 Add a Stats row to the main menu, with your games, runs, coins, torches, and the monsters and bats you killed, frightened and dodged, for each difficulty and all time.
-Add a T key that says how much torch you have left, or that you have none.
-Make the throw key, W or Up Arrow by default, say that you have no torch to throw, instead of doing nothing.
 
 ##Finished.
 
+T says how much torch you have left, from Torch full to No torch, and can be changed with F1.
+The throw key says No torch to throw when you have no torch.
 The earphone warning is said by a Windows voice, and the main menu waits for it to finish.
 The cave speeds up by 0.1 at a time, so its speeds run in even tenths.
 A bat that dodges your torch is heard going to its new lane.

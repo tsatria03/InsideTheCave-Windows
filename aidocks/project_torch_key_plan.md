@@ -1,11 +1,13 @@
 ---
 name: project_torch_key_plan
-description: "PLANNED 2026-10-03, waiting for the go-ahead: a rebindable T key that says the torch's state in five slot-based levels, and the throw key saying \"No torch to throw.\" when there is none. For the fourth release."
+description: "FINISHED 2026-10-03, confirmed by the dev: a rebindable T key that says the torch's state in five slot-based levels, and the throw key saying \"No torch to throw.\" when there is none. For the fourth release."
 metadata:
   type: project
 ---
 
-**Status: planned, agreed with the dev on 2026-10-03, not built.** The dev: "Do not modify any code yet." Two items in `docks/todo list.txt` under Unfinished. Built only on the dev's go-ahead ([[feedback_record_plans_first]]).
+**Status: FINISHED 2026-10-03, confirmed by the dev by ear ("Everything past.").** Built on the dev's go-ahead ("Let's start with the first 1."), planned and agreed the same day (the dev had said "Do not modify any code yet." until then). Its two todo items are in Finished ([[feedback_record_plans_first]]).
+
+**As built:** `keymap.py` (`torch`, "Say the torch", T; an older `keys.json` gains it, less any key the player already uses elsewhere), `game_input.py` (`sayTorch`), `game_scene.py` (`TORCH_STATES`, `torchState`, `sayTorch`, and `NO_TORCH_TO_THROW` in `throwTorch`, its checks reordered so death and the instructions refuse silently first). The levels fall one slot behind the round numbers below, as the falloff adds up in doubles: full 0 to 20, half 21 to 40, low 41 to 61 (with the game's own "Torch low"), almost out 62 to 69 (the last 8), none from 70. Tests: `gameplay.py` (the levels against the game's own moments, after a throw and death, the throw key's words and silences), `keymap.py` (T by default, an older file gaining it, a key the player uses kept), `screens.py` (T reaches the game, not the pause menu). `torch_check.py` describes T and the no-torch throw.
 
 **Why:** the torch's state was a picture in the original (the light's `falloff` shrinking round the player), which the port does not draw. By ear there is the burning loop, which loses only about a quarter of its volume over a torch, "Torch low" once, about 29 slots before it dies, and the burnout sound. Between "Torch low" and burnout nothing says how close it is, after burnout only the loop's absence says there is no torch, and a throw with no torch does nothing at all. The dev asked whether the game says when it is about to go out: it does, once, with "Torch low"; there is no closer warning, and none was asked for.
 

@@ -74,7 +74,8 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
 
 **Keys**: on the menus, Up and Down move, wrapping around at either end, Home and End go
 to the first and last row, Enter chooses and Escape goes back. In a game, A or Left Arrow
-and D or Right Arrow move, W or Up Arrow throws, and P or Escape pauses, opening a pause
+and D or Right Arrow move, W or Up Arrow throws (or says there is no torch to throw), T
+says how much torch is left, and P or Escape pauses, opening a pause
 menu with Resume, Restart and Quit to menu, where Escape or P resumes. While a game runs,
 Home and End set the master volume. Page Up and Page Down set the game's music in a game,
 paused or not, and the menu music on the menus. F1 lists and changes the keys, and Alt+F4

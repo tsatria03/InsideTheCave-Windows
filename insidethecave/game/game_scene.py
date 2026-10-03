@@ -94,6 +94,17 @@ TORCH_LOW = 'Torch low'
 #: PORT ADDITION: played once when the torch burns all the way out, not when it is thrown
 #: (the dev, for the third release: tocha_acende, "a torch lighting", from version 2.02).
 TORCH_OUT = 'tocha_acende.wav'
+#: PORT ADDITION: what the torch key, T, says, by the light's falloff (the dev, for the
+#: fourth release; aidocks/project_torch_key_plan.md).  A torch rises 0.025 a slot from 2.0
+#: to 3.0, then 0.07 a slot to 5.0: half from slot 20, low from the game's own "Torch low"
+#: at 3.0, almost out for its last 8 slots, none once out or thrown.
+FALLOFF_HALF = 2.5
+FALLOFF_ALMOST_OUT = FALLOFF_LAST - 8 * 0.07
+TORCH_STATES = ((FALLOFF_HALF, 'Torch full.'), (FALLOFF_DIM, 'Torch half.'),
+                (FALLOFF_ALMOST_OUT, 'Torch low.'), (FALLOFF_LAST, 'Torch almost out.'))
+NO_TORCH = 'No torch.'
+#: PORT ADDITION: the throw key with no torch, where the original does nothing (the dev).
+NO_TORCH_TO_THROW = 'No torch to throw.'
 #: PORT ADDITION: the sound each coin and each torch on the path carries, looped, at
 #: SpriteKit's default volume (question 4).  The coins had tilintar until the dev gave it to
 #: the torches, and the coins the early versions' coin.wav (for the third release).
@@ -689,12 +700,29 @@ class GameScene(Scene):
                                          'Layer4', 'Layer6'))
         return t
 
+    def torchState(self):
+        """PORT ADDITION: the torch key's words, by the falloff (TORCH_STATES)."""
+        f = self.falloffSize
+        for below, words in TORCH_STATES:
+            if f < below:
+                return words
+        return NO_TORCH
+
+    def sayTorch(self):
+        """PORT ADDITION: the torch key, T: how much torch is left, said through the screen
+        reader; nothing once the player is dead."""
+        if not self.playerDead:
+            self.say(self.torchState())
+
     # GameScene.throwTorch 0x10001111c
     def throwTorch(self):
-        if self.falloffSize >= FALLOFF_LAST or self.blockPlayer:      # 0x100011150, 0x100011164
-            return
         if self.playerDead:
             return                  # PORT FIX: the original checks nothing of the kind
+        if self.blockPlayer:                                           # 0x100011164
+            return
+        if self.falloffSize >= FALLOFF_LAST:                           # 0x100011150
+            self.say(NO_TORCH_TO_THROW)     # PORT ADDITION: the original does nothing
+            return
         self.backgroundTorch.removeFromParent()
         self.playTorchSound.runAction(A.play())
         self.playTorchSound.runAction(A.changeVolumeTo(1.3, 0.0))      # 0x100011234

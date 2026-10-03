@@ -68,6 +68,7 @@ def test_the_defaults_are_the_agreed_keys():
     assert km.bindings['move_right'] == [('d',), ('right',)]
     assert km.bindings['throw'] == [('w',), ('up',)]
     assert km.bindings['pause'] == [('p',)]
+    assert km.bindings['torch'] == [('t',)], 'the torch key (the dev, fourth release)'
 
 
 def test_every_default_key_acts_at_once():
@@ -75,7 +76,7 @@ def test_every_default_key_acts_at_once():
     km = _fresh()
     for name, action in (('a', 'move_left'), ('left', 'move_left'), ('d', 'move_right'),
                          ('right', 'move_right'), ('w', 'throw'), ('up', 'throw'),
-                         ('p', 'pause')):
+                         ('p', 'pause'), ('t', 'torch')):
         assert km.press(name) == (action, False), name
         km.release(name)
 
@@ -96,6 +97,32 @@ def test_the_key_file_is_written_on_the_first_start():
     with open(km.path, encoding='utf-8') as f:
         saved = json.load(f)
     assert saved['throw'] == [['w'], ['up']]
+
+
+def _old_file(bindings):
+    """A keys.json written before the torch key existed."""
+    path = os.path.join(paths.user_dir(), 'keys.json')
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(bindings, f)
+    return path
+
+
+def test_an_older_key_file_gains_the_torch_key():
+    path = _old_file({'move_left': [['a'], ['left']], 'move_right': [['d'], ['right']],
+                      'throw': [['w'], ['up']], 'pause': [['p']]})
+    km = KeyMap()
+    assert km.bindings['torch'] == [('t',)]
+    with open(path, encoding='utf-8') as f:
+        assert json.load(f)['torch'] == [['t']], 'not written back'
+
+
+def test_a_new_key_never_takes_one_the_player_already_uses():
+    """A player who put the pause on T keeps it; the torch key starts with none."""
+    _old_file({'move_left': [['a'], ['left']], 'move_right': [['d'], ['right']],
+               'throw': [['w'], ['up']], 'pause': [['t']]})
+    km = KeyMap()
+    assert km.bindings['pause'] == [('t',)] and km.bindings['torch'] == []
+    assert km.press('t') == ('pause', False)
 
 
 def test_a_rebound_key_is_kept_and_taken_off_the_other_action():

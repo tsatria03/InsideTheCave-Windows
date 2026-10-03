@@ -1,4 +1,6 @@
 unrelease:
+Press T in a game to hear how much torch you have left, from Torch full to No torch. You can change the key with F1.
+Trying to throw with no torch now says No torch to throw, instead of doing nothing.
 The earphone warning is now said by a Windows voice, as the instructions are, instead of your screen reader, and the main menu waits for it to finish. Any key still skips it.
 
 26.10.03-1:

@@ -11,6 +11,8 @@ rebind them from the screen F1 opens:
     move_right   D or Right Arrow     the swipe right, and a tap on the right
     throw        W or Up Arrow        the swipe up
     pause        P                    the port's own: the original has no pause
+    torch        T                    the port's own: says how much torch is left
+                                      (aidocks/project_torch_key_plan.md)
 
 Keys are stored by pygame's name for them ("left", "a"), not by keycode, so a saved keymap
 survives a pygame update.
@@ -41,6 +43,7 @@ ACTIONS = (
     ('move_right', 'Move right', (('d',), ('right',))),
     ('throw', 'Throw the torch', (('w',), ('up',))),
     ('pause', 'Pause', (('p',),)),
+    ('torch', 'Say the torch', (('t',),)),
 )
 
 ACTION_IDS = [a[0] for a in ACTIONS]
@@ -122,7 +125,9 @@ class KeyMap:
     def load(self):
         """Read the bindings, and write the file when it is missing or lacks an action, so
         ``keys.json`` is there from the first start.  A file that cannot be read is left
-        alone, so a player's bindings are never overwritten by the defaults."""
+        alone, so a player's bindings are never overwritten by the defaults.  An action the
+        file lacks, one added since it was written, gets its defaults, less any key the
+        player has already given to something else."""
         saved = {}
         try:
             if os.path.exists(self.path):
@@ -134,7 +139,12 @@ class KeyMap:
         except Exception:
             log.exception('could not read %s; using the defaults', self.path)
             return
-        if not all(action in saved for action in ACTION_IDS):
+        missing = [a for a in ACTION_IDS if a not in saved]
+        if saved:
+            for action in missing:
+                self.bindings[action] = [b for b in self.bindings[action]
+                                         if not self.conflicts(b, ignore=action)]
+        if missing:
             self.save()
 
     def save(self):

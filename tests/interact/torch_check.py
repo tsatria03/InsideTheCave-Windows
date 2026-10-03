@@ -21,6 +21,12 @@ The starting points:
      3  a full torch, as a new game: for throwing it (W or Up Arrow), which plays the throw
         and never the burning-out sound
 
+Press T at any moment to hear how much torch is left: "Torch full.", "Torch half.", "Torch
+low." (from the game's own "Torch low"), "Torch almost out." (its last 8 slots) or "No
+torch."; with no torch, the throw key says "No torch to throw.".  Start 1 hears the last
+two levels within seconds, start 2 low, almost out and none, start 3 full and, after a
+throw, none.
+
 Nothing comes down the cave by itself: no torches to pick up, so nothing relights yours,
 and no monsters, bats or coins, so nothing can kill you and there are no roars to talk
 over.  But each time you throw your torch, one torch comes down a lane the game picks,

@@ -362,12 +362,26 @@ class _Scene:
     def throwTorch(self):
         self.moves.append('throw')
 
+    def sayTorch(self):
+        self.moves.append('torch')
+
 
 def _game_input():
     said = _Said()
     gi = GameInput(KeyMap(), said)
     gi.attach(_Scene())
     return gi, said
+
+
+def test_t_asks_for_the_torch_in_a_game_but_not_on_the_pause_menu():
+    gi, said = _game_input()
+    gi.press('t')
+    gi.release('t')
+    assert gi.scene.moves == ['torch']
+    gi.press('escape')
+    gi.press('t')
+    gi.release('t')
+    assert gi.scene.moves == ['torch'], 'T reached the game while paused'
 
 
 def test_pausing_opens_the_menu_and_escape_or_p_resumes():

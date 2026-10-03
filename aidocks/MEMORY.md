@@ -20,7 +20,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Difficulty plan](project_difficulty_plan.md): PLANNED 2026-10-03, waiting for the go-ahead: Play asks for Easy (5.0 to 3.0, torch 1.5 times), Medium (4.0 to 2.0) or Hard (3.0 to 1.0, torch three quarters); a best five each, the old one Easy's; opens on the last choice.
 - [Status keys plan](project_status_keys_plan.md): PLANNED 2026-10-03, waiting for the go-ahead: rebindable S "Score, 412.", C "Coins, 7.", E "Speed, 0." to "Speed, 40." (speed-ups so far); in the tutorial S and E say there is nothing to report.
 - [Tutorial plan](project_tutorial_plan.md): PLANNED 2026-10-03, waiting for the go-ahead: a Tutorial row after Play, speed held at 5.0, one thing at a time, everything announced in an English Windows voice as it appears, nothing saved; Play's key hints on the first 2 games only, the original's line gone.
-- [Torch key plan](project_torch_key_plan.md): PLANNED 2026-10-03, waiting for the go-ahead: a rebindable T saying the torch in five slot-based levels (full, half, low, almost out, none), and the throw key saying "No torch to throw.".
+- [Torch key plan](project_torch_key_plan.md): FINISHED 2026-10-03, confirmed by the dev: a rebindable T saying the torch in five slot-based levels (full, half, low, almost out, none), and the throw key saying "No torch to throw.".
 - [Developer tasks](project_dev_tasks.md): repository, tool, analysis, test, build and docs tasks, open and finished; one open, tests/case/release.py.
 
 ## Feedback: how the dev wants you to work

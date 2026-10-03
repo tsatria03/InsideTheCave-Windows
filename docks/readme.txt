@@ -37,6 +37,7 @@ A or Left Arrow moves you one lane to the left.
 D or Right Arrow moves you one lane to the right.
 Each move sounds from the lane you move into, and trying to go past the left or right lane bumps into the cave wall on that side.
 W or Up Arrow throws your torch up your lane.
+T says how much torch you have left.
 P or Escape pauses the game.
 Switching away from the game window pauses the game as well.
 F1 opens the key bindings.
@@ -61,7 +62,9 @@ Your screen reader says Torch low when it starts to dim, and soon after that it 
 Torches lie on the path, each jingling from its lane as it comes, and running into one gives you a fresh torch.
 Throwing your torch kills a monster in your lane, but it uses the torch up, and you score nothing for it.
 A bat that your torch hits only dodges into another lane, and you hear its sound go with it.
-You cannot throw a torch that has gone out.
+You cannot throw a torch that has gone out, and your screen reader says No torch to throw if you try.
+Press T at any time in a game to hear how much torch you have left: Torch full, Torch half, Torch low, Torch almost out, or No torch.
+Torch low on T comes at the same moment as the game's own Torch low warning, and Torch almost out covers the last few seconds before it goes out.
 
 Score and coins
 

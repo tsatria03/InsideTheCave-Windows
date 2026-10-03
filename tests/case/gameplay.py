@@ -637,6 +637,60 @@ def test_no_throw_after_death():
     assert not _named(g.scene, 'thrown')
 
 
+def test_t_says_the_torch_by_slot():
+    """The torch key (the dev, option A by slot): full to slot 19, half to 39, low from the
+    game's own "Torch low", almost out for the last 8 slots, then none."""
+    g = _Game()
+    s = g.scene
+    said, warned = [], None
+    for slot in range(80):
+        said.append(s.torchState())
+        s.changeFalloffSize()
+        if warned is None and G.TORCH_LOW in g.speech.lines:
+            warned = slot
+    order = ['Torch full.', 'Torch half.', 'Torch low.', 'Torch almost out.', 'No torch.']
+    firsts = [said.index(w) for w in order]
+    assert firsts == sorted(firsts), firsts
+    assert firsts[1] in (20, 21), 'half from slot 20, a float behind: %r' % firsts
+    assert firsts[2] == warned, 'T says low from the game\'s own "Torch low"'
+    assert 7 <= firsts[4] - firsts[3] <= 9, 'almost out for the last 8 slots: %r' % firsts
+    assert said[firsts[3]:firsts[4]] == ['Torch almost out.'] * (firsts[4] - firsts[3])
+    assert set(said[firsts[4]:]) == {'No torch.'}
+
+
+def test_t_says_no_torch_after_a_throw_and_nothing_after_death():
+    g = _Game()
+    g.start()
+    s = g.scene
+    s.sayTorch()
+    assert g.speech.lines[-1] == 'Torch full.'
+    s.throwTorch()
+    s.sayTorch()
+    assert g.speech.lines[-1] == 'No torch.'
+    _crash(g)
+    before = list(g.speech.lines)
+    s.sayTorch()
+    assert g.speech.lines == before, 'said after death'
+
+
+def test_the_throw_key_says_when_there_is_no_torch():
+    """The dev: "w should say you don't have a torch to throw"; the game's other refusals
+    stay silent."""
+    g = _Game()
+    s = g.scene
+    s.throwTorch()                              # the instructions: blockPlayer, silent
+    assert G.NO_TORCH_TO_THROW not in g.speech.lines
+    g.start()
+    s.throwTorch()                              # thrown
+    assert G.NO_TORCH_TO_THROW not in g.speech.lines
+    s.throwTorch()                              # none left
+    assert g.speech.lines[-1] == G.NO_TORCH_TO_THROW
+    _crash(g)
+    n = g.speech.lines.count(G.NO_TORCH_TO_THROW)
+    s.throwTorch()                              # after death, silent
+    assert g.speech.lines.count(G.NO_TORCH_TO_THROW) == n
+
+
 def test_in_debug_mode_nothing_kills_you():
     g = _Game(debug=True)
     g.start()
