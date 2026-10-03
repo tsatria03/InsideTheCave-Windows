@@ -25,34 +25,33 @@ class _Args:
 
 
 class _Key:
-    def __init__(self, pygame, key, down=True, mod=0):
+    def __init__(self, pygame, key, down=True, mod=0, unicode=''):
         self.type = pygame.KEYDOWN if down else pygame.KEYUP
         self.key = key
         self.mod = mod
+        self.unicode = unicode
 
 
-def _app():
+def _app(first='game'):
     assert os.environ.get('SDL_VIDEODRIVER') == 'dummy'
     app = InsideTheCave.App(_Args())
     app.defaults.setInteger_forKey_(3, 'countTutorial')
-    app.start_game()
+    app.go(first)
     return app
 
 
 def _frames(app, seconds):
     end = runloop.clock() + seconds
     while runloop.clock() < end:
-        now = runloop.clock()
-        app.input.tick()
-        app.loop.pump(now)
-        app.game.frame(now)
+        app.step(runloop.clock())
         app.draw()
 
 
-def _press(app, key, mod=0):
+def _press(app, key, mod=0, unicode=''):
     pg = app.pygame
-    app.handle(_Key(pg, key, True, mod))
+    app.handle(_Key(pg, key, True, mod, unicode))
     app.handle(_Key(pg, key, False, mod))
+    app.step(runloop.clock())
 
 
 def test_the_program_starts_draws_and_closes():
@@ -116,6 +115,78 @@ def test_alt_f4_quits():
     try:
         app.handle(_Key(pg, pg.K_F4, True, pg.KMOD_LALT))
         assert not app.running
+    finally:
+        app.close()
+
+
+# ---- the screens ---------------------------------------------------------------------------
+
+def test_the_warning_then_the_menu_then_a_game():
+    app = _app('warning')
+    pg = app.pygame
+    try:
+        assert app.kind == 'warning'
+        _frames(app, 0.1)
+        assert app.kind == 'warning'
+        _press(app, pg.K_x, unicode='x')
+        assert app.kind == 'menu'
+        assert app.lines()[0] == 'Inside The Cave - Main menu'
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'game' and app.game.scene is not None
+    finally:
+        app.close()
+
+
+def test_score_shows_the_ranking_and_escape_goes_back():
+    app = _app('menu')
+    pg = app.pygame
+    try:
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'ranking'
+        _press(app, pg.K_ESCAPE)
+        assert app.kind == 'menu'
+        _press(app, pg.K_ESCAPE)
+        assert not app.running, 'Escape on the menu quits'
+    finally:
+        app.close()
+
+
+def test_the_pause_menu_restarts_and_quits_to_the_menu():
+    app = _app()
+    pg = app.pygame
+    try:
+        _frames(app, 0.1)
+        first = app.game.scene
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'game' and app.game.scene is not first, 'restarted'
+        assert not app.input.paused and not app.loop.held
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_END)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'menu' and not app.loop.held
+    finally:
+        app.close()
+
+
+def test_a_game_over_goes_to_the_result_screen_and_replay_saves():
+    app = _app()
+    pg = app.pygame
+    try:
+        _frames(app, 0.1)
+        app.game.score, app.game.coins = 25, 2
+        app.game.scene.clear()                  # what the death timer ends with
+        _frames(app, 0.05)
+        assert app.kind == 'result'
+        assert app.lines()[1] == 'Score 25   Coins 2'
+        for key, ch in ((pg.K_a, 'A'), (pg.K_l, 'l')):
+            _press(app, key, unicode=ch)
+        _press(app, pg.K_RETURN)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'game' and not app.game.over
+        assert app.defaults.objectForKey_('rank')[0] == {'Name': 'Al', 'Score': '25'}
     finally:
         app.close()
 

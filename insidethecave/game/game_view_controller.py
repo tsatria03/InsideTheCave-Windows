@@ -10,8 +10,8 @@ game.  Ported from ``analysis/disasm/dz_GameViewController.txt``.
   ``gameOverDelegateFunc`` (0x100017fdc) goes to the result screen with the score and the
   coins (``prepareForSegue:sender:``, 0x100018b0c).
 
-Until the result screen is ported (phase 4), the game over here says the score and the
-coins and waits for Enter to play again: ``on_game_over`` is the hook the screens replace.
+``on_game_over`` is the segue: the screen loop (``InsideTheCave.py``) takes it to the result
+screen with the score and the coins.
 """
 from __future__ import annotations
 

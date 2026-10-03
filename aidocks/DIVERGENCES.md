@@ -42,8 +42,20 @@ The original shows the light shrinking; its burning sound loses only about a qua
 ### The tutorial: line, then key hints, then the first slot (port addition, built 2026-10-02)
 The original speaks its line and starts the first slot 4 s after the line began (0x10000e634), and its line speaks of swipes and taps. The port speaks the line in the Windows voice (or through the screen reader when there is none), then, once the voice is done, says the keys from the player's own bindings through the screen reader: "Press A or Left Arrow to move left, and D or Right Arrow to move right." and "Press W or Up Arrow to throw your torch." The first slot comes once both are done; as a screen reader cannot tell when it has finished, the hints are given 14 characters a second. On the fourth game and after, nothing is said and the first slot comes after 2 s, as the original.
 
-### The pause, and debug mode (port additions, built 2026-10-02)
-The original has no pause. In the port P or Escape pauses and continues (Enter continues too), and leaving the window pauses: the slots, the light, the score, the timers and every sound stop where they are (`GameScene.pause`, `runloop.hold`). With `--debug` nothing kills the player: a monster or bats reaching them says "Hit" instead; developer-facing only.
+### The pause, the pause menu, and debug mode (port additions, built 2026-10-02)
+The original has no pause. In the port P or Escape pauses, and leaving the window pauses: the slots, the light, the score, the timers and every sound stop where they are (`GameScene.pause`, `runloop.hold`). Since phase 4 pausing opens a pause menu, "Resume", "Restart" and "Quit to menu" (`ui/pause_menu.py`); Escape and P resume, as before (the dev: "I want a propper pause menu with resume, restart, and quit to menu if possible. Pressing escape will still resume the game."). Restart and Quit to menu save no score: only a game over reaches the result screen, the original's only way to save. With `--debug` nothing kills the player: a monster or bats reaching them says "Hit" instead; developer-facing only.
+
+### The screens are rows, read by the screen reader (port addition, built 2026-10-02)
+The original's screens are buttons and labels that VoiceOver read (the menu's titles are in a 1-point font: invisible, but read). In the port each screen is a list of rows said through the screen reader: Up and Down, Home and End, Enter or Space, Escape to go back, any other key saying the row again (`ui/rows.py`). The earphone warning is said, and any key skips it, as a touch did (0x10000ed18). The menu has a third row, "Quit", and Escape on the menu quits. The ranking reads its rows as "1, Ana, 120", with no Local / World switch (question 9).
+
+### The name field (port changes, built 2026-10-02)
+The original fills the name field from the device's name (`checkName`, crashing on a name under 10 characters, `GAME_STRUCTURE.md` section 11). The port's field starts empty and says "Insert name" (question 8: "Do option 1."). Typed characters are said, Backspace says what it took, and the limit is the original's 15 (0x1000204a0). Enter in the field goes on to Replay, as the original's Return only closed the keyboard (0x10001e63c). Spaces at either end are trimmed when saving.
+
+### A blank name still saves the score (fix, built 2026-10-02)
+`checkRank` saves "Insert name" as "unnamed player" but returns without saving anything when the field is empty (0x10001dc04..0x10001dc14). The port saves a blank name as "unnamed player" too, so a score that gets into the top five is never lost (question 4: "Oh yes. do option1."). The rest of `checkRank` is as the original: in only when strictly above the fifth (0x10001dac4), sorted best first (0x10001fb60), the sixth dropped.
+
+### No tied scores in the top five (port change, built 2026-10-02)
+The original lets a score equal to one already in the list in beside it. The port does not save a score that is already in the top five; the one already there stays (the dev, after seeing 63 twice: "There should not be any tied scores."; `ranked` in `game/result_view_controller.py`). A new save's five "Player", "0" entries are not affected, since a score must be above the fifth anyway. Replay and Menu both save, so the port saves once, whichever comes first. A ranking that is short or unreadable is filled with "Player", "0" rather than trapping (0x10001d884).
 
 ### Volume settings (port addition, built 2026-10-02)
 The original's gains are constants (the music at 0.2, `changeVolumeTo:0.2` at 0x100010a6c). The port keeps every one and adds two settings on top, in `settings.json`: `MASTERVOLUME`, which Page Up and Page Down step by ten, and `MUSICVOLUME`. Both default to 100, the original's mix (`platform/volume.py`; `project_port_plan.md`, question 12). Applied since the game scene (2026-10-02): the master as OpenAL's listener gain, the music's on its 0.2 (`createBackgroundMusic`).
@@ -68,8 +80,8 @@ Expected, not yet written up in detail:
 - **The save.** `UserDefaults` becomes `save.json` (`rank`, `countTutorial`, under the binary's own key names) and `settings.json` in `%APPDATA%\InsideTheCave` (`platform/defaults.py`, built 2026-10-02). `rankWorld` is not saved: there is no world ranking.
 - **Timers.** The original's four `NSTimer`s run on the port's own run loop (`platform/runloop.py`, built 2026-10-02), on the wall clock, as the original's.
 - **Speech.** `AVSpeechSynthesizer` becomes NVDA, another screen reader through Prism, or a Windows voice.
-- **The screens.** UIKit screens become lists of rows read aloud.
-- **The ranking.** CloudKit's world ranking cannot work.
+- **The screens.** UIKit screens become lists of rows read aloud (built 2026-10-02, above). The storyboard's segues become the screen loop in `InsideTheCave.py`.
+- **The ranking.** CloudKit's world ranking cannot work, and is left out (question 9): `RankingCloud` is not ported, and `checkRank` sends nothing (0x10001de80).
 
 ### The sounds are WAV, sorted into used and unused
 The original keeps 12 sounds loose in its bundle's top folder, as WAV, MP3 and AIFF (three with the wrong extension), and loads each by its full file name (`"BatSound.wav"`, `"dash.aiff"`, `"Rugido.mp3"`; see `GAME_STRUCTURE.md`). On 2026-10-02 the dev moved them into `game/sounds/`, converted them to MP3, then the same day to 16-bit PCM WAV, and sorted them, as in their earlier port:

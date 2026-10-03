@@ -1,6 +1,10 @@
 unrelease:
+No two scores in your best five are ever the same. A score that is already there is not saved again.
+Pausing opens a menu with Resume, Restart and Quit to menu, and Escape or P still resumes the game.
+A blank name still saves your score, as unnamed player. The original threw the score away.
+After a game you type your name, and a score that beats your fifth best is saved. Score on the main menu reads your best five.
+The game opens on the original's earphone warning, then the main menu, with Play, Score and Quit. Any key skips the warning.
 The sound of taking a coin comes from you, not from the middle lane.
-A game over says your score and your coins, and Enter plays again. The original's warning, menu, result and ranking screens are still to come.
 A torch can no longer be thrown in the second after you die.
 A coin, a torch on the path, or a monster reaching you always counts, however the game notices it touching you. The original could miss some of them.
 Monsters keep coming after you kill one with a torch. In the original, a monster killed at the wrong moment could leave the cave silent for good.

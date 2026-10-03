@@ -5,7 +5,9 @@ swipe right ``movePlayerRight``, swipe left ``movePlayerLeft``, swipe up ``throw
 and a tap, left or right by where it lands.  Here the player's bindings
 (``platform/keymap.py``) call the same methods; a tap's two halves are the two move keys.
 
-The rest is the port's own: P (and Escape, fixed) pause and continue; Enter continues too.
+The rest is the port's own: P (and Escape, fixed) pause and open the pause menu
+(``ui/pause_menu.py``), where the same keys resume.  The menu's Restart and Quit to menu are
+left in ``request`` for the screen loop.
 """
 from __future__ import annotations
 
@@ -13,11 +15,14 @@ import logging
 
 from ..platform import runloop
 from ..platform.keymap import CHORD_WINDOW
+from .pause_menu import PauseMenu
+from .rows import CHOOSE
 
 log = logging.getLogger('input')
 
-PAUSED = 'Paused. Press P, Escape or Enter to continue.'
 CONTINUE = 'Continue.'
+#: The keys the pause menu reads before the bindings do (Up is also a throw key).
+MENU_KEYS = ('up', 'down', 'home', 'end') + CHOOSE
 
 
 class GameInput:
@@ -28,10 +33,14 @@ class GameInput:
         self.keymap = keymap
         self.speech = speech
         self.scene = None
+        self.menu = PauseMenu(speech)
+        #: What the pause menu asked the screen loop for: 'restart' or 'menu'.
+        self.request = None
         self._settle_at = None
 
     def attach(self, scene):
         self.scene = scene
+        self.request = None
         self.keymap.clear_held()
         self._settle_at = None
 
@@ -47,13 +56,15 @@ class GameInput:
         if self.scene is None or self.scene.paused_by_player:
             return
         self.scene.pause()
-        if speak:
-            self.say(PAUSED)
+        self.keymap.clear_held()
+        self._settle_at = None
+        self.menu.open(speak)
 
     def resume(self, speak=True):
         if self.scene is None or not self.scene.paused_by_player:
             return
         self.scene.resume()
+        self.keymap.clear_held()
         if speak:
             self.say(CONTINUE)
 
@@ -79,19 +90,31 @@ class GameInput:
         elif action == 'throw':
             s.throwTorch()
 
+    # ---- the pause menu ---------------------------------------------------------------
+    def menu_key(self, name):
+        self.menu.key(name)
+        chosen, self.menu.next = self.menu.next, None
+        if chosen == 'resume':
+            self.resume()
+        elif chosen in ('restart', 'menu'):
+            self.request = chosen
+
     def press(self, name):
         """A key went down.  True when it meant something here."""
         if name == 'escape':
             self.toggle_pause()
             return True
-        if self.paused and name in ('return', 'enter'):
-            self.resume()
+        if self.paused and name in MENU_KEYS:
+            self.menu_key(name)
             return True
         action, pending = self.keymap.press(name)
         if pending:
             self._settle_at = runloop.clock() + CHORD_WINDOW
             return True
         self._settle_at = None
+        if self.paused and action != 'pause':
+            self.menu.say_row()                 # any other key says the row again
+            return True
         self.act(action)
         return action is not None
 

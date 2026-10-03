@@ -1,16 +1,18 @@
 ##Unfinished.
 
-Add the earphone warning that opens the game, in English or Portuguese as in the original.
-Add the main menu, with Play, Score and Quit.
-Add the result screen after a game, where you type your name and your score is saved.
-Add the ranking screen, with your best five scores.
 Add a readme that says how to play.
 Make a version of the game that can be downloaded and played without installing Python.
 
 ##Finished.
 
+No two scores in your best five are ever the same.
+A blank name still saves your score, as unnamed player.
+Pausing opens a menu with Resume, Restart and Quit to menu, and Escape or P resumes.
+The Score screen reads your best five scores.
+After a game you type your name, and your score is saved if it is in your best five.
+The main menu has Play, Score and Quit.
+The game opens on the earphone warning, in English or Portuguese as in the original.
 The sound of taking a coin comes from you, not from the middle lane.
-A game over says your score and your coins, and Enter plays again.
 A torch can no longer be thrown after you die.
 A coin, a torch on the path, or a monster reaching you always counts, however the game notices it touching you.
 Monsters keep coming after you kill one with a torch, instead of sometimes stopping for good.

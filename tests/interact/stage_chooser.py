@@ -22,8 +22,9 @@ The starting points:
      4  slot 340, at the top speed (speedMonster about 1.96)
 
 Starting later sets the slot count and the speed the game would have reached there, and
-the cave it would be in; everything else starts as a new game does.  After a game over,
-Enter starts again from the same point.
+the cave it would be in; everything else starts as a new game does.  A game over goes to
+the result screen, where Replay starts again from the same point, and the pause menu's
+Restart does too.
 
 **Your save is never touched**: its own save in
 ``%APPDATA%\\InsideTheCave\\stage_chooser``, with a copy of your key bindings and volume
@@ -139,7 +140,7 @@ def main():
             self.speech.speak('Starting at slot %d, speed %.2f.' % (slot, s.speedMonster),
                               interrupt=False)
 
-    ChooserApp(Args()).run()
+    ChooserApp(Args()).run('game')
     return 0
 
 

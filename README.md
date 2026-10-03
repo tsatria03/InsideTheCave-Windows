@@ -17,13 +17,14 @@ cannot show you.
 
 ## Status
 
-**The game itself is playable from source**, with no releases yet:
+**The whole game is playable from source**, with no releases yet:
 
     python InsideTheCave.py
 
-It starts straight on a game: the original's earphone warning, menu, result and ranking
-screens are still to come, and until then a game over says your score and coins, and
-Enter plays again. The whole original game has been disassembled: every function of its
+It opens as the original does, on the earphone warning, then the menu: Play, Score and
+Quit. A game over goes to the result screen, where you type your name and choose Replay or
+Menu; Score reads your best five. `--stage` starts straight on a game. The whole
+original game has been disassembled: every function of its
 code is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the
 game works, read from that code. `aidocks/PORTING_STATUS.md` keeps track of what is done,
 and `aidocks/DIVERGENCES.md` of every place the port differs on purpose.
@@ -63,14 +64,16 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
   goes up four times a second while you live.
 - The cave **speeds up** every twenty things that come down, and turns from rock to water
   and then ice as you go deeper.
-- The game will remember your best five scores on your computer, with the result screen
-  still to come. The original also sent them to an online leaderboard, which this port
-  leaves out.
+- After a game you type your name, and a score that beats your fifth best goes into your
+  **best five**, saved on your computer; a blank name is saved as "unnamed player". The
+  original also sent them to an online leaderboard, which this port leaves out.
 
-**Keys**: A or Left Arrow and D or Right Arrow move, W or Up Arrow throws, P or Escape
-pauses, Page Up and Page Down set the volume, F1 lists and changes the keys, Alt+F4 quits.
-Leaving the window pauses. On your first three games a Windows voice says the original's
-line in your language, and your screen reader then says the keys.
+**Keys**: on the menus, Up and Down move, Enter chooses and Escape goes back. In a game,
+A or Left Arrow and D or Right Arrow move, W or Up Arrow throws, and P or Escape pauses,
+opening a pause menu with Resume, Restart and Quit to menu, where Escape or P resumes.
+Everywhere, Page Up and Page Down set the volume, F1 lists and changes the keys, and
+Alt+F4 quits. Leaving the window pauses. On your first three games a Windows voice says
+the original's line in your language, and your screen reader then says the keys.
 
 ## Layout
 
@@ -96,13 +99,15 @@ requirements.txt         the two packages it needs
 VERSION                  the date version, such as 26.10.02-1
 ```
 
-The game is in `insidethecave/game/`, one module per original class (so far `GameScene`
-and `GameViewController`); `insidethecave/scene/` is the part of Apple's SpriteKit it
+The game is in `insidethecave/game/`, one module per original class, from the earphone
+warning and the menu to `GameScene` and the result and ranking screens;
+`insidethecave/scene/` is the part of Apple's SpriteKit it
 needs (things moving over time, contacts, sounds placed in the lanes); the platform layer
 is in `insidethecave/platform/`: OpenAL, the timers, the save, the volume settings, speech
 and the tutorial's Windows voice, the display language, the key bindings and the sounds.
-The keyboard and the F1 key-binding screen are in `insidethecave/ui/`, and
-`InsideTheCave.py` is the entry point and the window.
+The keyboard, the screens' rows, the pause menu and the F1 key-binding screen are in
+`insidethecave/ui/`, and `InsideTheCave.py` is the entry point, the window and the loop
+that goes from screen to screen.
 
 The save lives in `%APPDATA%\InsideTheCave`: `save.json` (the local top five and the
 tutorial count), `settings.json` (the master and music volumes) and `keys.json` (the key
@@ -143,8 +148,8 @@ the original will be written down in `aidocks/DIVERGENCES.md`.
 `tests/case/` holds the tests: plain scripts, each checking one part of the game
 against the original and printing `ok` or `FAIL` for every check, then a total. So far
 they cover the platform layer (`paths`, `runloop`, `save`, `speech`, `keymap`, `sound`,
-`language`), the SpriteKit stand-in (`scene`), the game (`gameplay`) and the program
-(`app`). Run any of them on its own:
+`language`), the SpriteKit stand-in (`scene`), the game (`gameplay`), the screens and
+the pause menu (`screens`) and the program (`app`). Run any of them on its own:
 
     python tests/case/<name>.py
 
@@ -173,6 +178,12 @@ little before the ice, or at the top speed, with the tutorial and debug mode (wh
 nothing can kill you) on or off:
 
     python tests/interact/stage_chooser.py
+
+`screens_check.py` starts the whole program from the earphone warning, or the result screen
+at once with a made-up score, or a game for the pause menu, over a made-up top five so you
+know what the Score screen should say:
+
+    python tests/interact/screens_check.py
 
 ## Building and releasing
 
