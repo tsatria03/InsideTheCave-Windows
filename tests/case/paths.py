@@ -147,8 +147,9 @@ def test_every_sound_the_binary_names_is_in_the_used_folder():
 
 
 #: The sounds the port plays that the 2.32 binary never names (the dev): the menu music, the
-#: footsteps, and the torch burning out.
-PORT_NAMES = ('background-music.wav', 'cave-walk.wav', 'cave-run.wav', 'tocha_acende.wav')
+#: footsteps, the torch burning out, and the coins' ding.
+PORT_NAMES = ('background-music.wav', 'cave-walk.wav', 'cave-run.wav', 'tocha_acende.wav',
+              'coin.wav')
 
 
 def test_the_used_folder_holds_only_what_the_game_plays():

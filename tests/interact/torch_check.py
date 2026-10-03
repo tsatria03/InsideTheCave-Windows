@@ -24,8 +24,8 @@ The starting points:
 Nothing comes down the cave by itself: no torches to pick up, so nothing relights yours,
 and no monsters, bats or coins, so nothing can kill you and there are no roars to talk
 over.  But each time you throw your torch, one torch comes down a lane the game picks,
-and your screen reader says "A torch is coming."; be in its lane to pick it up and throw
-again.  Miss it, and you have no torch until you restart.  Each would-be one is an empty slot, so the slots, and
+jingling from it, and your screen reader says "A torch is coming."; be in its lane to pick
+it up and throw again.  Miss it, and you have no torch until you restart.  Each would-be one is an empty slot, so the slots, and
 with them the torch burning down, keep their pace.  The game starts without the tutorial
 line.  The pause menu's Restart starts again from the same point.
 

@@ -328,13 +328,39 @@ def test_footsteps_stop_at_death():
     assert not f.in_scene
 
 
-def test_every_coin_carries_its_own_jingle():
-    """The port's addition: the original's tilintar, looped, riding down with the coin."""
+def test_every_coin_and_torch_carries_its_own_sound():
+    """The port's addition, looped, riding down with it: the coins the early versions'
+    coin.wav, the torches the original's unused tilintar (the dev, for the third release)."""
+    from insidethecave.scene.audio import placed
     g = _Game()
-    coin = g.scene.createCoin()
-    jingles = [n for n in coin.children if n.name == 'jingle']
-    assert len(jingles) == 1
-    assert jingles[0].file_name == 'tilintar.aiff' and jingles[0].autoplayLooped
+    for make, wanted in ((g.scene.createCoin, 'coin.wav'),
+                         (g.scene.createTorchObstacle, 'tilintar.aiff')):
+        node = make()
+        jingles = [n for n in node.children if n.name == 'jingle']
+        assert len(jingles) == 1, node
+        j = jingles[0]
+        assert j.file_name == wanted and j.autoplayLooped and j.volume == 1.0, j.file_name
+        assert placed(j.file_name) and not j.by_lane, 'placed against you, from its lane'
+
+
+def test_a_torch_s_sound_stops_when_you_take_it_or_die():
+    g = _Game(debug=True)
+    g.start()
+    s = g.scene
+    torch = s.createTorchObstacle()
+    torch.removeAllActions()
+    torch.position = s.player.position
+    s.addChild(torch)
+    jingle = [n for n in torch.children if n.name == 'jingle'][0]
+    assert jingle.in_scene
+    g.step(0.001)
+    assert not torch.in_scene and not jingle.in_scene, 'taken, and silent'
+    g = _Game()
+    g.start()
+    torch = g.scene.createTorchObstacle()
+    g.scene.addChild(torch)
+    _crash(g)
+    assert not [n for n in g.scene.walk() if n.name == 'jingle'], 'all jingles go at death'
 
 
 # ---- contacts ----------------------------------------------------------------------------

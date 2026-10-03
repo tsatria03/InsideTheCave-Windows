@@ -18,7 +18,9 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
 * a monster killed before its slot made the next one makes it then, so spawning never
   stops (``torchDidCollideWithObstacle``);
 * no throw once the player is dead (``throwTorch``);
-* every coin jingles as it comes (``createCoin``), the original's unused ``tilintar``;
+* every coin dings and every torch on the path jingles as it comes (``createCoin``,
+  ``createTorchObstacle``), the early versions' ``coin`` and the original's unused
+  ``tilintar``;
 * the coin's collect sound is heard at the player, not from the middle lane
   (``createNodesSounds``);
 * the dash and the wall come from the lane, left, middle or right (``soundMovePlayer``,
@@ -92,8 +94,12 @@ TORCH_LOW = 'Torch low'
 #: PORT ADDITION: played once when the torch burns all the way out, not when it is thrown
 #: (the dev, for the third release: tocha_acende, "a torch lighting", from version 2.02).
 TORCH_OUT = 'tocha_acende.wav'
-#: PORT ADDITION: the jingle each coin carries, at SpriteKit's default volume (question 4).
+#: PORT ADDITION: the sound each coin and each torch on the path carries, looped, at
+#: SpriteKit's default volume (question 4).  The coins had tilintar until the dev gave it to
+#: the torches, and the coins the early versions' coin.wav (for the third release).
 JINGLE_VOLUME = 1.0
+COIN_JINGLE = 'coin.wav'
+TORCH_JINGLE = 'tilintar.aiff'
 #: The music's gain, before MUSICVOLUME.  The original's is 0.2 (``changeVolumeTo:0.2`` at
 #: 0x100010a6c); PORT: 1.0, the file as recorded (the dev: "Please put the game music volume
 #: to 1.0 as well. Again, I can turn that down as well."), turned down with Page Down.
@@ -398,25 +404,36 @@ class GameScene(Scene):
 
     # GameScene.createTorchObstacle 0x10000d578
     def createTorchObstacle(self):
+        """PORT ADDITION: a torch on the path carries its own sound, looped, from its
+        lane, as a coin does: the original's unused tilintar (the dev, for the third
+        release)."""
         t = self._obstacle('torchObstacle', 0.0009, self.choiceObstacleLine, TORCH_PICKUP, 2)
         t.name = 'torch'
         t.lightingBitMask = 0
+        t.addChild(self._jingle(TORCH_JINGLE))
         return t
 
     # GameScene.createCoin 0x10000d86c
     def createCoin(self):
         """A coin, its look by scenario; its size, and so its body, always rockCoin's
         (setTexture: keeps the size, 0x10000dc08).  PORT ADDITION: it carries its own
-        jingle, looped, the original's unused tilintar (question 4)."""
+        jingle, looped (question 4): since the third release the early versions' coin.wav,
+        tilintar going to the torches (the dev)."""
         c = self._obstacle('rockCoin', 0.0008, self.choiceObstacleCoin, COIN, 3,
                            center=False)
         c.name = 'coin'
         c.texture = COIN_LOOKS.get(self.currentScenario, 'rockCoin')
         c.lightingBitMask = 1
-        jingle = AudioNode('tilintar.aiff', name='jingle')
-        jingle.volume = JINGLE_VOLUME
-        c.addChild(jingle)
+        c.addChild(self._jingle(COIN_JINGLE))
         return c
+
+    @staticmethod
+    def _jingle(file_name):
+        """PORT ADDITION: a pickup's own sound, looped, placed with it; named "jingle", so
+        it goes with the other sounds at death."""
+        jingle = AudioNode(file_name, name='jingle')
+        jingle.volume = JINGLE_VOLUME
+        return jingle
 
     # ---- the slots' movement ------------------------------------------------------------
     # GameScene.moveObstacleWithBorn 0x100013a5c

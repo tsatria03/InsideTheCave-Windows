@@ -59,10 +59,10 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
   left, ahead or right. Move out of its lane before it reaches you, about a second later.
 - **Bats** come down the same way, with their own sound; every seventh obstacle is bats.
 - Your **torch** burns down as you go; "Torch low" is said when it starts to dim. Torches
-  lie on the path: run into one to pick it up and relight.
+  lie on the path, each jingling from its lane: run into one to pick it up and relight.
 - **Throw** your torch up your lane to kill a monster in it. It uses the torch up, and
   scores nothing; a bat it hits only dodges into another lane.
-- **Coins** come down too, each jingling from its lane: ten points each. The score also
+- **Coins** come down too, each dinging from its lane: ten points each. The score also
   goes up four times a second while you live.
 - The cave **speeds up** every twenty things that come down, and turns from rock to water
   and then ice as you go deeper.
@@ -82,8 +82,8 @@ the original's line in your language, and your screen reader then says the keys.
 
 ```
 game/                    the original app bundle, unpacked
-  sounds/used/           the 12 sounds version 2.32 plays, and 4 more the port adds
-  sounds/unused/         11 sounds from the game's older versions
+  sounds/used/           the 12 sounds version 2.32 plays, and 5 more the port adds
+  sounds/unused/         10 sounds from the game's older versions
 InsideTheCave.py         the entry point: python InsideTheCave.py
 insidethecave/           the Python package: the game, the SpriteKit stand-in, the
                          platform layer and the keyboard
@@ -133,9 +133,9 @@ original asks for some by another extension, such as `dash.aiff`, so the port fi
 by its name without the extension, and a renamed one under its new name. `used/` also
 holds sounds from the game's early versions that the port adds: the menu music,
 `background-music.wav`, two footstep loops made from `Running_On_Rocks`
-(`cave-walk.wav`, `cave-run.wav`), and the torch burning out, `tocha_acende.wav`.
-`game/sounds/unused/` keeps 11 more sounds from the older versions, which version 2.32
-never plays.
+(`cave-walk.wav`, `cave-run.wav`), the torch burning out, `tocha_acende.wav`, and the
+coins' ding, `coin.wav`. `game/sounds/unused/` keeps 10 more sounds from the older
+versions, which version 2.32 never plays.
 
 ## Where this came from
 

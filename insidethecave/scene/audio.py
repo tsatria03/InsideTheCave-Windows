@@ -64,9 +64,9 @@ def heard(volume):
     """A volume the game sets, as it is played: 0 to ``MAX_GAIN``."""
     return min(max(0.0, float(volume)), MAX_GAIN)
 #: The sounds placed in their lanes, loaded mixed down to mono (base names): the roar, the
-#: bats and the jingle against the player; the dash and the wall by the lane itself (the
+#: bats, and the coins' and torches' own sounds against the player; the dash and the wall by the lane itself (the
 #: dev, for the second release), and the footsteps too (for the third).
-PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'dash', 'movimentoproibido',
+PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'coin', 'dash', 'movimentoproibido',
                     'cave-walk', 'cave-run'))
 
 
