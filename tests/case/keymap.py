@@ -187,7 +187,7 @@ def test_leaving_the_window_pauses_what_can_be_paused():
 
 
 def test_the_fixed_keys_are_the_way_out_and_the_volume():
-    assert set(keymap.FIXED) == {'f1', 'escape', 'page up', 'page down'}
+    assert set(keymap.FIXED) == {'f1', 'escape', 'page up', 'page down', 'home', 'end'}
 
 
 if __name__ == '__main__':

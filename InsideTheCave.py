@@ -15,8 +15,9 @@ to the menu (``unwindToHomeScreenSegue``).  The pause menu's Restart and Quit to
 the port's own.
 
 The keys: on a screen, Up and Down, Enter, Escape to go back; in a game, your bindings to
-move and throw, P or Escape to pause.  Everywhere, F1 lists and changes the keys, Page Up
-and Page Down set the volume, and Alt+F4 quits.  Leaving the window pauses a game.
+move and throw, P or Escape to pause, Home and End for the master volume.  Everywhere, F1
+lists and changes the keys, Page Up and Page Down set the volume, and Alt+F4 quits.
+Leaving the window pauses a game.
 """
 from __future__ import annotations
 
@@ -38,8 +39,8 @@ WINDOW_SIZE = (720, 440)
 TITLE = 'Inside The Cave'
 FPS = 120
 LINES, LINE_HEIGHT = 19, 22
-KEY_LINES = ['Keys: your move and throw keys, F1 key bindings,',
-             'P or Escape pause, Page Up / Page Down volume, Alt+F4 quit.']
+KEY_LINES = ['Keys: your move and throw keys, P or Escape pause, F1 key bindings,',
+             'Page Up / Page Down volume, Home / End master volume, Alt+F4 quit.']
 
 
 class App:
@@ -166,6 +167,17 @@ class App:
         self.set_master()
         self.speech.speak('Volume %d percent.' % now)
 
+    def change_master(self, step):
+        """Home or End, while a game is running: everything's volume."""
+        now = self.volume.change_master(self.defaults, step)
+        self.set_master()
+        self.speech.speak('Master volume %d percent.' % now)
+
+    def game_running(self):
+        """A game being played: not paused, and not over.  Home and End are the master
+        volume then, and the first and last row everywhere else (the dev)."""
+        return self.kind == 'game' and not self.input.paused and not self.game.over
+
     def open_keys(self):
         """F1: the key bindings, over a game held still, or over a screen."""
         self.was_paused = self.kind != 'game' or self.input.paused or self.game.over
@@ -195,6 +207,9 @@ class App:
             return
         if name in ('page up', 'page down'):
             self.change_volume(+1 if name == 'page up' else -1)
+            return
+        if name in ('home', 'end') and self.game_running():
+            self.change_master(+1 if name == 'home' else -1)
             return
         if self.kind == 'game':
             self.input.press(name)

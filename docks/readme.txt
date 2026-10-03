@@ -38,7 +38,8 @@ W or Up Arrow throws your torch up your lane.
 P or Escape pauses the game.
 Switching away from the game window pauses the game as well.
 F1 opens the key bindings.
-Page Up and Page Down make the game louder and quieter, in steps of ten percent, and your screen reader says the new volume.
+Home and End make the whole game louder and quieter while you play, in steps of ten percent, and your screen reader says the new master volume.
+Page Up and Page Down do the same everywhere, and your screen reader says the new volume.
 Alt+F4 quits the game at any moment.
 
 How to play
@@ -95,7 +96,7 @@ Up and Down move through the actions, and Enter changes the key for the one you 
 A adds a second key, and Delete removes a key.
 Press R twice to put every key back as it was.
 Escape or F1 goes back.
-F1, Escape, Page Up and Page Down cannot be changed, so there is always a way out.
+F1, Escape, Page Up, Page Down, Home and End cannot be changed, so there is always a way out, and the volume keys stay where they are.
 The key bindings screen speaks through your screen reader, or through a Windows voice if none is running.
 
 Your save

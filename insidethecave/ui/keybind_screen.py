@@ -16,8 +16,8 @@ up, so the order they are pressed in does not matter.  Letting go of the Enter t
 the capture does not count, or the capture would be over before the player had pressed
 anything.
 
-F1, Escape, Page Up and Page Down are never rebindable (``keymap.FIXED``): bind over the
-way out and there would be no way back in.
+F1, Escape, Page Up, Page Down, Home and End are never rebindable (``keymap.FIXED``): bind
+over the way out and there would be no way back in, and the last four set the volumes.
 """
 from __future__ import annotations
 

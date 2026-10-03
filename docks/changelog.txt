@@ -1,4 +1,5 @@
 unrelease:
+Home and End make the whole game louder and quieter while you play, and your screen reader says master volume. On the menus and the pause menu they still go to the first and last row.
 The menus wrap around, so Down on the last row goes back to the first, and Up on the first row goes to the last.
 Bumping into the cave wall sounds from the side you bumped into, not from the middle.
 Each move sounds from the lane you move into, on the left, in the middle or on the right.

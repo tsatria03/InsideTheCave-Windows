@@ -83,6 +83,29 @@ def test_the_keys_move_pause_and_change_the_volume():
         app.close()
 
 
+def test_home_and_end_set_the_master_volume_only_while_a_game_runs():
+    app = _app()
+    pg = app.pygame
+    try:
+        _frames(app, 0.1)
+        p = app.volume.percents
+        master = p['MASTERVOLUME']
+        _press(app, pg.K_END)
+        assert p['MASTERVOLUME'] == max(0, master - 10)
+        _press(app, pg.K_HOME)
+        assert p['MASTERVOLUME'] == master
+        _press(app, pg.K_ESCAPE)                # paused: Home and End are the pause menu's
+        _press(app, pg.K_END)
+        assert p['MASTERVOLUME'] == master
+        assert app.input.menu.current() == 'menu'
+        _press(app, pg.K_ESCAPE)
+        app.go('menu')                          # and the menu's
+        _press(app, pg.K_END)
+        assert p['MASTERVOLUME'] == master and app.page.current() == 'quit'
+    finally:
+        app.close()
+
+
 def test_f1_holds_the_game_and_escape_brings_it_back():
     app = _app()
     pg = app.pygame
