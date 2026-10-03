@@ -47,7 +47,7 @@ metadata:
 - **Dodged** (the dev: "I like Bats frightened, Bats dodged, and monsters dodged"): a monster or bats in the player's lane when its roar or sound played (the sensor), which then passed without catching the player. One in another lane all along does not count; a bat a torch frightened counts as frightened, not dodged.
 - **All-time** adds the three difficulties up; its longest run and fastest speed are the best of the three.
 - **Counting starts with the update:** past games were never counted, so every stat starts at 0 (the old best five still becomes Easy's). **Tutorial games never count** ([[project_tutorial_plan]]).
-- A game is counted when it ends by being caught, as a score is saved only then; Restart and Quit to menu count nothing (to confirm with the dev when built).
+- A game is counted only when it ends by being caught, as a score is saved only then; Restart and Quit to menu count nothing (the dev: "restarts and quits do not count in a game.").
 
 ## Where it goes
 - `game/result_view_controller.py` (the rows, the time and speed, saving coins and time with the entry), `game/ranking_view_controller.py` (the one-line entries, per difficulty), a new stats screen and the difficulty choice before each, `game/home_screen_view_controller.py` (the five rows), `game/game_scene.py` and `game/game_view_controller.py` (the run's time without pauses, the speed reached, the counts of kills, frights, dodges and pickups), `platform/defaults.py` (the stats in the save).
