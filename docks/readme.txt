@@ -17,6 +17,7 @@ The main menu
 
 The main menu has three rows: Play, Score and Quit.
 Up and Down move between the rows, and your screen reader says each one.
+The rows wrap around, so Down on the last row goes back to the first, and Up on the first row goes to the last.
 Home and End go to the first and the last row.
 Enter or Space chooses the row you are on.
 Escape in the main menu quits the game.

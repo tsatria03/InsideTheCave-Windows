@@ -113,13 +113,13 @@ def test_the_menu_rows_and_keys():
     m.viewDidLoad()
     assert said.last == 'Main menu. Play'
     _keys(m, 'up')
-    assert said.last == 'Play', 'the list stops at the top'
+    assert said.last == 'Quit', 'Up on the first row wraps to the last'
+    _keys(m, 'down')
+    assert said.last == 'Play', 'and Down on the last to the first'
     _keys(m, 'down')
     assert said.last == 'Score'
     _keys(m, 'end')
     assert said.last == 'Quit'
-    _keys(m, 'down')
-    assert said.last == 'Quit', 'and at the bottom'
     _keys(m, 'home', 'x')
     assert said.last == 'Play', 'another key says the row again'
     n = len(said.lines)
@@ -332,7 +332,7 @@ def test_up_moves_the_pause_menu_and_does_not_throw():
     gi.press('a')
     gi.release('a')
     assert gi.scene.moves == [] and gi.paused
-    assert said.last == 'Resume', 'a game key says the row again'
+    assert said.last == 'Quit to menu', 'Up wrapped to the last row; a game key says it again'
 
 
 def test_restart_and_quit_to_menu_are_left_for_the_screen_loop():
@@ -345,6 +345,19 @@ def test_restart_and_quit_to_menu_are_left_for_the_screen_loop():
         assert gi.request == wanted and gi.paused
         gi.attach(_Scene())
         assert gi.request is None
+
+
+def test_the_pause_menu_and_the_result_screen_wrap_around():
+    gi, said = _game_input()
+    gi.press('escape')
+    gi.press('up')
+    assert said.last == 'Quit to menu'
+    gi.press('down')
+    assert said.last == 'Resume'
+    said = _Said()
+    r = R.ResultViewController(1, 0, _defaults(), said)
+    r.key('up')
+    assert r.current() == 'menu' and said.last == 'Menu', 'from the name field up to Menu'
 
 
 def test_pausing_again_starts_the_menu_at_resume():

@@ -5,8 +5,8 @@ The original's screens are a few buttons each, and a blind player heard them thr
 VoiceOver, swiping from one to the next and double-tapping (GAME_STRUCTURE.md sections 9
 to 12).  Here a screen is a list of rows: Up and Down move and say each, Home and End go to
 the first and the last, Enter or Space chooses, and Escape goes back.  Any other key says
-the row again, as the reference port's menus do.  The screen loop in ``InsideTheCave.py``
-reads ``next`` to know where to go.
+the row again, as the reference port's menus do.  The rows wrap around at both ends.  The
+screen loop in ``InsideTheCave.py`` reads ``next`` to know where to go.
 """
 from __future__ import annotations
 
@@ -59,10 +59,10 @@ class RowScreen:
 
     # ---- moving -----------------------------------------------------------------------
     def move(self, step):
-        """Up or Down.  The list stops at its ends, as a screen reader's lists do, and the
-        row there is said again."""
+        """Up or Down.  The list wraps around: Down on the last row goes to the first, and
+        Up on the first to the last (the dev, for the second release)."""
         if self.rows:
-            self.index = max(0, min(len(self.rows) - 1, self.index + step))
+            self.index = (self.index + step) % len(self.rows)
         self.say_row()
 
     def jump(self, last):
