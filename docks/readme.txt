@@ -32,6 +32,7 @@ Controls
 
 A or Left Arrow moves you one lane to the left.
 D or Right Arrow moves you one lane to the right.
+Each move sounds from the lane you move into, on the left, in the middle or on the right.
 W or Up Arrow throws your torch up your lane.
 P or Escape pauses the game.
 Switching away from the game window pauses the game as well.

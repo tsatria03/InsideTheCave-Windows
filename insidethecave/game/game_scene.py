@@ -21,6 +21,7 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
 * every coin jingles as it comes (``createCoin``), the original's unused ``tilintar``;
 * the coin's collect sound is heard at the player, not from the middle lane
   (``createNodesSounds``);
+* the dash comes from the lane, left, middle or right (``soundMovePlayer``);
 * "Torch low" is spoken as the torch starts to dim (``changeFalloffSize``);
 * the tutorial line in a Windows voice, then the key hints, then the first slot
   (``tutorial``);
@@ -460,6 +461,9 @@ class GameScene(Scene):
         # node's own (0, 0), the middle lane, whatever lane the coin was taken in.  Unplaced,
         # it is heard at the player, like the stereo pickup sounds beside it.
         self.coinSound.positional = False
+        # PORT: the dash is placed by its lane, left, middle or right, not against the
+        # player, who would always hear it in the middle (soundMovePlayer).
+        self.movePlayerSound.by_lane = True
         for node in (self.coinTinkle, self.batSound):
             node.positional = True
             node.autoplayLooped = False
@@ -495,9 +499,14 @@ class GameScene(Scene):
         self.addChild(m)
 
     # GameScene.soundMovePlayer 0x10000fe30
-    def soundMovePlayer(self):
-        self.movePlayerSound.runAction(A.play())
-        self.movePlayerSound.runAction(A.changeVolumeTo(0.25, 0.0))    # 0x10000fec4
+    def soundMovePlayer(self, fraction=0.0):
+        """PORT: the dash comes from the lane it ends in, left, middle or right, placed by
+        the lane rather than against the player (the dev, for the second release)."""
+        s = self.movePlayerSound
+        s.position = (self.W * fraction, self.player.position[1])
+        s.runAction(A.play())
+        s.runAction(A.changeVolumeTo(0.25, 0.0))                       # 0x10000fec4
+
 
     # GameScene.playMonsterRoarAtPoint: 0x10000f69c
     def playMonsterRoarAtPoint(self, point):
@@ -520,13 +529,13 @@ class GameScene(Scene):
             return
         lane = self.actualPositionPlayer
         if lane == 0:
-            self.soundMovePlayer()
             self.actualPositionPlayer = 1
             x = 0.0
+            self.soundMovePlayer(x)
         elif lane == 1:
-            self.soundMovePlayer()
             self.actualPositionPlayer = 2
             x = 0.3
+            self.soundMovePlayer(x)
         elif lane == 2:
             self.runAction(A.playSoundFileNamed('MovimentoProibido.wav', False))
             self.actualPositionPlayer = 2
@@ -541,13 +550,13 @@ class GameScene(Scene):
             return
         lane = self.actualPositionPlayer
         if lane == 2:
-            self.soundMovePlayer()
             self.actualPositionPlayer = 1
             x = 0.0
+            self.soundMovePlayer(x)
         elif lane == 1:
-            self.soundMovePlayer()
             self.actualPositionPlayer = 0
             x = -0.3
+            self.soundMovePlayer(x)
         elif lane == 0:
             self.runAction(A.playSoundFileNamed('MovimentoProibido.wav', False))
             self.actualPositionPlayer = 0

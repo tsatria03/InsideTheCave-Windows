@@ -1,4 +1,5 @@
 unrelease:
+Each move sounds from the lane you move into, on the left, in the middle or on the right.
 
 26.10.02-1:
 A readme beside the game says how to play, and credits.txt says who made the game and lists the licenses.

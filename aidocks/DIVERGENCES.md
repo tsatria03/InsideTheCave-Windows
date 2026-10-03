@@ -36,6 +36,9 @@ The original loads "tilintar.aiff" as a positioned node and has `moveCoinSound` 
 ### The coin's collect sound is heard at the player (fix, built 2026-10-02)
 `coinSound` ("plim_moeda.wav") is a scene child the game never moves, so it stays at (0, 0), the middle lane, and it is positional by default (`createNodesSounds` 0x1000105b0 sets only `autoplayLooped`). It is the only mono file among the pickup sounds, so OpenAL placed it there: taken in a side lane, a coin sounded one lane over. The port makes it unplaced (`positional = False`), heard at the player like the stereo pickup sounds. Whether the iPhone placed it too is Apple's code (**inferred**). The dev found it by ear: "it plays the collect sound at a different lane".
 
+### The dash comes from the lane (port change, for the second release)
+The original's dash, `movePlayerSound` ("dash.aiff"), is a stereo scene child at (0, 0), so it most likely played unplaced (0x10000fe30; **inferred**, Apple's code), as the port's did until now. The dev asked for it to come from the lane you move into. It is now mixed to mono and placed **by the lane itself**, not against the player (`audio.lane_position`, `AudioNode.by_lane`): the left lane on the left, the middle in the middle, the right on the right, whatever lane you are in, where the roar and the bats are heard against you. `GameScene.soundMovePlayer`.
+
 ### "Torch low" (port addition, built 2026-10-02)
 The original shows the light shrinking; its burning sound loses only about a quarter of its volume over a whole torch. The port says "Torch low" through the screen reader once a torch, the first time the light takes its dim step (falloff 3 or more, `changeFalloffSize` 0x100023a0c), about 29 slots before it goes out. A new torch picked up resets it. The dev: "I want to add a speech warning if possible. Along with the current sounds."
 

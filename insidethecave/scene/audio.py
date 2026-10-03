@@ -21,8 +21,10 @@ with OpenAL's inverse distance, clamped, from ``REFERENCE_DISTANCE``.  HRTF is o
 
 **Mono for the placed sounds.**  OpenAL places only mono buffers, and plays stereo ones
 straight through, as Apple's 3D audio did with the original's stereo roar (**inferred**).
-The dev chose to place the roar, the bats and the coin jingle: those three (``PLACED``)
-load mixed down to mono.  Every other positional node keeps its file as it is, so a
+The dev chose to place the roar, the bats and the coin jingle, and later the dash, which
+is placed by its lane, not against the player (``by_lane``, ``lane_position``): those
+four (``PLACED``) load mixed down to mono.  Every other positional node keeps its file
+as it is, so a
 stereo one plays unplaced, as it most likely did on the iPhone; the music is mono already
 and sits at the player.
 
@@ -61,9 +63,16 @@ MAX_GAIN = 1.0
 def heard(volume):
     """A volume the game sets, as it is played: 0 to ``MAX_GAIN``."""
     return min(max(0.0, float(volume)), MAX_GAIN)
-#: The sounds placed in their lanes, loaded mixed down to mono (base names).
-PLACED = frozenset(('rugido', 'batsound', 'tilintar'))
+#: The sounds placed in their lanes, loaded mixed down to mono (base names): the roar, the
+#: bats and the jingle against the player; the dash by the lane itself (the dev, for the
+#: second release).
+PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'dash'))
 
+
+def lane_position(scene_x):
+    """PORT ADDITION: where a sound placed by its lane is heard: across by the lane's place
+    in the scene, the middle lane in the middle, whatever lane the player is in."""
+    return (float(scene_x) / LANE_WIDTH * PAN_PER_LANE, 0.0, 0.0)
 
 def placed(file_name):
     return paths.base_name(file_name) in PLACED
@@ -79,6 +88,8 @@ class AudioNode(Node):
         self.file_name = file_name
         self.autoplayLooped = True
         self.positional = True
+        #: PORT ADDITION: placed by its lane (``lane_position``), not against the listener.
+        self.by_lane = False
         self.volume = 1.0
         self.playing = False
         self.engine = None          # the AudioEngine, while the node is in a scene with one
@@ -115,7 +126,11 @@ class AudioEngine:
     # ---- where a node is heard ------------------------------------------------------
     def mapped(self, node, listener):
         """A node's place, relative to the listener, in OpenAL's units."""
-        if not node.positional or listener is None:
+        if not node.positional:
+            return (0.0, 0.0, 0.0)
+        if node.by_lane:
+            return lane_position(node.scene_position()[0])
+        if listener is None:
             return (0.0, 0.0, 0.0)
         nx, ny = node.scene_position()
         lx, ly = listener.scene_position()
