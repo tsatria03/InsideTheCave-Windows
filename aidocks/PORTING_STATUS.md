@@ -3,9 +3,11 @@
 What is done, what is stubbed, what has not been started. Kept honest: "done" means ported from the
 disassembly method by method, with the address recorded in the code.
 
-**Status, 2026-10-02: the disassembly is complete; no game function is ported yet.** The platform layer the
-game will run on (OpenAL, the NSTimers, UserDefaults, speech, the keys, the sounds) is built in
-`insidethecave/platform/`, phase 1 of `project_port_plan.md`; it stands in for iOS, not for any function below. Every function of the game is listed
+**Status, 2026-10-02: `GameScene` and `GameViewController` are ported** (phase 3 of `project_port_plan.md`,
+not yet confirmed by the dev): 181 functions ported, 5 stubbed until the result screen, 18 left out with the
+reason beside each. The screens' classes are phase 4. The platform layer (OpenAL, the NSTimers, UserDefaults,
+speech, the keys, the sounds) and the SpriteKit stand-in, `insidethecave/platform/` and `insidethecave/scene/`,
+stand in for iOS and SpriteKit, not for any function below. Every function of the game is listed
 below, generated from `analysis/data/functions.txt` (by `tools/names.py`), with its address and size. As a
 function is ported, mark it here: **ported** (with the Python module), **stubbed**, or **left out** (with why).
 The mechanism they make up is in `GAME_STRUCTURE.md`; the listings are in `analysis/disasm/dz_<Class>.txt`.
@@ -77,213 +79,213 @@ from `ResultViewController.checkRank` and `RankingViewController.changeValue:`, 
 
 ## GameViewController (38 functions)
 
-- `0x1000178e8` -[GameViewController coinLabel], 32 bytes: not ported
-- `0x100017908` -[GameViewController setCoinLabel:], 20 bytes: not ported
-- `0x10001791c` -[GameViewController scoreLabel], 32 bytes: not ported
-- `0x10001793c` -[GameViewController setScoreLabel:], 20 bytes: not ported
-- `0x100017950` -[GameViewController CoinCounter], 32 bytes: not ported
-- `0x100017970` -[GameViewController setCoinCounter:], 20 bytes: not ported
-- `0x100017984` -[GameViewController unwindToGameSegue:], 64 bytes: not ported
-- `0x1000179c4` GameViewController~shared1, 1012 bytes: not ported
-- `0x100017db8` -[GameViewController viewDidLoad], 44 bytes: not ported
-- `0x100017de4` -[GameViewController shouldAutorotate], 28 bytes: not ported
-- `0x100017e00` GameViewController.vtable[11], 8 bytes: not ported
-- `0x100017e08` -[GameViewController supportedInterfaceOrientations], 140 bytes: not ported
-- `0x100017e94` GameViewController.vtable[12], 100 bytes: not ported
-- `0x100017ef8` GameViewController.vtable[13], 96 bytes: not ported
-- `0x100017f58` -[GameViewController didReceiveMemoryWarning], 96 bytes: not ported
-- `0x100017fb8` -[GameViewController prefersStatusBarHidden], 28 bytes: not ported
-- `0x100017fd4` GameViewController.vtable[14], 8 bytes: not ported
-- `0x100017fdc` -[GameViewController gameOverDelegateFunc], 312 bytes: not ported
-- `0x100018114` GameViewController.vtable[16], 36 bytes: not ported
-- `0x100018138` -[GameViewController prepareForSegue:sender:], 148 bytes: not ported
-- `0x1000181cc` GameViewController.clearScene, 332 bytes: not ported
-- `0x100018318` -[GameViewController clearScene], 44 bytes: not ported
-- `0x100018344` GameViewController.scoreUpWithValue:, 12 bytes: not ported
-- `0x100018350` -[GameViewController scoreUpWithValue:], 52 bytes: not ported
-- `0x100018384` GameViewController.coinUpWithValue:, 12 bytes: not ported
-- `0x100018390` GameViewController~shared2, 296 bytes: not ported
-- `0x1000184b8` -[GameViewController coinUpWithValue:], 52 bytes: not ported
-- `0x1000184ec` -[GameViewController changeCoinCounterWithScenario:], 76 bytes: not ported
-- `0x100018598` -[GameViewController .cxx_destruct], 72 bytes: not ported
-- `0x1000185e0` GameViewController.initWithNibName:bundle:, 284 bytes: not ported
-- `0x1000186fc` -[GameViewController initWithNibName:bundle:], 132 bytes: not ported
-- `0x100018780` GameViewController.vtable[22], 212 bytes: not ported
-- `0x100018854` GameViewController.vtable[23], 180 bytes: not ported
-- `0x100018908` -[GameViewController initWithCoder:], 200 bytes: not ported
-- `0x100018b0c` GameViewController.prepareForSegue:sender:, 764 bytes: not ported
-- `0x100018e08` GameViewController.changeCoinCounterWithScenario:, 532 bytes: not ported
-- `0x10001904c` -[GameViewController gameOverDelegateFunc]~closure1, 108 bytes: not ported
-- `0x10001f220` GameViewController.prepareForSegue:sender:~call1, 56 bytes: not ported
+- `0x1000178e8` -[GameViewController coinLabel], 32 bytes: ported (game/game_view_controller.py)
+- `0x100017908` -[GameViewController setCoinLabel:], 20 bytes: ported (game/game_view_controller.py)
+- `0x10001791c` -[GameViewController scoreLabel], 32 bytes: ported (game/game_view_controller.py)
+- `0x10001793c` -[GameViewController setScoreLabel:], 20 bytes: ported (game/game_view_controller.py)
+- `0x100017950` -[GameViewController CoinCounter], 32 bytes: ported (game/game_view_controller.py)
+- `0x100017970` -[GameViewController setCoinCounter:], 20 bytes: ported (game/game_view_controller.py)
+- `0x100017984` -[GameViewController unwindToGameSegue:], 64 bytes: ported (game/game_view_controller.py)
+- `0x1000179c4` GameViewController~shared1, 1012 bytes: ported (game/game_view_controller.py)
+- `0x100017db8` -[GameViewController viewDidLoad], 44 bytes: ported (game/game_view_controller.py)
+- `0x100017de4` -[GameViewController shouldAutorotate], 28 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017e00` GameViewController.vtable[11], 8 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017e08` -[GameViewController supportedInterfaceOrientations], 140 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017e94` GameViewController.vtable[12], 100 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017ef8` GameViewController.vtable[13], 96 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017f58` -[GameViewController didReceiveMemoryWarning], 96 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017fb8` -[GameViewController prefersStatusBarHidden], 28 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017fd4` GameViewController.vtable[14], 8 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x100017fdc` -[GameViewController gameOverDelegateFunc], 312 bytes: ported (game/game_view_controller.py)
+- `0x100018114` GameViewController.vtable[16], 36 bytes: stubbed (game/game_view_controller.py; the result screen is phase 4)
+- `0x100018138` -[GameViewController prepareForSegue:sender:], 148 bytes: stubbed (game/game_view_controller.py; the result screen is phase 4)
+- `0x1000181cc` GameViewController.clearScene, 332 bytes: ported (game/game_view_controller.py)
+- `0x100018318` -[GameViewController clearScene], 44 bytes: ported (game/game_view_controller.py)
+- `0x100018344` GameViewController.scoreUpWithValue:, 12 bytes: ported (game/game_view_controller.py)
+- `0x100018350` -[GameViewController scoreUpWithValue:], 52 bytes: ported (game/game_view_controller.py)
+- `0x100018384` GameViewController.coinUpWithValue:, 12 bytes: ported (game/game_view_controller.py)
+- `0x100018390` GameViewController~shared2, 296 bytes: ported (game/game_view_controller.py)
+- `0x1000184b8` -[GameViewController coinUpWithValue:], 52 bytes: ported (game/game_view_controller.py)
+- `0x1000184ec` -[GameViewController changeCoinCounterWithScenario:], 76 bytes: ported (game/game_view_controller.py)
+- `0x100018598` -[GameViewController .cxx_destruct], 72 bytes: left out (iOS only: rotation, the status bar, memory warnings)
+- `0x1000185e0` GameViewController.initWithNibName:bundle:, 284 bytes: ported (game/game_view_controller.py)
+- `0x1000186fc` -[GameViewController initWithNibName:bundle:], 132 bytes: ported (game/game_view_controller.py)
+- `0x100018780` GameViewController.vtable[22], 212 bytes: ported (game/game_view_controller.py)
+- `0x100018854` GameViewController.vtable[23], 180 bytes: ported (game/game_view_controller.py)
+- `0x100018908` -[GameViewController initWithCoder:], 200 bytes: ported (game/game_view_controller.py)
+- `0x100018b0c` GameViewController.prepareForSegue:sender:, 764 bytes: stubbed (game/game_view_controller.py; the result screen is phase 4)
+- `0x100018e08` GameViewController.changeCoinCounterWithScenario:, 532 bytes: ported (game/game_view_controller.py)
+- `0x10001904c` -[GameViewController gameOverDelegateFunc]~closure1, 108 bytes: stubbed (game/game_view_controller.py; the result screen is phase 4)
+- `0x10001f220` GameViewController.prepareForSegue:sender:~call1, 56 bytes: stubbed (game/game_view_controller.py; the result screen is phase 4)
 
 ## GameScene (166 functions)
 
-- `0x10000be10` GameScene.createPlayer, 644 bytes: not ported
-- `0x10000c094` -[GameScene createPlayer], 44 bytes: not ported
-- `0x10000c0c0` GameScene.changeSpritePlayer:, 584 bytes: not ported
-- `0x10000c308` -[GameScene changeSpritePlayer:], 60 bytes: not ported
-- `0x10000c344` GameScene.createRoarSensor, 772 bytes: not ported
-- `0x10000c648` -[GameScene createRoarSensor], 44 bytes: not ported
-- `0x10000c674` GameScene.createObjectScene, 852 bytes: not ported
-- `0x10000c9c8` -[GameScene createObjectScene], 44 bytes: not ported
-- `0x10000c9f4` -[GameScene coinTogether], 12 bytes: not ported
-- `0x10000ca00` -[GameScene torchTogether], 12 bytes: not ported
-- `0x10000ca0c` GameScene~shared1, 236 bytes: not ported
-- `0x10000caf8` GameScene.createMonster, 1672 bytes: not ported
-- `0x10000d180` -[GameScene createMonster], 56 bytes: not ported
-- `0x10000d1b8` GameScene.createBats, 904 bytes: not ported
-- `0x10000d540` -[GameScene createBats], 56 bytes: not ported
-- `0x10000d578` GameScene.createTorchObstacle, 700 bytes: not ported
-- `0x10000d834` -[GameScene createTorchObstacle], 56 bytes: not ported
-- `0x10000d86c` GameScene.createCoin, 1540 bytes: not ported
-- `0x10000de70` -[GameScene createCoin], 56 bytes: not ported
-- `0x10000dea8` GameScene.tutorial, 2452 bytes: not ported
-- `0x10000e83c` -[GameScene tutorial], 44 bytes: not ported
-- `0x10000f614` -[GameScene playMonsterRoarAtPoint:], 68 bytes: not ported
-- `0x10000f658` -[GameScene playBatSoundAtPoint:], 68 bytes: not ported
-- `0x10000f69c` GameScene.playMonsterRoarAtPoint:, 296 bytes: not ported
-- `0x10000f7c4` GameScene.playBatSoundAtPoint:, 288 bytes: not ported
-- `0x10000f8e4` GameScene.movePlayerRight, 640 bytes: not ported
-- `0x10000fb64` -[GameScene movePlayerRight], 44 bytes: not ported
-- `0x10000fb90` GameScene.movePlayerLeft, 628 bytes: not ported
-- `0x10000fe04` -[GameScene movePlayerLeft], 44 bytes: not ported
-- `0x10000fe30` GameScene.soundMovePlayer, 224 bytes: not ported
-- `0x10000ff10` -[GameScene soundMovePlayer], 44 bytes: not ported
-- `0x10000ff3c` -[GameScene touchesBegan:withEvent:], 180 bytes: not ported
-- `0x10000fff0` -[GameScene movePlayerTap], 120 bytes: not ported
-- `0x100010068` -[GameScene touchesBegan:withEvent:]~call1~call1, 348 bytes: not ported
-- `0x1000101c4` -[GameScene touchesBegan:withEvent:]~call1~call1~call1, 268 bytes: not ported
-- `0x1000102d0` -[GameScene touchesBegan:withEvent:]~call1~call2, 368 bytes: not ported
-- `0x100010440` -[GameScene touchesBegan:withEvent:]~call1, 368 bytes: not ported
-- `0x1000105b0` GameScene.createNodesSounds, 396 bytes: not ported
-- `0x10001073c` -[GameScene createNodesSounds], 44 bytes: not ported
-- `0x100010768` GameScene.removeNodesSounds, 208 bytes: not ported
-- `0x100010838` -[GameScene removeNodesSounds], 44 bytes: not ported
-- `0x100010864` GameScene.createBackgroundTorch, 280 bytes: not ported
-- `0x10001097c` -[GameScene createBackgroundTorch], 44 bytes: not ported
-- `0x1000109a8` GameScene.createBackgroundMusic, 300 bytes: not ported
-- `0x100010ad4` -[GameScene createBackgroundMusic], 44 bytes: not ported
-- `0x100010b00` GameScene.createTorch, 1116 bytes: not ported
-- `0x100010f5c` -[GameScene createTorch], 56 bytes: not ported
-- `0x100010f94` GameScene.setLightTorch, 348 bytes: not ported
-- `0x1000110f0` -[GameScene setLightTorch], 44 bytes: not ported
-- `0x10001111c` GameScene.throwTorch, 1372 bytes: not ported
-- `0x100011678` -[GameScene throwTorch], 44 bytes: not ported
-- `0x1000116a4` -[GameScene lineRandom], 60 bytes: not ported
-- `0x1000116e0` -[GameScene coinRandom], 60 bytes: not ported
-- `0x10001171c` -[GameScene positionLineWithValue:], 40 bytes: not ported
-- `0x100011744` -[GameScene choiceObstacleLine], 128 bytes: not ported
-- `0x1000117c4` -[GameScene choiceObstacleCoin], 124 bytes: not ported
-- `0x100011840` GameScene.moveScenario, 800 bytes: not ported
-- `0x100011b60` -[GameScene moveScenario], 56 bytes: not ported
-- `0x100011b98` -[GameScene putScenario], 136 bytes: not ported
-- `0x100011c20` GameScene.changeScenario, 2808 bytes: not ported
-- `0x100012718` -[GameScene changeScenario], 44 bytes: not ported
-- `0x100012774` GameScene.moveScenario~closure1, 48 bytes: not ported
-- `0x1000127bc` GameScene.moveScenario~closure2, 48 bytes: not ported
-- `0x1000127f8` -[GameScene didBeginContact:], 12 bytes: not ported
-- `0x100012804` -[GameScene torchDidCollideWithObstacle:obstacleE:], 100 bytes: not ported
-- `0x100012868` -[GameScene torchDidCollideWithBat:batB:], 96 bytes: not ported
-- `0x1000128c8` -[GameScene playerDidCollideWithTorch:], 12 bytes: not ported
-- `0x1000128d4` GameScene~shared2, 80 bytes: not ported
-- `0x100012924` -[GameScene playerDidCollideWithCoin:playerP:], 96 bytes: not ported
-- `0x100012984` -[GameScene didBeginContact:]~closure1, 2612 bytes: not ported
-- `0x1000133b8` GameScene.torchDidCollideWithObstacle:obstacleE:, 436 bytes: not ported
-- `0x10001356c` GameScene.torchDidCollideWithBat:batB:, 588 bytes: not ported
-- `0x1000137b8` -[GameScene playerDidCollideWithTorch:]~closure1, 340 bytes: not ported
-- `0x10001390c` GameScene.playerDidCollideWithCoin:playerP:, 336 bytes: not ported
-- `0x100013a5c` GameScene.moveObstacleWithBorn, 712 bytes: not ported
-- `0x100013d24` -[GameScene moveObstacleWithBorn], 56 bytes: not ported
-- `0x100013d5c` GameScene.moveObstacle, 424 bytes: not ported
-- `0x100013f04` -[GameScene moveObstacle], 56 bytes: not ported
-- `0x100013f3c` GameScene.moveCoinSound, 404 bytes: not ported
-- `0x1000140d0` -[GameScene moveCoinSound], 56 bytes: not ported
-- `0x100014108` -[GameScene positionFloat], 44 bytes: not ported
-- `0x100014164` GameScene.moveObstacleWithBorn~closure1, 48 bytes: not ported
-- `0x100014a40` GameScene.didMoveToView:~call1, 188 bytes: not ported
-- `0x100014afc` -[GameScene gameSceneDelegate], 48 bytes: not ported
-- `0x100014b2c` -[GameScene setGameSceneDelegate:], 52 bytes: not ported
-- `0x100014b60` -[GameScene positionLaneZero], 12 bytes: not ported
-- `0x100014b6c` -[GameScene positionLaneOne], 8 bytes: not ported
-- `0x100014b74` -[GameScene positionLaneTwo], 12 bytes: not ported
-- `0x100014b80` -[GameScene actualPositionPlayer], 16 bytes: not ported
-- `0x100014b90` -[GameScene setActualPositionPlayer:], 16 bytes: not ported
-- `0x100014ba0` -[GameScene player], 48 bytes: not ported
-- `0x100014bd0` -[GameScene setPlayer:], 52 bytes: not ported
-- `0x100014c04` -[GameScene lightTorch], 48 bytes: not ported
-- `0x100014c34` -[GameScene throwLightTorch], 48 bytes: not ported
-- `0x100014c64` -[GameScene setThrowLightTorch:], 52 bytes: not ported
-- `0x100014c98` -[GameScene positionLastObstacles], 16 bytes: not ported
-- `0x100014ca8` -[GameScene setPositionLastObstacles:], 16 bytes: not ported
-- `0x100014cb8` -[GameScene countObstacles], 16 bytes: not ported
-- `0x100014cc8` -[GameScene setCountObstacles:], 16 bytes: not ported
-- `0x100014cd8` -[GameScene countSubObstacles], 16 bytes: not ported
-- `0x100014ce8` -[GameScene setCountSubObstacles:], 16 bytes: not ported
-- `0x100014cf8` -[GameScene countObjectScene], 16 bytes: not ported
-- `0x100014d08` -[GameScene setCountObjectScene:], 16 bytes: not ported
-- `0x100014d18` -[GameScene objectHeight], 16 bytes: not ported
-- `0x100014d28` -[GameScene setObjectHeight:], 16 bytes: not ported
-- `0x100014d38` -[GameScene playerDead], 36 bytes: not ported
-- `0x100014d5c` -[GameScene setPlayerDead:], 64 bytes: not ported
-- `0x100014d9c` -[GameScene blockPlayer], 36 bytes: not ported
-- `0x100014dc0` -[GameScene setBlockPlayer:], 64 bytes: not ported
-- `0x100014e00` -[GameScene positionX], 16 bytes: not ported
-- `0x100014e10` -[GameScene setPositionX:], 16 bytes: not ported
-- `0x100014e20` -[GameScene speedMonster], 16 bytes: not ported
-- `0x100014e30` -[GameScene setSpeedMonster:], 16 bytes: not ported
-- `0x100014e40` -[GameScene roar], 48 bytes: not ported
-- `0x100014e70` -[GameScene batSound], 48 bytes: not ported
-- `0x100014ea0` -[GameScene coinTinkle], 48 bytes: not ported
-- `0x100014ed0` -[GameScene coinSound], 48 bytes: not ported
-- `0x100014f00` -[GameScene getTorchSound], 48 bytes: not ported
-- `0x100014f30` -[GameScene playTorchSound], 48 bytes: not ported
-- `0x100014f60` -[GameScene backgroundTorch], 48 bytes: not ported
-- `0x100014f90` -[GameScene backgroundMusic], 48 bytes: not ported
-- `0x100014fc0` -[GameScene movePlayerSound], 48 bytes: not ported
-- `0x100014ff0` -[GameScene deadMonster], 48 bytes: not ported
-- `0x100015020` -[GameScene synth], 48 bytes: not ported
-- `0x100015050` -[GameScene utterance], 48 bytes: not ported
-- `0x100015080` -[GameScene setUtterance:], 52 bytes: not ported
-- `0x1000150b4` -[GameScene falloffSize], 16 bytes: not ported
-- `0x1000150c4` -[GameScene setFalloffSize:], 16 bytes: not ported
-- `0x1000150d4` -[GameScene scenario0], 48 bytes: not ported
-- `0x100015104` -[GameScene scenario1], 48 bytes: not ported
-- `0x100015134` -[GameScene scenario2], 48 bytes: not ported
-- `0x100015164` -[GameScene currentScenario], 92 bytes: not ported
-- `0x1000151c0` -[GameScene setCurrentScenario:], 88 bytes: not ported
-- `0x100015218` GameScene.vtable[48], 36 bytes: not ported
-- `0x10001523c` -[GameScene didMoveToView:], 68 bytes: not ported
-- `0x100015280` -[GameScene createScene], 100 bytes: not ported
-- `0x1000152e4` -[GameScene startGame], 72 bytes: not ported
-- `0x10001532c` GameScene.startScore, 632 bytes: not ported
-- `0x1000155a4` -[GameScene startScore], 44 bytes: not ported
-- `0x1000155d0` GameScene.vtable[52], 36 bytes: not ported
-- `0x1000155f4` -[GameScene upScore], 36 bytes: not ported
-- `0x10001561c` -[GameScene update:], 4 bytes: not ported
-- `0x100015620` GameScene.initWithSize:, 1844 bytes: not ported
-- `0x100015d54` -[GameScene initWithSize:], 4 bytes: not ported
-- `0x100015d58` GameScene.init, 1816 bytes: not ported
-- `0x100016470` -[GameScene init], 4 bytes: not ported
-- `0x100016474` GameScene.vtable[56], 112 bytes: not ported
-- `0x1000164e4` GameScene.vtable[57], 48 bytes: not ported
-- `0x100016514` -[GameScene initWithCoder:], 68 bytes: not ported
-- `0x1000165b8` -[GameScene .cxx_destruct], 348 bytes: not ported
-- `0x10001696c` GameScene.didMoveToView:, 2024 bytes: not ported
-- `0x100017154` GameScene.initWithCoder:, 1828 bytes: not ported
-- `0x1000178a8` GameScene.startScore~closure1, 40 bytes: not ported
-- `0x1000194fc` -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:], 232 bytes: not ported
-- `0x1000195e4` -[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:], 404 bytes: not ported
-- `0x100019778` -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:]~call1, 684 bytes: not ported
-- `0x100019a24` -[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:]~call1, 1088 bytes: not ported
-- `0x100022f08` GameScene~shared3, 32 bytes: not ported
-- `0x100022f68` -[GameScene obstacleDidCollideWithPlayer:obstacleE:], 96 bytes: not ported
-- `0x100022fc8` -[GameScene clear], 116 bytes: not ported
-- `0x10002303c` GameScene~shared4, 136 bytes: not ported
-- `0x1000230c4` GameScene.obstacleDidCollideWithPlayer:obstacleE:, 1660 bytes: not ported
-- `0x100023740` GameScene.createLight, 672 bytes: not ported
-- `0x1000239e0` -[GameScene createLight], 44 bytes: not ported
-- `0x100023a0c` GameScene.changeFalloffSize, 472 bytes: not ported
-- `0x100023be4` -[GameScene changeFalloffSize], 44 bytes: not ported
+- `0x10000be10` GameScene.createPlayer, 644 bytes: ported (game/game_scene.py)
+- `0x10000c094` -[GameScene createPlayer], 44 bytes: ported (game/game_scene.py)
+- `0x10000c0c0` GameScene.changeSpritePlayer:, 584 bytes: ported (game/game_scene.py)
+- `0x10000c308` -[GameScene changeSpritePlayer:], 60 bytes: ported (game/game_scene.py)
+- `0x10000c344` GameScene.createRoarSensor, 772 bytes: ported (game/game_scene.py)
+- `0x10000c648` -[GameScene createRoarSensor], 44 bytes: ported (game/game_scene.py)
+- `0x10000c674` GameScene.createObjectScene, 852 bytes: ported (game/game_scene.py)
+- `0x10000c9c8` -[GameScene createObjectScene], 44 bytes: ported (game/game_scene.py)
+- `0x10000c9f4` -[GameScene coinTogether], 12 bytes: ported (game/game_scene.py)
+- `0x10000ca00` -[GameScene torchTogether], 12 bytes: ported (game/game_scene.py)
+- `0x10000ca0c` GameScene~shared1, 236 bytes: ported (game/game_scene.py)
+- `0x10000caf8` GameScene.createMonster, 1672 bytes: ported (game/game_scene.py)
+- `0x10000d180` -[GameScene createMonster], 56 bytes: ported (game/game_scene.py)
+- `0x10000d1b8` GameScene.createBats, 904 bytes: ported (game/game_scene.py)
+- `0x10000d540` -[GameScene createBats], 56 bytes: ported (game/game_scene.py)
+- `0x10000d578` GameScene.createTorchObstacle, 700 bytes: ported (game/game_scene.py)
+- `0x10000d834` -[GameScene createTorchObstacle], 56 bytes: ported (game/game_scene.py)
+- `0x10000d86c` GameScene.createCoin, 1540 bytes: ported (game/game_scene.py)
+- `0x10000de70` -[GameScene createCoin], 56 bytes: ported (game/game_scene.py)
+- `0x10000dea8` GameScene.tutorial, 2452 bytes: ported (game/game_scene.py)
+- `0x10000e83c` -[GameScene tutorial], 44 bytes: ported (game/game_scene.py)
+- `0x10000f614` -[GameScene playMonsterRoarAtPoint:], 68 bytes: ported (game/game_scene.py)
+- `0x10000f658` -[GameScene playBatSoundAtPoint:], 68 bytes: ported (game/game_scene.py)
+- `0x10000f69c` GameScene.playMonsterRoarAtPoint:, 296 bytes: ported (game/game_scene.py)
+- `0x10000f7c4` GameScene.playBatSoundAtPoint:, 288 bytes: ported (game/game_scene.py)
+- `0x10000f8e4` GameScene.movePlayerRight, 640 bytes: ported (game/game_scene.py)
+- `0x10000fb64` -[GameScene movePlayerRight], 44 bytes: ported (game/game_scene.py)
+- `0x10000fb90` GameScene.movePlayerLeft, 628 bytes: ported (game/game_scene.py)
+- `0x10000fe04` -[GameScene movePlayerLeft], 44 bytes: ported (game/game_scene.py)
+- `0x10000fe30` GameScene.soundMovePlayer, 224 bytes: ported (game/game_scene.py)
+- `0x10000ff10` -[GameScene soundMovePlayer], 44 bytes: ported (game/game_scene.py)
+- `0x10000ff3c` -[GameScene touchesBegan:withEvent:], 180 bytes: left out (touches and gestures: keys instead, ui/game_input.py)
+- `0x10000fff0` -[GameScene movePlayerTap], 120 bytes: ported (game/game_scene.py)
+- `0x100010068` -[GameScene touchesBegan:withEvent:]~call1~call1, 348 bytes: left out (touches and gestures: keys instead, ui/game_input.py)
+- `0x1000101c4` -[GameScene touchesBegan:withEvent:]~call1~call1~call1, 268 bytes: left out (touches and gestures: keys instead, ui/game_input.py)
+- `0x1000102d0` -[GameScene touchesBegan:withEvent:]~call1~call2, 368 bytes: left out (touches and gestures: keys instead, ui/game_input.py)
+- `0x100010440` -[GameScene touchesBegan:withEvent:]~call1, 368 bytes: left out (touches and gestures: keys instead, ui/game_input.py)
+- `0x1000105b0` GameScene.createNodesSounds, 396 bytes: ported (game/game_scene.py)
+- `0x10001073c` -[GameScene createNodesSounds], 44 bytes: ported (game/game_scene.py)
+- `0x100010768` GameScene.removeNodesSounds, 208 bytes: ported (game/game_scene.py)
+- `0x100010838` -[GameScene removeNodesSounds], 44 bytes: ported (game/game_scene.py)
+- `0x100010864` GameScene.createBackgroundTorch, 280 bytes: ported (game/game_scene.py)
+- `0x10001097c` -[GameScene createBackgroundTorch], 44 bytes: ported (game/game_scene.py)
+- `0x1000109a8` GameScene.createBackgroundMusic, 300 bytes: ported (game/game_scene.py)
+- `0x100010ad4` -[GameScene createBackgroundMusic], 44 bytes: ported (game/game_scene.py)
+- `0x100010b00` GameScene.createTorch, 1116 bytes: ported (game/game_scene.py)
+- `0x100010f5c` -[GameScene createTorch], 56 bytes: ported (game/game_scene.py)
+- `0x100010f94` GameScene.setLightTorch, 348 bytes: left out (the light's colours: nothing to hear)
+- `0x1000110f0` -[GameScene setLightTorch], 44 bytes: left out (the light's colours: nothing to hear)
+- `0x10001111c` GameScene.throwTorch, 1372 bytes: ported (game/game_scene.py)
+- `0x100011678` -[GameScene throwTorch], 44 bytes: ported (game/game_scene.py)
+- `0x1000116a4` -[GameScene lineRandom], 60 bytes: ported (game/game_scene.py)
+- `0x1000116e0` -[GameScene coinRandom], 60 bytes: ported (game/game_scene.py)
+- `0x10001171c` -[GameScene positionLineWithValue:], 40 bytes: ported (game/game_scene.py)
+- `0x100011744` -[GameScene choiceObstacleLine], 128 bytes: ported (game/game_scene.py)
+- `0x1000117c4` -[GameScene choiceObstacleCoin], 124 bytes: ported (game/game_scene.py)
+- `0x100011840` GameScene.moveScenario, 800 bytes: ported (game/game_scene.py)
+- `0x100011b60` -[GameScene moveScenario], 56 bytes: ported (game/game_scene.py)
+- `0x100011b98` -[GameScene putScenario], 136 bytes: ported (game/game_scene.py)
+- `0x100011c20` GameScene.changeScenario, 2808 bytes: ported (game/game_scene.py)
+- `0x100012718` -[GameScene changeScenario], 44 bytes: ported (game/game_scene.py)
+- `0x100012774` GameScene.moveScenario~closure1, 48 bytes: ported (game/game_scene.py)
+- `0x1000127bc` GameScene.moveScenario~closure2, 48 bytes: ported (game/game_scene.py)
+- `0x1000127f8` -[GameScene didBeginContact:], 12 bytes: ported (game/game_scene.py)
+- `0x100012804` -[GameScene torchDidCollideWithObstacle:obstacleE:], 100 bytes: ported (game/game_scene.py)
+- `0x100012868` -[GameScene torchDidCollideWithBat:batB:], 96 bytes: ported (game/game_scene.py)
+- `0x1000128c8` -[GameScene playerDidCollideWithTorch:], 12 bytes: ported (game/game_scene.py)
+- `0x1000128d4` GameScene~shared2, 80 bytes: ported (game/game_scene.py)
+- `0x100012924` -[GameScene playerDidCollideWithCoin:playerP:], 96 bytes: ported (game/game_scene.py)
+- `0x100012984` -[GameScene didBeginContact:]~closure1, 2612 bytes: ported (game/game_scene.py)
+- `0x1000133b8` GameScene.torchDidCollideWithObstacle:obstacleE:, 436 bytes: ported (game/game_scene.py)
+- `0x10001356c` GameScene.torchDidCollideWithBat:batB:, 588 bytes: ported (game/game_scene.py)
+- `0x1000137b8` -[GameScene playerDidCollideWithTorch:]~closure1, 340 bytes: ported (game/game_scene.py)
+- `0x10001390c` GameScene.playerDidCollideWithCoin:playerP:, 336 bytes: ported (game/game_scene.py)
+- `0x100013a5c` GameScene.moveObstacleWithBorn, 712 bytes: ported (game/game_scene.py)
+- `0x100013d24` -[GameScene moveObstacleWithBorn], 56 bytes: ported (game/game_scene.py)
+- `0x100013d5c` GameScene.moveObstacle, 424 bytes: ported (game/game_scene.py)
+- `0x100013f04` -[GameScene moveObstacle], 56 bytes: ported (game/game_scene.py)
+- `0x100013f3c` GameScene.moveCoinSound, 404 bytes: ported (game/game_scene.py)
+- `0x1000140d0` -[GameScene moveCoinSound], 56 bytes: ported (game/game_scene.py)
+- `0x100014108` -[GameScene positionFloat], 44 bytes: ported (game/game_scene.py)
+- `0x100014164` GameScene.moveObstacleWithBorn~closure1, 48 bytes: ported (game/game_scene.py)
+- `0x100014a40` GameScene.didMoveToView:~call1, 188 bytes: left out (touches and gestures: keys instead, ui/game_input.py)
+- `0x100014afc` -[GameScene gameSceneDelegate], 48 bytes: ported (game/game_scene.py)
+- `0x100014b2c` -[GameScene setGameSceneDelegate:], 52 bytes: ported (game/game_scene.py)
+- `0x100014b60` -[GameScene positionLaneZero], 12 bytes: ported (game/game_scene.py)
+- `0x100014b6c` -[GameScene positionLaneOne], 8 bytes: ported (game/game_scene.py)
+- `0x100014b74` -[GameScene positionLaneTwo], 12 bytes: ported (game/game_scene.py)
+- `0x100014b80` -[GameScene actualPositionPlayer], 16 bytes: ported (game/game_scene.py)
+- `0x100014b90` -[GameScene setActualPositionPlayer:], 16 bytes: ported (game/game_scene.py)
+- `0x100014ba0` -[GameScene player], 48 bytes: ported (game/game_scene.py)
+- `0x100014bd0` -[GameScene setPlayer:], 52 bytes: ported (game/game_scene.py)
+- `0x100014c04` -[GameScene lightTorch], 48 bytes: ported (game/game_scene.py)
+- `0x100014c34` -[GameScene throwLightTorch], 48 bytes: ported (game/game_scene.py)
+- `0x100014c64` -[GameScene setThrowLightTorch:], 52 bytes: ported (game/game_scene.py)
+- `0x100014c98` -[GameScene positionLastObstacles], 16 bytes: ported (game/game_scene.py)
+- `0x100014ca8` -[GameScene setPositionLastObstacles:], 16 bytes: ported (game/game_scene.py)
+- `0x100014cb8` -[GameScene countObstacles], 16 bytes: ported (game/game_scene.py)
+- `0x100014cc8` -[GameScene setCountObstacles:], 16 bytes: ported (game/game_scene.py)
+- `0x100014cd8` -[GameScene countSubObstacles], 16 bytes: ported (game/game_scene.py)
+- `0x100014ce8` -[GameScene setCountSubObstacles:], 16 bytes: ported (game/game_scene.py)
+- `0x100014cf8` -[GameScene countObjectScene], 16 bytes: ported (game/game_scene.py)
+- `0x100014d08` -[GameScene setCountObjectScene:], 16 bytes: ported (game/game_scene.py)
+- `0x100014d18` -[GameScene objectHeight], 16 bytes: ported (game/game_scene.py)
+- `0x100014d28` -[GameScene setObjectHeight:], 16 bytes: ported (game/game_scene.py)
+- `0x100014d38` -[GameScene playerDead], 36 bytes: ported (game/game_scene.py)
+- `0x100014d5c` -[GameScene setPlayerDead:], 64 bytes: ported (game/game_scene.py)
+- `0x100014d9c` -[GameScene blockPlayer], 36 bytes: ported (game/game_scene.py)
+- `0x100014dc0` -[GameScene setBlockPlayer:], 64 bytes: ported (game/game_scene.py)
+- `0x100014e00` -[GameScene positionX], 16 bytes: ported (game/game_scene.py)
+- `0x100014e10` -[GameScene setPositionX:], 16 bytes: ported (game/game_scene.py)
+- `0x100014e20` -[GameScene speedMonster], 16 bytes: ported (game/game_scene.py)
+- `0x100014e30` -[GameScene setSpeedMonster:], 16 bytes: ported (game/game_scene.py)
+- `0x100014e40` -[GameScene roar], 48 bytes: ported (game/game_scene.py)
+- `0x100014e70` -[GameScene batSound], 48 bytes: ported (game/game_scene.py)
+- `0x100014ea0` -[GameScene coinTinkle], 48 bytes: ported (game/game_scene.py)
+- `0x100014ed0` -[GameScene coinSound], 48 bytes: ported (game/game_scene.py)
+- `0x100014f00` -[GameScene getTorchSound], 48 bytes: ported (game/game_scene.py)
+- `0x100014f30` -[GameScene playTorchSound], 48 bytes: ported (game/game_scene.py)
+- `0x100014f60` -[GameScene backgroundTorch], 48 bytes: ported (game/game_scene.py)
+- `0x100014f90` -[GameScene backgroundMusic], 48 bytes: ported (game/game_scene.py)
+- `0x100014fc0` -[GameScene movePlayerSound], 48 bytes: ported (game/game_scene.py)
+- `0x100014ff0` -[GameScene deadMonster], 48 bytes: ported (game/game_scene.py)
+- `0x100015020` -[GameScene synth], 48 bytes: ported (game/game_scene.py)
+- `0x100015050` -[GameScene utterance], 48 bytes: ported (game/game_scene.py)
+- `0x100015080` -[GameScene setUtterance:], 52 bytes: ported (game/game_scene.py)
+- `0x1000150b4` -[GameScene falloffSize], 16 bytes: ported (game/game_scene.py)
+- `0x1000150c4` -[GameScene setFalloffSize:], 16 bytes: ported (game/game_scene.py)
+- `0x1000150d4` -[GameScene scenario0], 48 bytes: ported (game/game_scene.py)
+- `0x100015104` -[GameScene scenario1], 48 bytes: ported (game/game_scene.py)
+- `0x100015134` -[GameScene scenario2], 48 bytes: ported (game/game_scene.py)
+- `0x100015164` -[GameScene currentScenario], 92 bytes: ported (game/game_scene.py)
+- `0x1000151c0` -[GameScene setCurrentScenario:], 88 bytes: ported (game/game_scene.py)
+- `0x100015218` GameScene.vtable[48], 36 bytes: ported (game/game_scene.py)
+- `0x10001523c` -[GameScene didMoveToView:], 68 bytes: ported (game/game_scene.py)
+- `0x100015280` -[GameScene createScene], 100 bytes: ported (game/game_scene.py)
+- `0x1000152e4` -[GameScene startGame], 72 bytes: ported (game/game_scene.py)
+- `0x10001532c` GameScene.startScore, 632 bytes: ported (game/game_scene.py)
+- `0x1000155a4` -[GameScene startScore], 44 bytes: ported (game/game_scene.py)
+- `0x1000155d0` GameScene.vtable[52], 36 bytes: ported (game/game_scene.py)
+- `0x1000155f4` -[GameScene upScore], 36 bytes: ported (game/game_scene.py)
+- `0x10001561c` -[GameScene update:], 4 bytes: ported (game/game_scene.py)
+- `0x100015620` GameScene.initWithSize:, 1844 bytes: ported (game/game_scene.py)
+- `0x100015d54` -[GameScene initWithSize:], 4 bytes: ported (game/game_scene.py)
+- `0x100015d58` GameScene.init, 1816 bytes: ported (game/game_scene.py)
+- `0x100016470` -[GameScene init], 4 bytes: ported (game/game_scene.py)
+- `0x100016474` GameScene.vtable[56], 112 bytes: ported (game/game_scene.py)
+- `0x1000164e4` GameScene.vtable[57], 48 bytes: ported (game/game_scene.py)
+- `0x100016514` -[GameScene initWithCoder:], 68 bytes: ported (game/game_scene.py)
+- `0x1000165b8` -[GameScene .cxx_destruct], 348 bytes: left out (Objective-C's clean-up)
+- `0x10001696c` GameScene.didMoveToView:, 2024 bytes: ported (game/game_scene.py)
+- `0x100017154` GameScene.initWithCoder:, 1828 bytes: ported (game/game_scene.py)
+- `0x1000178a8` GameScene.startScore~closure1, 40 bytes: ported (game/game_scene.py)
+- `0x1000194fc` -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:], 232 bytes: ported (game/game_scene.py)
+- `0x1000195e4` -[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:], 404 bytes: ported (game/game_scene.py)
+- `0x100019778` -[GameScene spriteThreeFramesWithImageOne:imageTwo:imageThree:]~call1, 684 bytes: ported (game/game_scene.py)
+- `0x100019a24` -[GameScene spriteSixFramesWithImageOne:imageTwo:imageThree:imageFour:imageFive:imageSix:imageSeven:]~call1, 1088 bytes: ported (game/game_scene.py)
+- `0x100022f08` GameScene~shared3, 32 bytes: ported (game/game_scene.py)
+- `0x100022f68` -[GameScene obstacleDidCollideWithPlayer:obstacleE:], 96 bytes: ported (game/game_scene.py)
+- `0x100022fc8` -[GameScene clear], 116 bytes: ported (game/game_scene.py)
+- `0x10002303c` GameScene~shared4, 136 bytes: ported (game/game_scene.py)
+- `0x1000230c4` GameScene.obstacleDidCollideWithPlayer:obstacleE:, 1660 bytes: ported (game/game_scene.py)
+- `0x100023740` GameScene.createLight, 672 bytes: ported (game/game_scene.py)
+- `0x1000239e0` -[GameScene createLight], 44 bytes: ported (game/game_scene.py)
+- `0x100023a0c` GameScene.changeFalloffSize, 472 bytes: ported (game/game_scene.py)
+- `0x100023be4` -[GameScene changeFalloffSize], 44 bytes: ported (game/game_scene.py)
 
 ## ResultViewController (70 functions)
 

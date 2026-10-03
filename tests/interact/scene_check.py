@@ -71,12 +71,13 @@ class Preview:
         self.W, self.H = self.scene.size
         W, H = self.W, self.H
         self.scene.physicsWorld.contactDelegate = self
-        # the player: scale W x 0.0007, a circle half its width, category 2, mask 6
+        # the player, as createPlayer: a circle half its width made before it is scaled by
+        # W x 0.0007 (0x10000bec8, then 0x10000c134), category 2, mask 6
         self.player = SpriteNode('player', name='player')
-        self.player.setScale(W * 0.0007)
         self.player.position = (0, -0.25 * H)
         self.player.physicsBody = self._body(
             physics.bodyWithCircleOfRadius(self.player.size[0] / 2), 2, 6)
+        self.player.setScale(W * 0.0007)
         self.scene.addChild(self.player)
         self.scene.listener = self.player
         # the roar sensor: the missing image, xScale W x 0.007, yScale 0.005, at 0.07 H

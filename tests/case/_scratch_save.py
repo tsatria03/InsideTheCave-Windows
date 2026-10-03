@@ -31,6 +31,7 @@ QUIET = {
     'SDL_VIDEODRIVER': 'dummy',
 }
 os.environ.update(QUIET)
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'      # pygame's banner, kept off the output
 atexit.register(shutil.rmtree, FOLDER, True)
 
 

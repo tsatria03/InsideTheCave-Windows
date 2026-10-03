@@ -17,12 +17,16 @@ cannot show you.
 
 ## Status
 
-**The port has only just begun.** Nothing is playable yet, and there are no releases.
-The whole original game has been disassembled: every function of its code is listed in
-`analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the game works, read
-from that code. What is here besides is the original app bundle, the libraries the port
-will use, the build and release scripts, and the notes the port is being written from.
-`aidocks/PORTING_STATUS.md` keeps track of what is done.
+**The game itself is playable from source**, with no releases yet:
+
+    python InsideTheCave.py
+
+It starts straight on a game: the original's earphone warning, menu, result and ranking
+screens are still to come, and until then a game over says your score and coins, and
+Enter plays again. The whole original game has been disassembled: every function of its
+code is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the
+game works, read from that code. `aidocks/PORTING_STATUS.md` keeps track of what is done,
+and `aidocks/DIVERGENCES.md` of every place the port differs on purpose.
 
 ---
 
@@ -45,19 +49,28 @@ port is for Windows only.
 
 ## How the game plays
 
-As the press described it in 2016, and as the names in the binary suggest; not yet
-checked against the original's code. The port will follow what that code actually does,
-and `aidocks/GAME_STRUCTURE.md` records it as it is read out of the binary.
+As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few changes.
 
-- The cave has **three lanes**. Monsters come down them toward you, and each one
-  **roars** from where it is. When you hear the roar, move left or right, out of its lane.
-- Your **torch** is gradually going out, and the darkness closes in. Pick up new torches
-  as you go.
-- A torch can also be **thrown** at the monsters and the bats as a weapon.
-- **Coins** lie along the way, and the cave changes as you go deeper: rock, water and ice.
-- The 2016 update added new monsters and a boss.
-- At the end, your score goes on a leaderboard. The original's was online, through Apple's
-  CloudKit, which a Windows port cannot reach.
+- The cave has **three lanes**, and you stand at the bottom of the middle one. Monsters
+  come down the lanes toward you; as one comes within reach it **roars**, from its lane,
+  left, ahead or right. Move out of its lane before it reaches you, about a second later.
+- **Bats** come down the same way, with their own sound; every seventh obstacle is bats.
+- Your **torch** burns down as you go; "Torch low" is said when it starts to dim. Torches
+  lie on the path: run into one to pick it up and relight.
+- **Throw** your torch up your lane to kill a monster in it. It uses the torch up, and
+  scores nothing; a bat it hits only dodges into another lane.
+- **Coins** come down too, each jingling from its lane: ten points each. The score also
+  goes up four times a second while you live.
+- The cave **speeds up** every twenty things that come down, and turns from rock to water
+  and then ice as you go deeper.
+- The game will remember your best five scores on your computer, with the result screen
+  still to come. The original also sent them to an online leaderboard, which this port
+  leaves out.
+
+**Keys**: A or Left Arrow and D or Right Arrow move, W or Up Arrow throws, P or Escape
+pauses, Page Up and Page Down set the volume, F1 lists and changes the keys, Alt+F4 quits.
+Leaving the window pauses. On your first three games a Windows voice says the original's
+line in your language, and your screen reader then says the keys.
 
 ## Layout
 
@@ -65,8 +78,9 @@ and `aidocks/GAME_STRUCTURE.md` records it as it is read out of the binary.
 game/                    the original app bundle, unpacked
   sounds/used/           the 12 sounds version 2.32 plays, as WAV, under their own names
   sounds/unused/         14 sounds from the game's older versions
-insidethecave/           the Python package: so far the platform layer, the key screen and
-                         the SpriteKit stand-in
+InsideTheCave.py         the entry point: python InsideTheCave.py
+insidethecave/           the Python package: the game, the SpriteKit stand-in, the
+                         platform layer and the keyboard
 analysis/                the binary, and its complete disassembly and decoded data
 tools/                   the arm64 Mach-O and disassembly tools that made analysis/
 tests/case/              the automated tests
@@ -82,10 +96,13 @@ requirements.txt         the two packages it needs
 VERSION                  the date version, such as 26.10.02-1
 ```
 
-The platform layer is in `insidethecave/platform/`: OpenAL, the timers, the save, the
-volume settings, speech and the tutorial's Windows voice, the display language, the key
-bindings and the sounds. The F1 key-binding screen is in `insidethecave/ui/`. The game
-itself will have one module per original class in `insidethecave/game/`.
+The game is in `insidethecave/game/`, one module per original class (so far `GameScene`
+and `GameViewController`); `insidethecave/scene/` is the part of Apple's SpriteKit it
+needs (things moving over time, contacts, sounds placed in the lanes); the platform layer
+is in `insidethecave/platform/`: OpenAL, the timers, the save, the volume settings, speech
+and the tutorial's Windows voice, the display language, the key bindings and the sounds.
+The keyboard and the F1 key-binding screen are in `insidethecave/ui/`, and
+`InsideTheCave.py` is the entry point and the window.
 
 The save lives in `%APPDATA%\InsideTheCave`: `save.json` (the local top five and the
 tutorial count), `settings.json` (the master and music volumes) and `keys.json` (the key
@@ -126,7 +143,8 @@ the original will be written down in `aidocks/DIVERGENCES.md`.
 `tests/case/` holds the tests: plain scripts, each checking one part of the game
 against the original and printing `ok` or `FAIL` for every check, then a total. So far
 they cover the platform layer (`paths`, `runloop`, `save`, `speech`, `keymap`, `sound`,
-`language`) and the SpriteKit stand-in (`scene`). Run any of them on its own:
+`language`), the SpriteKit stand-in (`scene`), the game (`gameplay`) and the program
+(`app`). Run any of them on its own:
 
     python tests/case/<name>.py
 
@@ -149,6 +167,12 @@ a monster, bats or a jingling coin coming down each lane, the roar when it reach
 sensor, and "now" when it would reach you.
 
     python tests/interact/scene_check.py
+
+`stage_chooser.py` starts the real game from the beginning, a little before the water, a
+little before the ice, or at the top speed, with the tutorial and debug mode (where
+nothing can kill you) on or off:
+
+    python tests/interact/stage_chooser.py
 
 ## Building and releasing
 

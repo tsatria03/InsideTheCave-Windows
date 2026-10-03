@@ -27,7 +27,11 @@ MISSING_IMAGE = (128.0, 128.0)
 
 
 def image_size(name):
-    """An image's size in points, by the name the code asks for."""
+    """An image's size in points, by the name the code asks for.  ``imageNamed:`` takes
+    the name with or without ``.png`` (the dead sprites are asked for with it,
+    ``"deadPedra.png"`` at 0x100027931)."""
+    if name not in image_sizes.SIZES and name.lower().endswith('.png'):
+        name = name[:-4]
     return image_sizes.SIZES.get(name, MISSING_IMAGE)
 
 

@@ -19,16 +19,23 @@ order (the order they joined the scene); the port's game scene accepts either or
 
 **Shapes**: rectangles (with a centre offset) and circles, never rotated (the game
 creates no rotation).  A body's shape is taken in the scene's units, as the game computed
-it from the sprite's scaled ``size``; whether SpriteKit then scaled it again by the node's
-own scale is Apple's code and not in the binary (**inferred** not), so it is the switch
-``BODY_SCALES_WITH_NODE``, to be settled by ear with the roar's timing (question 11).
+it from the sprite's ``size``, and then scaled by the node's own scale, as SpriteKit
+scales a body with its node (**inferred**: Apple's code, not the binary).  The binary
+points that way: ``createPlayer`` builds the player's circle from its size *before*
+``changeSpritePlayer`` scales it by W x 0.0007 (0x10000bec8, then 0x10000c134), a radius
+of 150 points, which only scaled with the node comes out as half the drawn player's
+width, 78.75; unscaled it would be twice the sprite.  For a body built after the scale
+the difference is small (a monster's scale is 0.975).  The switch
+``BODY_SCALES_WITH_NODE`` keeps the other reading at hand (aidocks/project_port_plan.md,
+question 11).
 """
 from __future__ import annotations
 
 import math
 
-#: Whether a body's shape grows and shrinks with its node's scale (**inferred** not).
-BODY_SCALES_WITH_NODE = False
+#: Whether a body's shape grows and shrinks with its node's scale (**inferred** yes, from
+#: createPlayer; turned on 2026-10-02 with phase 3).
+BODY_SCALES_WITH_NODE = True
 
 DEFAULT_CATEGORY = 0xFFFFFFFF
 DEFAULT_CONTACT = 0

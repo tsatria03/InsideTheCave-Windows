@@ -53,13 +53,13 @@ class Timer:
     __slots__ = ('interval', 'target', 'selector', 'userInfo', 'repeats',
                  'fireDate', '_valid', '_seq')
 
-    def __init__(self, interval, target, selector, userInfo, repeats, seq):
+    def __init__(self, interval, target, selector, userInfo, repeats, seq, now):
         self.interval = float(interval)
         self.target = target
         self.selector = selector
         self.userInfo = userInfo
         self.repeats = bool(repeats)
-        self.fireDate = clock() + self.interval
+        self.fireDate = now + self.interval
         self._valid = True
         self._seq = seq
 
@@ -92,14 +92,16 @@ class RunLoop:
             cls._instance = RunLoop()
         return cls._instance
 
-    def __init__(self):
+    def __init__(self, clock_fn=None):
         self._timers = []                 # list[Timer]
         self._seq = itertools.count()
         self._held_at = None              # when hold() stopped the clock
+        #: What this loop's time is: the real clock, or a made-up one the tests drive.
+        self.now = clock_fn or clock
 
     def scheduledTimer(self, interval, target, selector, userInfo=None, repeats=False):
         """``+[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:]``"""
-        t = Timer(interval, target, selector, userInfo, repeats, next(self._seq))
+        t = Timer(interval, target, selector, userInfo, repeats, next(self._seq), self.now())
         self._timers.append(t)
         return t
 
@@ -107,7 +109,7 @@ class RunLoop:
         """Run every timer due, earliest first.  Called once per frame by the main loop."""
         if self._held_at is not None:
             return
-        now = clock() if now is None else now
+        now = self.now() if now is None else now
         while True:
             timer = min((t for t in self._timers if t._valid and t.fireDate <= now),
                         key=lambda t: (t.fireDate, t._seq), default=None)
@@ -136,12 +138,12 @@ class RunLoop:
         ``resume``, which moves every fire date on by the time that was held, so the game
         picks up where it left off."""
         if self._held_at is None:
-            self._held_at = clock()
+            self._held_at = self.now()
 
     def resume(self):
         if self._held_at is None:
             return
-        gap = clock() - self._held_at
+        gap = self.now() - self._held_at
         self._held_at = None
         for t in self._timers:
             t.fireDate += gap

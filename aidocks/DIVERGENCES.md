@@ -11,12 +11,39 @@ Each entry gives the address it rests on, and the port's matching code. Before
 
 ## Original behaviour kept as-is
 
-Nothing yet (2026-10-02).
+Kept on purpose with the game scene (built 2026-10-02, `insidethecave/game/game_scene.py`):
+- **Bats cannot be killed.** A thrown torch makes a bat dodge in 0.3 s, to the centre from a side or to a random side from the centre, and flies on (`torchDidCollideWithBat:batB:`, 0x10001356c; the wrapper at 0x100012868 hands it only the bat). The dev: "I think I do not want to kill them."
+- **Moving before the game starts.** Lane changes check only `playerDead` (0x10000f910), so they work during the tutorial line and the wait before the first slot. The dev chose to keep it.
+- **A move into the wall still moves.** At the edge the wall sound plays and the player is sent to the lane they are already in, over the same 0.15 s (0x10000f970..0x10000fa60).
+- **A torch on the path is silent**, as the original; only coins get a sound (the dev: "You can leave the torch sounds alone.").
+- **Killing a monster scores nothing**, and a thrown torch's light stays out after a kill (0x100013538).
+- **After death the monsters go on falling for the second before the game over**, and their roars still play: the roar is the one sound `removeNodesSounds` keeps (0x100010768).
 
 ## Where the port differs on purpose
 
+### Contacts work whichever body comes first (fix, built 2026-10-02)
+The original's contact handler (closure 0x100012984) builds a pair sorted by category, but tests most pairs in one raw order of `bodyA` and `bodyB` only: a coin and the player (0x100012d80), a thrown torch and a monster (0x100012e90) or a bat (0x100012f9c), a torch on the path and the player (0x1000130ac), a monster or bat and the player (0x1000131a0). Only the roar and the bats' sound are tested both ways. When SpriteKit handed a pair the other way round, the contact was silently missed. The port matches every pair either way and hands each handler its bodies in the original's order (`didBeginContact`). The dev: "I want option 1."
+
+### Spawning never stops after a kill (fix, built 2026-10-02)
+A slot makes the next slot when its own action reaches 0.33 H (`moveObstacleWithBorn`, 0x100013aec). A monster killed by a torch made the next slot itself only when it was still at or above 0.4175 H (0x1000134dc..0x1000134f0), so one killed between the two heights left no next slot, and the cave went quiet for good. The port marks each slot when it makes the next, and a monster killed before that makes it then (`torchDidCollideWithObstacle`). The dev: "I want to fix this bug."
+
+### No throw after death (fix, built 2026-10-02)
+`throwTorch` checks the light and `blockPlayer` (0x100011150, 0x100011164) but not `playerDead`, so a throw in the second between death and the game over still played. The port refuses it.
+
+### Every coin jingles as it comes (port addition, built 2026-10-02)
+The original loads "tilintar.aiff" as a positioned node and has `moveCoinSound` to carry it with a coin, but never plays it or calls that function (0x100013f3c); coins are silent until taken. In the port each coin carries its own jingle, looped, at 1.0, placed with the coin as it comes down its lane, stopping when the coin is taken or leaves the bottom (`createCoin`). It goes with the other sounds at death. The dev: "I want coins to have a sound."
+
+### "Torch low" (port addition, built 2026-10-02)
+The original shows the light shrinking; its burning sound loses only about a quarter of its volume over a whole torch. The port says "Torch low" through the screen reader once a torch, the first time the light takes its dim step (falloff 3 or more, `changeFalloffSize` 0x100023a0c), about 29 slots before it goes out. A new torch picked up resets it. The dev: "I want to add a speech warning if possible. Along with the current sounds."
+
+### The tutorial: line, then key hints, then the first slot (port addition, built 2026-10-02)
+The original speaks its line and starts the first slot 4 s after the line began (0x10000e634), and its line speaks of swipes and taps. The port speaks the line in the Windows voice (or through the screen reader when there is none), then, once the voice is done, says the keys from the player's own bindings through the screen reader: "Press A or Left Arrow to move left, and D or Right Arrow to move right." and "Press W or Up Arrow to throw your torch." The first slot comes once both are done; as a screen reader cannot tell when it has finished, the hints are given 14 characters a second. On the fourth game and after, nothing is said and the first slot comes after 2 s, as the original.
+
+### The pause, and debug mode (port additions, built 2026-10-02)
+The original has no pause. In the port P or Escape pauses and continues (Enter continues too), and leaving the window pauses: the slots, the light, the score, the timers and every sound stop where they are (`GameScene.pause`, `runloop.hold`). With `--debug` nothing kills the player: a monster or bats reaching them says "Hit" instead; developer-facing only.
+
 ### Volume settings (port addition, built 2026-10-02)
-The original's gains are constants (the music at 0.2, `changeVolumeTo:0.2` at 0x100010a6c). The port keeps every one and adds two settings on top, in `settings.json`: `MASTERVOLUME`, which Page Up and Page Down step by ten, and `MUSICVOLUME`. Both default to 100, the original's mix (`platform/volume.py`; `project_port_plan.md`, question 12). The game does not apply them yet; the SpriteKit stand-in will.
+The original's gains are constants (the music at 0.2, `changeVolumeTo:0.2` at 0x100010a6c). The port keeps every one and adds two settings on top, in `settings.json`: `MASTERVOLUME`, which Page Up and Page Down step by ten, and `MUSICVOLUME`. Both default to 100, the original's mix (`platform/volume.py`; `project_port_plan.md`, question 12). Applied since the game scene (2026-10-02): the master as OpenAL's listener gain, the music's on its 0.2 (`createBackgroundMusic`).
 
 ### Actions keep their leftover time (built 2026-10-02)
 SpriteKit runs actions frame by frame, 60 frames a second on the iPhone, so an action that ends partway through a frame hands over to the next one at the following frame. The port's frames come at whatever rate Windows gives, so rounding to them would make every chain of actions run long by a different amount on every computer: the slot chain above all, one slot every 0.165 x `speedMonster` (`moveObstacleWithBorn`, 0x100013ae8). The stand-in (`insidethecave/scene/actions.py`) starts the next action, and any action a block starts, at the exact moment the last one ended, so chains keep the binary's durations whatever the frame rate (`tests/case/scene.py`). On the iPhone the difference was at most a sixtieth of a second a link.

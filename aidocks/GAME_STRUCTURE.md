@@ -63,6 +63,9 @@ screen; Replay unwinds to the game (`unwindToGameSegue`), Menu unwinds to the me
 - **The player** starts in lane 1 (`actualPositionPlayer` = 1, 0x10001569c, **checked**), at (0, -0.25 H),
   so y = -333.5 (0x10000be5c..0x10000be90).
   - A circle physics body of half its width; category 2, contact mask 6, collision mask 0 (0x10000bec8..0x10000c048).
+    The body is made from the sprite's size *before* `changeSpritePlayer` scales it (**checked** 2026-10-02:
+    0x10000bec8, then `setScale:` at 0x10000c134), a radius of 150 points; only if SpriteKit scales a body
+    with its node does that come out as half the drawn player's width, 78.75 (**inferred** that it does).
   - `changeSpritePlayer(withTorch)` (0x10000c0c0): scale W x 0.0007; frames "player", "player2", "player3" with a
     torch, "sem_tocha_1/2/3" without; textures [1, 2, 3, 2] at 0.1 s a frame, forever (helper 0x100019778).
     It does nothing once the player is dead.
@@ -187,8 +190,9 @@ taken as 128 points square (**inferred**), which makes it a line 672 wide and 0.
   `analysis/data/assets.txt`): the monster's body (half of 220 x 153 points times 0.975, centred 22 below it)
   meets the sensor's top when the monster is at y = 153, and the player's circle (radius 78.75: 300 points
   times 0.525, halved) when it is at y = -195. That is 348 units, **1.04 s at the start** (333.5 units a
-  second) and about 0.51 s at the fastest (**inferred**: it rests on the 128-point placeholder and on bodies
-  not being scaled again by their nodes; `tests/case/scene.py` pins the sensor's half of it).
+  second) and about 0.51 s at the fastest (**inferred**: it rests on the 128-point placeholder; whether
+  SpriteKit scales a body again by its node changes it by under 0.01 s, since `createPlayer` makes the player's
+  body before its scale; `tests/case/scene.py` pins the sensor's half of it).
 - Both nodes are positional, and the listener is the player, so the roar also comes from the monster's side.
 
 **The coin's jingle** ("tilintar.aiff") is set up as a positional node but never played, and `moveCoinSound`,
@@ -227,7 +231,9 @@ torch sprite.
 - The player's own light goes out (falloff 1000) and the sprite becomes torchless. **Throwing uses up the torch.**
 
 **Contacts** (`didBeginContact:`, closure 0x100012984). Most pairs are tested in one order of the two bodies only,
-so a contact that arrives the other way round is ignored (**inferred** consequence):
+so a contact that arrives the other way round is ignored (**inferred** consequence). **Checked** 2026-10-02: the
+closure first builds a pair sorted by category, the higher first (0x100012a0c), but uses it only to hand the
+nodes on; every test reads `contact.bodyA` and `contact.bodyB` themselves:
 - **Monster or bat and the roar sensor**: the roar or the bats (section 6). Both orders tested.
 - **Coin and player**: "plim_moeda.wav" at 0.2, the coin removed, **score +10 and coins +1**
   (`playerDidCollideWithCoin:playerP:`, 0x10001390c).
@@ -237,7 +243,9 @@ so a contact that arrives the other way round is ignored (**inferred** consequen
   will not now reach 0.33 H.
 - **Thrown torch and bat**: the bat is **not** killed and the torch flies on; the bat dodges in 0.3 s, to the
   centre if it was at a side, or to a random side if it was in the centre; it also prints to the console
-  (`torchDidCollideWithBat:batB:`, 0x10001356c).
+  (`torchDidCollideWithBat:batB:`, 0x10001356c). **Checked** 2026-10-02: its wrapper (0x100012868) hands the
+  body only the bat and the scene; the side is `arc4random_uniform(2)` into the table {0.3, -0.3} at 0x1000248a0,
+  times W; the console gets the bat's x and W / 3.
 - **Torch pickup and player**: picking it up (above).
 - **Monster or bat and player**: death (below).
 

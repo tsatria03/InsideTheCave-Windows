@@ -300,8 +300,11 @@ def test_a_monster_reaches_the_roar_sensor_where_its_bodies_meet():
     m.runAction(A.moveToY(-0.5 * H, 4.0))
     _run(scene, 4.0, 1 / 120.0)
     assert len(hit) == 1, hit
-    sensor_top = H * 0.07 + 128 * 0.005 / 2
-    y_meet = sensor_top + 22 + h * 0.25
+    # each body scaled again by its node's scale when the stand-in says SpriteKit does
+    sy_sensor = 0.005 if physics.BODY_SCALES_WITH_NODE else 1.0
+    sy_monster = W * 0.0013 if physics.BODY_SCALES_WITH_NODE else 1.0
+    sensor_top = H * 0.07 + 128 * 0.005 * sy_sensor / 2
+    y_meet = sensor_top + (22 + h * 0.25) * sy_monster
     expected = (0.5 * H - y_meet) / (H / 4.0)
     assert abs(hit[0] - expected) <= 1 / 120.0 + 1e-9, (hit[0], expected)
 
