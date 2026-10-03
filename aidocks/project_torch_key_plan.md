@@ -23,6 +23,7 @@ metadata:
 | "No torch." | burnt out, or thrown | 5.0 or more (`FALLOFF_OUT` after either) |
 
   A torch rises 0.025 a slot from 2.0 to 3.0 (40 slots), then 0.07 a slot to 5.0 (about 29), so about 69 slots in all (`changeFalloffSize`, 0x100023a0c). The almost-out boundary is 5.0 - 8 x 0.07 = 4.44. At speed 5.0 a level lasts about 16 s; at 1.0 about 3 s (accepted: the dev chose slots over time).
+  **With the difficulties** ([[project_difficulty_plan]]) the torch burns at a different rate on Easy and Hard, so the levels are the falloff points in the table, not fixed slot counts: the slot counts above are Medium's; "Torch half." comes from slot 31 on Easy and 16 on Hard, "Torch low." from 62 and 32, "Torch almost out." from 92 (the last 13) and 47 (the last 7).
 - **When it works:** whenever a game is running, the instructions included; not on the pause menu (its keys are the menu's), and not after death. Said through the screen reader, interrupting, as the game's other messages (`GameScene.say`).
 
 ## 2. The throw key with no torch

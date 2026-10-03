@@ -1,7 +1,7 @@
 ##Unfinished.
 
 Add three keys that say, during a game, your score with S, your coins with C, and how many times the cave has sped up with E.
-Add a difficulty choice to the main menu: Easy starting at speed 5.0, Normal at 4.0 and Hard at 3.0.
+Make Play ask for a difficulty, Easy, Medium or Hard, each with its own speeds, torch length and best five.
 Add a Tutorial to the main menu, after Play, where the cave never speeds up and a Windows voice tells you what each thing is and what to do.
 Make Play say your keys only on your first two games, instead of the original's instructions on your first three.
 Make the result screen also say how long you survived and the top speed you reached.
