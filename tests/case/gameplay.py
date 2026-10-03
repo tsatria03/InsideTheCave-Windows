@@ -493,6 +493,43 @@ def test_a_bat_dodges_a_torch():
     assert abs(abs(b.position[0]) - 0.3 * W) < 1e-6, 'a centre bat goes to a side'
 
 
+def test_a_falling_bat_dodges_a_thrown_torch_and_stays_dodged():
+    """The dev found the bats not moving off to the side: the dodge's moveToX and the
+    fall's moveToY each put the other's axis back.  A bat in your lane, a torch thrown at
+    it: the bat leaves for good, keeps falling, and you live."""
+    g = _Game(seed=3)
+    s = g.scene
+    g.start()
+    s.createMonster = s.createBats
+    for make in ('createCoin', 'createTorchObstacle'):
+        setattr(s, make, lambda: G.SpriteNode(name='slot'))
+    bat = None
+    for _ in range(400):
+        g.step(1 / 30.0)
+        bats = _named(s, 'bat')
+        if bats:
+            bat = bats[0]
+            break
+    assert bat is not None, 'no bat came'
+    s.createBats = s.createMonster = lambda: G.SpriteNode(name='slot')   # this bat alone
+    lane = bat.position[0]
+    s.actualPositionPlayer = {-0.3 * W: 0, 0.0: 1, 0.3 * W: 2}[round(lane, 6)]
+    s.player.position = (lane, s.player.position[1])
+    g.run(0.5)
+    s.throwTorch()
+    for _ in range(120):
+        g.step(1 / 30.0)
+        if bat.position[0] != lane:
+            break
+    assert bat.position[0] != lane, 'the torch never reached the bat'
+    y = bat.position[1]
+    g.run(1.0)
+    assert abs(abs(bat.position[0] - lane) - 0.3 * W) < 1e-6, 'the bat went back to its lane'
+    assert bat.position[1] < y, 'the bat stopped falling'
+    g.run(4.0)
+    assert not s.playerDead, 'the dodged bat still reached you'
+
+
 def test_the_torch_burns_out_and_says_torch_low_once():
     g = _Game()
     s = g.scene

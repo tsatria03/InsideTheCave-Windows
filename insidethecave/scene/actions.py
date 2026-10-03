@@ -160,7 +160,10 @@ class Wait(_Timed):
 
 class MoveTo(_Timed):
     """``moveToX:``, ``moveToY:``, ``moveTo:``: linear, from wherever the node is when the
-    action starts.  ``x`` or ``y`` None leaves that coordinate alone."""
+    action starts.  ``x`` or ``y`` None leaves that coordinate alone: where the node is now,
+    not where it was when the action started, so a ``moveToX`` and a ``moveToY`` running
+    together each move their own axis, as in SpriteKit.  A bat dodging a torch sideways
+    (``torchDidCollideWithBat``) while it falls is the case the game has."""
 
     def __init__(self, x, y, duration):
         super().__init__(duration)
@@ -171,8 +174,9 @@ class MoveTo(_Timed):
 
     def apply(self, node, start, f):
         sx, sy = start
-        x = sx if self.x is None else sx + (self.x - sx) * f
-        y = sy if self.y is None else sy + (self.y - sy) * f
+        nx, ny = node.position
+        x = nx if self.x is None else sx + (self.x - sx) * f
+        y = ny if self.y is None else sy + (self.y - sy) * f
         node.position = (x, y)
 
 

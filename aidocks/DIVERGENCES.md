@@ -12,7 +12,7 @@ Each entry gives the address it rests on, and the port's matching code. Before
 ## Original behaviour kept as-is
 
 Kept on purpose with the game scene (built 2026-10-02, `insidethecave/game/game_scene.py`):
-- **Bats cannot be killed.** A thrown torch makes a bat dodge in 0.3 s, to the centre from a side or to a random side from the centre, and flies on (`torchDidCollideWithBat:batB:`, 0x10001356c; the wrapper at 0x100012868 hands it only the bat). The dev: "I think I do not want to kill them."
+- **Bats cannot be killed.** A thrown torch makes a bat dodge in 0.3 s, to the centre from a side or to a random side from the centre, and flies on (`torchDidCollideWithBat:batB:`, 0x10001356c; the wrapper at 0x100012868 hands it only the bat). The dev: "I think I do not want to kill them." Until the third release the port's dodge did not work at all, as the dev found by ear: the stand-in's `moveToX` put the bat's height back, and the fall its lane, so the bat froze for 0.3 s and returned to its lane; fixed in `scene/actions.py` (`MoveTo` leaves the other axis where it is now). The dodge picks left or right fairly from the middle (the table at 0x1000248a0 holds 0.3 and -0.3).
 - **Moving before the game starts.** Lane changes check only `playerDead` (0x10000f910), so they work during the tutorial line and the wait before the first slot. The dev chose to keep it.
 - **A move into the wall still moves.** At the edge the wall sound plays and the player is sent to the lane they are already in, over the same 0.15 s (0x10000f970..0x10000fa60).
 - **Killing a monster scores nothing**, and a thrown torch's light stays out after a kill (0x100013538).

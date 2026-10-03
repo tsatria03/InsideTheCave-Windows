@@ -87,6 +87,25 @@ def test_a_move_is_linear():
     assert n.position[1] == -667 and not n.hasActions()
 
 
+def test_a_move_across_and_a_move_down_run_together():
+    """moveToX and moveToY at once each move their own axis: a bat dodging sideways
+    while it falls goes on falling, and stays in its new lane."""
+    scene = Scene()
+    n = Node()
+    scene.addChild(n)
+    n.position = (0, 667)
+    _run(scene, 0.0, 0.1)
+    n.runAction(A.moveToY(-667, 4.0))
+    _run(scene, 1.0, 0.1)
+    n.runAction(A.moveToX(0.3 * W, 0.3))
+    _run(scene, 1.3, 0.1, start=1.0)
+    assert _close(n.position[0], 0.3 * W), n.position
+    assert _close(n.position[1], 667 - 1334 * 1.3 / 4.0, 1e-6), n.position
+    _run(scene, 3.0, 0.1, start=1.3)
+    assert _close(n.position[0], 0.3 * W), 'it went back across: %r' % (n.position,)
+    assert _close(n.position[1], 667 - 1334 * 3.0 / 4.0, 1e-6), n.position
+
+
 def test_the_slot_chain_keeps_its_time_whatever_the_frame_rate():
     """A slot moves to 0.33 H in 0.165 x speedMonster and its block makes the next
     (0x100013ae8): ten slots must start 0.66 s apart, at 60 frames a second or 7."""
