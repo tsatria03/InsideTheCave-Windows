@@ -1,7 +1,8 @@
 # tools
 
 The tools that disassemble Inside The Cave's iOS binary into `analysis/`. They only read the binary
-and the app bundle, and only write into `analysis/`; none of them runs or plays anything.
+and the app bundle, and write into `analysis/` (and `assets.py` one generated module of the game);
+none of them runs or plays anything.
 
 They need Python 3.12 or newer and, for the disassembly, `capstone` (`pip install capstone`).
 Capstone is never needed to play or build the game, so it is not in `requirements.txt`.
@@ -27,6 +28,8 @@ python tools/listings.py     # analysis/disasm/dz_<Class>.txt (also rewrites fun
 python tools/coverage.py     # proves the listings cover all of __text, once each
 python tools/strings.py      # analysis/data/strings.txt
 python tools/archive.py      # the scenes, storyboards, Info.plist and asset names
+python tools/assets.py       # every image's size from Assets.car: analysis/data/assets.txt,
+                             # and the game's insidethecave/scene/image_sizes.py
 ```
 
 Each takes a second or two. `coverage.py` exits 0 only when every function and every 4-byte word
@@ -57,6 +60,11 @@ of `__text` is listed exactly once.
 - **`strings.py`**: every string, with the functions that load it.
 - **`archive.py`**: decodes the SpriteKit scenes (NSKeyedArchiver plists), the compiled storyboards
   (Apple's NIBArchive format), `Info.plist`, and the names in `Assets.car`.
+- **`assets.py`**: reads `Assets.car` as what it is, Apple's BOM store: the RENDITIONS tree gives
+  every image's pixels and scale, and FACETKEYS with KEYFORMAT joins each to the name the code asks
+  for (`"monstroPedra"`). It is the one tool that also writes into the package:
+  `insidethecave/scene/image_sizes.py`, the sizes the SpriteKit stand-in sizes its sprites by, since
+  builds do not ship `Assets.car`.
 
 ## Reading the listings
 

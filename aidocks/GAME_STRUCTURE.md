@@ -173,17 +173,22 @@ category 7, contact mask 3.
 ## 6. The roar, and how you hear what is coming
 
 **The roar sensor** (`createRoarSensor`, 0x10000c344) is an invisible sprite across the cave at y = 0.07 H, built
-from the empty image name `""`; category 3, contact mask 1. Its size comes from SpriteKit's placeholder for a
-missing image, scaled W x 0.007 by 0.005 (**inferred** size).
+from the empty image name `""`; category 3, contact mask 1. `xScale` is W x 0.007 = 5.25 and `yScale` the literal
+0.005 (0x10000c3d8..0x10000c40c, **checked** 2026-10-02), and its body is its whole scaled `size`
+(`bodyWithRectangleOfSize:`, 0x10000c494). Its size comes from SpriteKit's placeholder for a missing image,
+taken as 128 points square (**inferred**), which makes it a line 672 wide and 0.64 high: across all three lanes.
 - A **monster** touching it plays the roar at the monster's position: `playMonsterRoarAtPoint:` (0x10000f69c)
   moves the `roar` node there and plays "Rugido.mp3" at **volume 3.0 if the monster's x equals the player's**
   (the same lane) **and 1.0 otherwise** (0x10000f738..0x10000f764, **checked**).
 - A **bat** touching it plays "BatSound.wav" the same way, at **3.0 in your lane, 0.7 in another**
   (`playBatSoundAtPoint:`, 0x10000f7c4).
 - The sensor is at 0.07 H and the player at -0.25 H, so the roar comes when the monster is about a third of the
-  screen away (0.32 H): roughly 0.32 x `speedMonster` seconds before it reaches you, about 1.3 s at the start
-  and 0.6 s at the fastest (**inferred** arithmetic; contact begins when the bodies' edges meet, a little
-  earlier than the centres).
+  screen away (0.32 H). Worked out from the bodies' edges (2026-10-02, with the image sizes from `Assets.car`,
+  `analysis/data/assets.txt`): the monster's body (half of 220 x 153 points times 0.975, centred 22 below it)
+  meets the sensor's top when the monster is at y = 153, and the player's circle (radius 78.75: 300 points
+  times 0.525, halved) when it is at y = -195. That is 348 units, **1.04 s at the start** (333.5 units a
+  second) and about 0.51 s at the fastest (**inferred**: it rests on the 128-point placeholder and on bodies
+  not being scaled again by their nodes; `tests/case/scene.py` pins the sensor's half of it).
 - Both nodes are positional, and the listener is the player, so the roar also comes from the monster's side.
 
 **The coin's jingle** ("tilintar.aiff") is set up as a positional node but never played, and `moveCoinSound`,

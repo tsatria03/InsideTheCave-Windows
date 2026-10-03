@@ -65,7 +65,8 @@ and `aidocks/GAME_STRUCTURE.md` records it as it is read out of the binary.
 game/                    the original app bundle, unpacked
   sounds/used/           the 12 sounds version 2.32 plays, as WAV, under their own names
   sounds/unused/         14 sounds from the game's older versions
-insidethecave/           the Python package: so far the platform layer and the key screen
+insidethecave/           the Python package: so far the platform layer, the key screen and
+                         the SpriteKit stand-in
 analysis/                the binary, and its complete disassembly and decoded data
 tools/                   the arm64 Mach-O and disassembly tools that made analysis/
 tests/case/              the automated tests
@@ -124,8 +125,8 @@ the original will be written down in `aidocks/DIVERGENCES.md`.
 
 `tests/case/` holds the tests: plain scripts, each checking one part of the game
 against the original and printing `ok` or `FAIL` for every check, then a total. So far
-they cover the platform layer: `paths`, `runloop`, `save`, `speech`, `keymap`, `sound`
-and `language`. Run any of them on its own:
+they cover the platform layer (`paths`, `runloop`, `save`, `speech`, `keymap`, `sound`,
+`language`) and the SpriteKit stand-in (`scene`). Run any of them on its own:
 
     python tests/case/<name>.py
 
@@ -142,6 +143,12 @@ Down choose a check, Enter runs it, Escape stops it, and Alt+F4 quits at any mom
 headphones:
 
     python tests/interact/platform_check.py
+
+`scene_check.py`, in the same kind of window, previews the game's sounds in their lanes:
+a monster, bats or a jingling coin coming down each lane, the roar when it reaches the
+sensor, and "now" when it would reach you.
+
+    python tests/interact/scene_check.py
 
 ## Building and releasing
 
