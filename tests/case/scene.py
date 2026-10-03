@@ -333,13 +333,30 @@ def test_the_roar_is_placed_in_its_lane():
         scene.frame(0.0)
         x, y, z = al.source_position(roar.source)
         assert _close(x, -1.0, 1e-5) and z < 0 and y == 0, (x, y, z)
-        assert _close(al.source_float(roar.source, openal.AL_GAIN), 3.0, 1e-6)
-        assert al.source_float(roar.source, openal.AL_MAX_GAIN) >= 3.0
+        assert roar.volume == 3.0, 'the node keeps what the game asked for'
+        assert _close(al.source_float(roar.source, openal.AL_GAIN), 1.0, 1e-6), \
+            'heard at no more than 1.0 (the dev)'
+        assert al.source_float(roar.source, openal.AL_MAX_GAIN) <= 1.0
         assert al.source_state(roar.source) == openal.AL_PLAYING
         scene.listener.position = (-0.3 * W, -0.25 * H)        # the player moves left
         scene.frame(0.1)
         x, _y, _z = al.source_position(roar.source)
         assert _close(x, 0.0, 1e-5), x
+    finally:
+        engine.release()
+        al.close()
+
+
+def test_no_sound_is_heard_louder_than_one():
+    """The dev, 2026-10-02: no volume above 1.0.  The bats keep 1.0 against 0.7."""
+    scene, al, engine = _audio_scene()
+    try:
+        bats = AudioNode('BatSound.wav')
+        bats.autoplayLooped = False
+        scene.addChild(bats)
+        for asked, want in ((3.0, 1.0), (0.7, 0.7), (1.5, 1.0), (-1.0, 0.0)):
+            bats.set_volume(asked)
+            assert _close(al.source_float(bats.source, openal.AL_GAIN), want, 1e-6), asked
     finally:
         engine.release()
         al.close()

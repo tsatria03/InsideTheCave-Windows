@@ -18,7 +18,7 @@ The checks:
 
      1  the roar, placed left, centre and right
      2  the bats, placed left, centre and right
-     3  the roar at the original's volumes: 3.0 in your lane, 1.0 in another
+     3  the bats at the game's volumes, never above 1.0: 1.0 in your lane, 0.7 in another
      4  the roar as the original's stereo file, then the port's mono one, both centred
      5  every sound version 2.32 plays, one after another, each named first
      6  the tutorial line in a Windows voice in your display language, then the key hints
@@ -204,8 +204,7 @@ class Check:
             al.alSourcei(s, o.AL_BUFFER, self.bank.buffer(name, mono))
             al.alSourcei(s, o.AL_SOURCE_RELATIVE, 1)
             al.alSource3f(s, o.AL_POSITION, *where)
-            al.alSourcef(s, o.AL_MAX_GAIN, 4.0)     # OpenAL caps a source at 1.0 otherwise
-            al.alSourcef(s, o.AL_GAIN, gain)
+            al.alSourcef(s, o.AL_GAIN, min(gain, 1.0))   # never above 1.0 (the dev)
             al.alSourcePlay(s)
             length = self.bank.seconds(name, mono)
             self.window.wait(min(length, seconds or length) + 0.3)
@@ -227,11 +226,13 @@ class Check:
         self.placed('BatSound.wav', 'The bats')
 
     def roar_volumes(self):
-        self.say('The roar at the original volumes.')
-        self.say('In your lane, 3.0, ahead of you.', 0.7)
-        self.play('Rugido.mp3', gain=3.0)
-        self.say('In another lane, 1.0, to your left.', 0.7)
-        self.play('Rugido.mp3', gain=1.0, where=PLACES[0][1])
+        """No sound is louder than 1.0 (the dev), so the roar's 3.0 is heard as 1.0, the
+        same as in another lane; the bats keep 1.0 against 0.7."""
+        self.say('The bats at the game volumes, never above 1.0.')
+        self.say('In your lane, 1.0, ahead of you.', 0.7)
+        self.play('BatSound.wav', gain=3.0)
+        self.say('In another lane, 0.7, to your left.', 0.7)
+        self.play('BatSound.wav', gain=0.7, where=PLACES[0][1])
 
     def stereo_and_mono(self):
         self.say('The roar as the original stereo file. It cannot be placed.', 0.7)
@@ -308,7 +309,7 @@ class Check:
 CHECKS = (
     ('The roar, placed left, centre and right', 'roar'),
     ('The bats, placed left, centre and right', 'bats'),
-    ("The roar at the original's volumes", 'roar_volumes'),
+    ('The bats in your lane and in another', 'roar_volumes'),
     ('The roar in stereo, then in mono', 'stereo_and_mono'),
     ('Every sound the game plays', 'every_sound'),
     ('The tutorial line, then the key hints', 'tutorial'),

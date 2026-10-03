@@ -26,9 +26,14 @@ load mixed down to mono.  Every other positional node keeps its file as it is, s
 stereo one plays unplaced, as it most likely did on the iPhone; the music is mono already
 and sits at the player.
 
-**Volume above 1.0.**  The game sets 3.0 for a roar in the player's lane (0x10000f740) and
-for the bats (0x10000f85c).  OpenAL caps a source at ``AL_MAX_GAIN``, 1.0 unless raised, so
-every source is given ``MAX_GAIN``.
+**No sound louder than 1.0** (the dev, 2026-10-02: "All sound volumes should not exceed
+1.0 to avoid peaking.").  The game asks for 3.0 for a roar in the player's lane
+(0x10000f740) and for the bats in it (0x10000f85c).  Every volume is capped at ``MAX_GAIN``,
+1.0, as it is set, which is most likely what the iPhone did too: the volume
+``changeVolumeTo:`` sets runs from 0 to 1 in Apple's audio (**inferred**: Apple's code).  So
+a roar is as loud in the player's lane as in another, and its lane is told by where it
+comes from; the bats keep 1.0 against 0.7.  A node keeps the volume the game asked for;
+only what is heard is capped.
 """
 from __future__ import annotations
 
@@ -48,8 +53,13 @@ DEPTH = 2.0
 #: OpenAL's inverse distance: full volume within this distance, quieter beyond it.
 REFERENCE_DISTANCE = 1.0
 ROLLOFF = 1.0
-#: The highest gain a source may have; the game asks for 3.0.
-MAX_GAIN = 4.0
+#: The highest gain a source may have (the dev); the game asks for 3.0, heard as 1.0.
+MAX_GAIN = 1.0
+
+
+def heard(volume):
+    """A volume the game sets, as it is played: 0 to ``MAX_GAIN``."""
+    return min(max(0.0, float(volume)), MAX_GAIN)
 #: The sounds placed in their lanes, loaded mixed down to mono (base names).
 PLACED = frozenset(('rugido', 'batsound', 'tilintar'))
 
@@ -124,7 +134,7 @@ class AudioEngine:
         al.alSourcef(s, o.AL_MAX_GAIN, MAX_GAIN)
         al.alSourcef(s, o.AL_REFERENCE_DISTANCE, REFERENCE_DISTANCE)
         al.alSourcef(s, o.AL_ROLLOFF_FACTOR, ROLLOFF)
-        al.alSourcef(s, o.AL_GAIN, node.volume)
+        al.alSourcef(s, o.AL_GAIN, heard(node.volume))
         if node.autoplayLooped or node.playing:
             node.playing = True
             self.start(node)
@@ -154,7 +164,7 @@ class AudioEngine:
 
     def volume_changed(self, node):
         if node.source:
-            self.al.alSourcef(node.source, o.AL_GAIN, max(0.0, node.volume))
+            self.al.alSourcef(node.source, o.AL_GAIN, heard(node.volume))
 
     def play_once(self, name):
         """``playSoundFileNamed:``: not placed, at full volume.  Returns its length."""

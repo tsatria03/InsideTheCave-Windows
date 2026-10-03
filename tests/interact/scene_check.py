@@ -12,10 +12,13 @@ runs, Escape stops a check or leaves the menu, Alt+F4 quits at any moment.
 
 The checks, you standing at the bottom of the cave as the game puts you (0, -0.25 H):
 
-     1  a monster down each lane, you in the centre: its roar at the sensor, at 3.0 in your
-        lane and 1.0 in another, then "now" when it would reach you
+     1  a monster down each lane, you in the centre: its roar at the sensor, then "now" when
+        it would reach you
      2  you in each lane, a monster down the left lane: the roar from where it is to you
-     3  bats down each lane, you in the centre: 3.0 in your lane, 0.7 in another
+     3  bats down each lane, you in the centre: 1.0 in your lane, 0.7 in another
+
+No sound is louder than 1.0 (the dev): the game asks for 3.0 in your lane, heard as 1.0,
+so a roar is as loud in your lane as in another and tells its lane by where it comes from.
      4  a coin down each lane, jingling as it comes (the port's addition), then "now"
         when it would reach you
      5  eight monsters in a row, lanes at random, as the game's first slots come: roar,

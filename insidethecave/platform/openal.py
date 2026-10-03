@@ -165,10 +165,10 @@ class AL:
         attrs = [ALC_MONO_SOURCES, 64, ALC_STEREO_SOURCES, 16]
         if self.alcIsExtensionPresent(self.device, b'ALC_SOFT_HRTF'):
             attrs += [ALC_HRTF_SOFT, ALC_FALSE]
-        # The roar plays at a gain of 3.0 in the player's lane (0x10000f738), which can
-        # take the mix past full scale; the limiter squeezes those peaks instead of
-        # clipping them.  It is OpenAL Soft's default already; asking for it keeps it on
-        # whatever a config file says.
+        # No source is louder than 1.0 (scene/audio.py), but several at once can still take
+        # the mix past full scale; the limiter squeezes those peaks instead of clipping
+        # them.  It is OpenAL Soft's default already; asking for it keeps it on whatever a
+        # config file says.
         if self.alcIsExtensionPresent(self.device, b'ALC_SOFT_output_limiter'):
             attrs += [ALC_OUTPUT_LIMITER_SOFT, ALC_TRUE]
         attrs.append(0)
