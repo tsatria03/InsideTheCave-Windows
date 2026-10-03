@@ -1,9 +1,10 @@
 ##Unfinished.
 
-Add footsteps that loop from your lane, a walk, then a run as the cave speeds up.
+Nothing is waiting here right now. New bugs, planned changes and anything still to be decided will be listed here as they come up.
 
 ##Finished.
 
+Footsteps loop from your lane, a walk at first, then a run from about a minute and a half in.
 Home and End change the master volume while a game is running, and say master volume.
 Page Up and Page Down change the menu music on the menus and the game's music in a game, and say menu volume or track volume.
 The menu music plays on the main menu, the Score screen and the result screen, and not while a game is paused.
