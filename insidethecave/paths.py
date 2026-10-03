@@ -2,15 +2,17 @@
 
 ``game/`` holds the contents of the original ``InsideTheCave.app`` as it shipped.  The port
 reads only its sounds, which the dev moved out of the bundle's top folder into
-``game/sounds/used`` (the 12 that version 2.32 plays) and ``game/sounds/unused`` (14 from
-the game's older versions), all converted to 16-bit PCM WAV under their original base names
+``game/sounds/used`` (the 17 the port plays: the 12 version 2.32 names, and five the dev
+brought back from the older versions or made from them) and ``game/sounds/unused`` (the 10
+left), all 16-bit PCM WAV under their original base names, except the two in ``RENAMED``
 (aidocks/DIVERGENCES.md).
 
 The binary asks for its sounds by full file name, with whatever extension each had in 2016:
 ``"Rugido.mp3"``, ``"dash.aiff"``, ``"BatSound.wav"`` (GAME_STRUCTURE.md section 13).  So
 ``sound`` finds one by its base name alone, whatever extension it is asked for:
-``"dash.aiff"`` is ``used/dash.wav``.  It looks in ``used`` first, then ``unused``, so a name
-in ``used`` always wins.
+``"Rugido.mp3"`` is ``used/Rugido.wav``, and ``"dash.aiff"``, through ``RENAMED``,
+``used/lane.wav``.  It looks in ``used`` first, then ``unused``, so a name in ``used`` always
+wins.
 
 The game folder is the one ``--game`` (``set_game``) or ``INSIDETHECAVE_GAME`` names, else
 ``game`` beside the executable, else the repository's ``game``: the first that holds a
