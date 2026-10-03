@@ -4,7 +4,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 
 ## Reference documents (not memory notes)
 - [Porting status](PORTING_STATUS.md), [Divergences](DIVERGENCES.md) and [Game structure](GAME_STRUCTURE.md): the three developer references. What is ported, where the port differs from the original, and the game's mechanism as read from the binary. On 2026-10-02 nothing is ported; the game structure is read from the full disassembly, with addresses.
-- The player documents, `readme.txt`, `changelog.txt`, `credits.txt` and `todo list.txt`, live in the repo's `docks/` folder. Since phase 3 (2026-10-02) the changelog has its first `unrelease:` block, 13 entries, and the todo list what is finished and what is not, written at the dev's request in the reference port's style; the readme and credits are empty.
+- The player documents, `readme.txt`, `changelog.txt`, `credits.txt` and `todo list.txt`, live in the repo's `docks/` folder. Since phase 3 (2026-10-02) the changelog has its first `unrelease:` block, 13 entries, and the todo list what is finished and what is not, written at the dev's request in the reference port's style; the readme and credits were written the same day ([[project_player_readme]]).
 
 ## Project: what the port is and how to work on it
 - [Provenance](project_provenance.md): the original was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife (MacMagazine, 2016-09-06, confirmed by the dev); it is no longer on the App Store. The port is solo, by tsatria03, with no contributors now or planned.
@@ -15,6 +15,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Build scripts](project_build_scripts.md): compiler.py and releaser.py adapted 2026-10-02 at the dev's go-ahead; built, not yet confirmed. The compiler finds game\ and game\sounds itself, ships only the sounds, and refuses to build until InsideTheCave.py and the package exist.
 - [Safe test run](project_safe_test_run.md): the design every test follows from the first one: a _scratch_save helper, silent, off the real save, headless. Plain scripts, run in PowerShell, skipping _*.py.
 - [Tests layout](project_tests_layout.md): tests/case for the automated tests, tests/interact for the by-ear tools Claude never runs: platform_check, scene_check, stage_chooser and screens_check hear phases 1 to 4.
+- [Player readme and credits](project_player_readme.md): docks/readme.txt (how to play) and docks/credits.txt (makers, licenses), written 2026-10-02 in the reference port's style and confirmed by the dev; keep the readme in step with the game in the same commit.
 - [Developer tasks](project_dev_tasks.md): repository, tool, analysis, test, build and docs tasks, open and finished.
 
 ## Feedback: how the dev wants you to work

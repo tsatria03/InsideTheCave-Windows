@@ -1,10 +1,10 @@
 ##Unfinished.
 
-Add a readme that says how to play.
 Make a version of the game that can be downloaded and played without installing Python.
 
 ##Finished.
 
+A readme says how to play, and credits.txt says who made the game.
 No two scores in your best five are ever the same.
 A blank name still saves your score, as unnamed player.
 Pausing opens a menu with Resume, Restart and Quit to menu, and Escape or P resumes.

@@ -20,7 +20,7 @@ metadata:
 **Why:** Credit matters, and the code itself doesn't say who made the original.
 
 **How to apply:**
-- README and `docks/credits.txt`: the suggested wording is "Inside The Cave was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife." Then "tsatria03 made the Windows port." No contributors list. Confirm the final wording with the dev when those files are written.
+- README and `docks/credits.txt`: the suggested wording is "Inside The Cave was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife." Then "tsatria03 made the Windows port." No contributors list. Written into `docks/credits.txt` on 2026-10-02 as "Inside The Cave was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife, in 2016." and "tsatria03 made the Windows version from the original game.", and confirmed by the dev ("The player docks look good.").
 - The changelog carries no credit lines ([[feedback_changelog]]).
 - Commits: tsatria03 is the author; no `Co-authored-by:` lines for people ([[feedback_use_github_usernames]], [[feedback_git_commits]]).
 - `LICENSE` is MIT; change its copyright line only if the dev asks.
