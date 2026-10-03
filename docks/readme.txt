@@ -50,7 +50,7 @@ You stand at the bottom of the middle lane, and monsters come down the lanes tow
 As a monster comes within reach it roars from its lane, about a second before it reaches you.
 Move out of its lane before it gets there.
 Bats come down the same way, with a sound of their own, and every seventh thing in your way is bats.
-The cave speeds up as you go deeper.
+The cave speeds up as you go deeper, until it reaches its top speed.
 Your footsteps run with you from your lane, a walk at first, then a run after about a minute and a half.
 
 Your torch
@@ -72,7 +72,7 @@ The pause menu
 
 When you pause, the game stops where it is, sounds and all, and a pause menu opens.
 It has three rows: Resume, Restart and Quit to menu.
-Up and Down move between them, and Enter chooses.
+Up and Down move between them, wrapping around as on the main menu, Home and End go to the first and the last row, and Enter chooses.
 Escape or P resumes the game.
 Restart and Quit to menu do not save your score.
 
