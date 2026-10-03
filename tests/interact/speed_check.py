@@ -7,23 +7,27 @@ headphones.
 
 A small window asks how to start, then the game itself takes the window:
 
-    Enter           start, at speed 5.0, the game's own start
+    Enter           start, at speed 0, the game's own start
     D               debug mode on or off (off at first; on: nothing can kill you)
     Escape          quit, here; in the game, pause
     Alt+F4          quit, at any moment
 
 In the game, besides the game's own keys:
 
-    Minus (-)       faster: the speed down by 0.1, as 5.0, 4.9, 4.8 ...
-    Equals (=)      slower: the speed up by 0.1
+    Equals (=)      faster: the speed up by one, as 0, 1, 2 ...
+    Minus (-)       slower: the speed down by one
 
-The speed is the game's ``speedMonster``: the seconds a thing takes to fall the whole
-height of the cave.  The game starts at 5.0 and, left to itself, steps down by 0.1 every
-20 slots until 1.0, at slot 800, and stays there.  Here it never changes by itself: it
-stays where you put it, from 5.0, the slowest, to 1.0, the fastest, the game's own limits
+The speed is said as the E key says it (aidocks/project_status_keys_plan.md): how many
+times the cave has sped up, "Speed, 0." at the game's start up to "Speed, 40.", the
+fastest (the dev: "What if minus and equals increased and decreased the speed, like speed
+0, speed 1."; "Equals faster and Minus slower").  Behind it is the game's ``speedMonster``,
+the seconds a thing takes to fall the whole cave: 5.0 at 0, 0.1 less for each one up, 1.0
+at 40.  Left to itself the game goes up one every 20 slots, reaching 40 at slot 800; here
+it never changes by itself, and stays where you put it, from 0 to 40, the game's own limits
 (the dev: "the speed checker script should cap to those speeds as well.").  A slot comes
-every 0.165 x the speed seconds, and a roar comes about 0.26 x the speed seconds before its
-monster reaches you: about 1.3 s at 5.0, a quarter of a second at 1.0.
+every 0.165 x speedMonster seconds, and a roar about 0.26 x speedMonster seconds before its
+monster reaches you: about 1.3 s at 0, a quarter of a second at 40.  E says the same
+number as these keys.
 
 A change applies to the next slot and what it brings; things already coming keep the
 speed they set off at.  The speed carries over a Restart, a Replay or a new game.  The
@@ -50,16 +54,17 @@ from platform_check import Quit, Window                          # noqa: E402
 platform_check.SAVE_NAME = 'speed_check'
 Window.TITLE = 'Inside The Cave - speed check'
 
+FASTER, SLOWER = ('=', '[+]'), ('-', '[-]')     # pygame's names, the keypad's too
+
 
 def limits():
-    """The game's own speeds: it starts at its slowest and speeds up to its fastest
-    (``GameScene.START_SPEED``, ``TOP_SPEED``), read only once the save is our own."""
-    from insidethecave.game.game_scene import START_SPEED, TOP_SPEED
-    return START_SPEED, TOP_SPEED
+    """The game's own range as the E key counts it: (the fastest count, a count's
+    speedMonster), read only once the save is our own."""
+    from insidethecave.game.game_scene import SPEED_COUNT_FROM, SPEED_STEP, TOP_SPEED
 
-
-STEP = 0.1
-FASTER, SLOWER = ('-', '[-]'), ('=', '[+]')     # pygame's names, the keypad's too
+    def speed_of(count):
+        return round(SPEED_COUNT_FROM - count * SPEED_STEP, 2)
+    return int(round((SPEED_COUNT_FROM - TOP_SPEED) / SPEED_STEP)), speed_of
 
 
 def choose():
@@ -68,7 +73,6 @@ def choose():
     speech = Speech.shared()
     window = Window()
     debug = False
-    start, _ = limits()
 
     def say(text):
         print(text)
@@ -76,8 +80,8 @@ def choose():
         speech.speak(text)
 
     try:
-        say('Speed check. Enter to start at speed %.1f, D for debug mode, Escape to quit. '
-            'In the game, minus is faster and equals is slower. Debug mode is off.' % start)
+        say('Speed check. Enter to start at speed 0, D for debug mode, Escape to quit. '
+            'In the game, equals is faster and minus is slower. Debug mode is off.')
         while True:
             for name in window.keys():
                 if name == 'escape':
@@ -111,37 +115,37 @@ def main():
         verbose = False
 
     Args.debug = debug
-    SLOWEST, FASTEST = limits()     # the game starts at its slowest
+    FASTEST, speed_of = limits()    # counts 0 (the slowest, the start) to FASTEST
 
     class SpeedApp(InsideTheCave.App):
-        speed = SLOWEST
+        count = 0
 
         def start_game(self):
             self.defaults.setInteger_forKey_(3, 'countTutorial')
             self.defaults.synchronize()
             super().start_game()
             s = self.game.scene
-            s.speedMonster = self.speed
+            s.speedMonster = speed_of(self.count)
             real = s.createObjectScene
 
             def slot():
                 """A slot as the game makes it, with the speed put back after: the game's
                 own speed-up every 20 slots (0x10000c998) never sticks."""
                 real()
-                s.speedMonster = self.speed
+                s.speedMonster = speed_of(self.count)
             s.createObjectScene = slot
-            self.speech.speak('Speed %.1f.' % self.speed, interrupt=False)
+            self.speech.speak('Speed, %d.' % self.count, interrupt=False)
 
         def keydown(self, event):
             name = self.pygame.key.name(event.key)
             if self.kind == 'game' and name in FASTER + SLOWER:
-                step = -STEP if name in FASTER else STEP
-                self.speed = round(min(SLOWEST, max(FASTEST, self.speed + step)), 1)
+                step = 1 if name in FASTER else -1
+                self.count = min(FASTEST, max(0, self.count + step))
                 if self.game.scene is not None:
-                    self.game.scene.speedMonster = self.speed
-                edge = (', the fastest' if self.speed == FASTEST else
-                        ', the slowest' if self.speed == SLOWEST else '')
-                self.speech.speak('Speed %.1f%s.' % (self.speed, edge))
+                    self.game.scene.speedMonster = speed_of(self.count)
+                edge = (', the fastest' if self.count == FASTEST else
+                        ', the slowest' if self.count == 0 else '')
+                self.speech.speak('Speed, %d%s.' % (self.count, edge))
                 return
             super().keydown(event)
 

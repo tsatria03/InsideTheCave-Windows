@@ -215,8 +215,9 @@ to, and your torch is lit again a second later.
 
     python tests/interact/bat_check.py
 
-`speed_check.py`, a developer tool, is the full game at a speed you set yourself: Minus
-makes it faster and Equals slower, by 0.1 at a time, and it never speeds up on its own.
+`speed_check.py`, a developer tool, is the full game at a speed you set yourself: Equals
+makes it faster and Minus slower, one speed-up at a time from 0 to 40, as the E key counts
+them, and it never speeds up on its own.
 
     python tests/interact/speed_check.py
 
