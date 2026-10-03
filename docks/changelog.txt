@@ -1,4 +1,5 @@
 unrelease:
+The game's music now plays at full volume, much louder than before, and Page Down in a game turns it down.
 The main menu, the Score screen and the result screen have music, from the game's early versions. It stops when a game starts, and does not play on the pause menu.
 Page Up and Page Down now change the music: in a game the track, saying track volume, and on the menus the menu music, saying menu volume.
 Home and End make the whole game louder and quieter while you play, and your screen reader says master volume. On the menus and the pause menu they still go to the first and last row.

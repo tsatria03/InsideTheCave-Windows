@@ -2,20 +2,21 @@
 
 Every gain in the game comes out of the binary and is written where it is used, with the
 address it was read from: the roar at 3.0 or 1.0 (0x10000f738), a coin at 0.2, the music at
-0.2 (``changeVolumeTo:0.2 duration:0`` at 0x100010a6c).  Those numbers stay exactly as they
-are, so the mix is still the original's.  On top of them sit two settings, percentages kept
-in settings.json:
+0.2 (``changeVolumeTo:0.2 duration:0`` at 0x100010a6c).  Those numbers stay as they are,
+so the mix is the original's, but for the music: at the dev's word it plays at 1.0, the
+file as recorded, and is turned down with Page Down (``GameScene.MUSIC_GAIN``).  On top of
+them sit settings, percentages kept in settings.json:
 
     MASTERVOLUME    everything the game plays; Home and End set it during a game, in steps
                     of ten
-    MUSICVOLUME     the game's music, the track, on top of its 0.2; Page Up and Page Down
+    MUSICVOLUME     the game's music, the track, on top of its 1.0; Page Up and Page Down
                     set it in a game, saying "Track volume"
     MENUVOLUME      the menu music (a port addition), on top of its own gain; Page Up and
                     Page Down set it on the menus, saying "Menu volume"
 
 (the dev, 2026-10-02, for the second release).
 
-Each is a whole number from 0 to 100; 100, the default, is the original's mix, and anything
+Each is a whole number from 0 to 100; 100, the default, is full volume, and anything
 else counts as 100.  The percentage is squared into the gain (``percent_gain``), so each
 step sounds about as big as the last.  ``load`` reads them when the game starts and writes
 any that are missing, so settings.json shows every one.
@@ -127,6 +128,7 @@ def change_menu(defaults, step):
 def menu(g: float) -> float:
     """The menu music's gain, with ``MENUVOLUME``."""
     return g * percent_gain(percents[MENU_KEY])
+
 
 def master_gain() -> float:
     """What every sound's gain is multiplied by: OpenAL's listener gain."""

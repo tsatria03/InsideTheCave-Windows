@@ -14,7 +14,7 @@ The keys the original saves (GAME_STRUCTURE.md section 12):
 and the port's own settings, PORT ADDITIONS (``volume.py``):
 
     MASTERVOLUME    everything the game plays, which Home and End set during a game
-    MUSICVOLUME     the game's music, on top of the original's 0.2 (Page Up and Page Down
+    MUSICVOLUME     the game's music, on top of its 1.0 (Page Up and Page Down
                     in a game)
     MENUVOLUME      the menu music (Page Up and Page Down on the menus)
 

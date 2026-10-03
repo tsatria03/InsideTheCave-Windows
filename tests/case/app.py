@@ -80,7 +80,7 @@ def test_the_keys_move_pause_and_change_the_volume():
         _press(app, pg.K_PAGEDOWN)
         assert p['MUSICVOLUME'] == max(0, music - 10) and p['MASTERVOLUME'] == master
         heard = app.game.scene.backgroundMusic.volume
-        assert abs(heard - 0.2 * (p['MUSICVOLUME'] / 100.0) ** 2) < 1e-9, 'heard at once'
+        assert abs(heard - (p['MUSICVOLUME'] / 100.0) ** 2) < 1e-9, 'heard at once'
         _press(app, pg.K_PAGEUP)
         assert p['MUSICVOLUME'] == music
     finally:

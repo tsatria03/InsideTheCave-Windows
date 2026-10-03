@@ -88,8 +88,10 @@ HINT_CHARS_PER_SECOND = 14.0
 TORCH_LOW = 'Torch low'
 #: PORT ADDITION: the jingle each coin carries, at SpriteKit's default volume (question 4).
 JINGLE_VOLUME = 1.0
-#: The music's gain (``changeVolumeTo:0.2`` at 0x100010a6c), before MUSICVOLUME.
-MUSIC_GAIN = 0.2
+#: The music's gain, before MUSICVOLUME.  The original's is 0.2 (``changeVolumeTo:0.2`` at
+#: 0x100010a6c); PORT: 1.0, the file as recorded (the dev: "Please put the game music volume
+#: to 1.0 as well. Again, I can turn that down as well."), turned down with Page Down.
+MUSIC_GAIN = 1.0
 
 
 class GameScene(Scene):
@@ -513,7 +515,6 @@ class GameScene(Scene):
         s.position = (self.W * fraction, self.player.position[1])
         s.runAction(A.play())
         s.runAction(A.changeVolumeTo(0.25, 0.0))                       # 0x10000fec4
-
 
     def soundWall(self, fraction):
         """The wall: MovimentoProibido, one-shot (0x10000f988, 0x10000fc14).  PORT: placed on

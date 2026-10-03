@@ -105,7 +105,7 @@ Your save
 
 Your best five scores and how many games have heard the instructions are saved in save.json, your volumes in settings.json, and your keys in keys.json.
 All three are in the InsideTheCave folder in your AppData Roaming folder, which you can open by typing %APPDATA%\InsideTheCave into the Windows Run box.
-In settings.json you can set three volumes, from 0 for silent to 100, the original's mix.
+In settings.json you can set three volumes, from 0 for silent to 100 for full volume.
 MASTERVOLUME is everything, which Home and End also change during a game.
 MUSICVOLUME is the music in a game, the track, which Page Up and Page Down change in a game.
 MENUVOLUME is the menu music, which Page Up and Page Down change on the menus.

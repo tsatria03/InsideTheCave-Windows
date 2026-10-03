@@ -288,11 +288,11 @@ def test_the_music_volume_changes_during_a_game():
     from insidethecave.platform import volume
     g = _Game()
     m = g.scene.backgroundMusic
-    assert abs(m.volume - 0.2) < 1e-9
+    assert abs(m.volume - 1.0) < 1e-9, 'the file as recorded (the dev), not the 0.2'
     volume.percents[volume.MUSIC_KEY] = 50
     try:
         g.scene.applyMusicVolume()
-        assert abs(m.volume - 0.2 * 0.25) < 1e-9
+        assert abs(m.volume - 0.25) < 1e-9
     finally:
         volume.percents[volume.MUSIC_KEY] = 100
 
