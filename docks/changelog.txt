@@ -1,4 +1,5 @@
 unrelease:
+The cave's top speed is now a touch slower: it stops speeding up at 2.0 instead of 1.96.
 Torches on the path now jingle from their lane as they come, so you can find them by ear, and coins ding instead, with the coin sound from the game's early versions.
 A sound plays when your torch burns all the way out.
 Your footsteps run with you from your lane: a walk at first, and a run after about a minute and a half, as the cave speeds up.

@@ -172,6 +172,19 @@ def test_the_game_speeds_up_every_twenty_slots():
     assert abs(g.scene.speedMonster - 3.76) < 1e-9
 
 
+def test_the_speed_never_goes_below_2():
+    """The original reaches 1.96 at slot 340; the port stops at 2.0 (the dev)."""
+    g = _Game(debug=True)
+    g.start()
+    s = g.scene
+    s.speedMonster, s.countObjectScene = 2.08, 339
+    s.createObjectScene()                       # the 340th slot
+    assert s.speedMonster == G.TOP_SPEED == 2.0, s.speedMonster
+    for _ in range(60):
+        s.createObjectScene()                   # and every 20th after it
+    assert s.speedMonster == 2.0, s.speedMonster
+
+
 def test_every_seventh_obstacle_is_bats_and_the_rest_monsters():
     g = _Game(debug=True)
     made = []

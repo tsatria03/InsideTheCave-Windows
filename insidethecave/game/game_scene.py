@@ -104,6 +104,10 @@ TORCH_JINGLE = 'tilintar.aiff'
 #: 0x100010a6c); PORT: 1.0, the file as recorded (the dev: "Please put the game music volume
 #: to 1.0 as well. Again, I can turn that down as well."), turned down with Page Down.
 MUSIC_GAIN = 1.0
+#: PORT: the lowest speedMonster goes, the fastest the game gets.  The original steps 0.12
+#: every 20 slots while at 2.0 or more, so from 2.08 to 1.96 at slot 340; the port stops at
+#: 2.0 (the dev: "In the real game, the speed should not go below 2.0.").
+TOP_SPEED = 2.0
 #: PORT ADDITION: your footsteps, looped, from your lane, quicker as the cave speeds up (the
 #: dev, for the third release, from the early versions' Running_On_Rocks).  Each is (file,
 #: the slot it starts at): a walk from the first slot, a run from slot 155 (the dev: "I want
@@ -320,7 +324,9 @@ class GameScene(Scene):
         self.updateFootsteps()                                         # PORT ADDITION
         self.changeFalloffSize()                                       # 0x10000c94c
         if self.countObjectScene % 20 == 0 and self.speedMonster >= 2.0:
-            self.speedMonster += -0.12                                 # 0x10000c998
+            # 0x10000c998 steps 2.08 to 1.96 at slot 340; PORT: never below 2.0, the
+            # fastest the game goes (the dev, for the third release)
+            self.speedMonster = max(TOP_SPEED, self.speedMonster - 0.12)
 
     # ---- -[GameScene coinTogether] / torchTogether, and their helper 0x10000ca0c ---------
     def coinTogether(self):

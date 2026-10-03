@@ -19,7 +19,7 @@ The starting points:
      1  the beginning, as a new game
      2  slot 75, a little before the cave turns to water at 81
      3  slot 155, a little before the ice at 161
-     4  slot 340, at the top speed (speedMonster about 1.96)
+     4  slot 340, at the top speed (speedMonster 2.0)
 
 Starting later sets the slot count and the speed the game would have reached there, and
 the cave it would be in; everything else starts as a new game does.  A game over goes to
@@ -55,11 +55,12 @@ STARTS = (('the beginning, as a new game', 0),
 
 def speed_at(slot):
     """speedMonster after ``slot`` slots: -0.12 every 20th while 2.0 or more
-    (createObjectScene, 0x10000c958..0x10000c9a0)."""
+    (createObjectScene, 0x10000c958..0x10000c9a0), never below the port's 2.0."""
+    from insidethecave.game.game_scene import TOP_SPEED
     s = 4.0
     for k in range(1, slot + 1):
         if k % 20 == 0 and s >= 2.0:
-            s += -0.12
+            s = max(TOP_SPEED, s - 0.12)
     return s
 
 
