@@ -17,15 +17,17 @@ cannot show you.
 
 ## Status
 
-**The whole game is playable from source**, with no releases yet:
+**The whole game is playable.** To play without installing anything, download the zip
+from the [releases page](https://github.com/tsatria03/InsideTheCave-Windows/releases),
+extract it, and run `InsideTheCave.exe`. To run it from source instead:
 
     python InsideTheCave.py
 
 It opens as the original does, on the earphone warning, then the menu: Play, Score and
 Quit. A game over goes to the result screen, where you type your name and choose Replay or
 Menu; Score reads your best five. `--stage` starts straight on a game. The whole
-original game has been disassembled: every function of its
-code is listed in `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the
+original game has been disassembled: every function of its code is listed in
+`analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the
 game works, read from that code. `aidocks/PORTING_STATUS.md` keeps track of what is done,
 and `aidocks/DIVERGENCES.md` of every place the port differs on purpose.
 
