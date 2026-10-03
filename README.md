@@ -82,8 +82,8 @@ the original's line in your language, and your screen reader then says the keys.
 
 ```
 game/                    the original app bundle, unpacked
-  sounds/used/           the 12 sounds version 2.32 plays, and the menu music, as WAV
-  sounds/unused/         13 sounds from the game's older versions
+  sounds/used/           the 12 sounds version 2.32 plays, the menu music and footsteps
+  sounds/unused/         12 sounds from the game's older versions
 InsideTheCave.py         the entry point: python InsideTheCave.py
 insidethecave/           the Python package: the game, the SpriteKit stand-in, the
                          platform layer and the keyboard
@@ -131,9 +131,10 @@ The one thing that is not where the original kept it is the sounds. The original
 in the original, as `game-music.wav`, and the move, `dash.aiff`, as `lane.wav`. The
 original asks for some by another extension, such as `dash.aiff`, so the port finds a sound
 by its name without the extension, and a renamed one under its new name. `used/` also
-holds the menu music, `background-music.wav`, from the game's early versions, and
-`game/sounds/unused/` keeps 13 more sounds from the older versions, which version 2.32
-never plays.
+holds sounds from the game's early versions that the port adds: the menu music,
+`background-music.wav`, and two footstep loops made from `Running_On_Rocks`
+(`cave-walk.wav`, `cave-run.wav`). `game/sounds/unused/` keeps 12
+more sounds from the older versions, which version 2.32 never plays.
 
 ## Where this came from
 

@@ -23,6 +23,8 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
   (``createNodesSounds``);
 * the dash and the wall come from the lane, left, middle or right (``soundMovePlayer``,
   ``soundWall``), and the music's volume can change during a game (``applyMusicVolume``);
+* footsteps loop from your lane, a walk, then a run as the cave speeds up
+  (``updateFootsteps``);
 * "Torch low" is spoken as the torch starts to dim (``changeFalloffSize``);
 * the tutorial line in a Windows voice, then the key hints, then the first slot
   (``tutorial``);
@@ -92,6 +94,12 @@ JINGLE_VOLUME = 1.0
 #: 0x100010a6c); PORT: 1.0, the file as recorded (the dev: "Please put the game music volume
 #: to 1.0 as well. Again, I can turn that down as well."), turned down with Page Down.
 MUSIC_GAIN = 1.0
+#: PORT ADDITION: your footsteps, looped, from your lane, quicker as the cave speeds up (the
+#: dev, for the third release, from the early versions' Running_On_Rocks).  Each is (file,
+#: the slot it starts at): a walk from the first slot, a run from slot 155 (the dev: "I want
+#: the running to start at slot 155."), about 1 min 32 s in, at speedMonster 3.16.
+FOOTSTEPS = (('cave-walk.wav', 0), ('cave-run.wav', 155))
+FOOTSTEP_VOLUME = 0.5
 
 
 class GameScene(Scene):
@@ -148,6 +156,7 @@ class GameScene(Scene):
         self.paused_by_player = False
         self.torch_low_said = False
         self.started = False
+        self.footsteps = None                                # PORT ADDITION: the loop playing
 
     # ---- helpers the binary inlines -----------------------------------------------------
     @property
@@ -298,6 +307,7 @@ class GameScene(Scene):
             self.addChild(slot)                                        # 0x10000c8d4
             slot.runAction(self.moveObstacleWithBorn(slot))
         self.countObjectScene += 1                                     # 0x10000c93c
+        self.updateFootsteps()                                         # PORT ADDITION
         self.changeFalloffSize()                                       # 0x10000c94c
         if self.countObjectScene % 20 == 0 and self.speedMonster >= 2.0:
             self.speedMonster += -0.12                                 # 0x10000c998
@@ -841,6 +851,35 @@ class GameScene(Scene):
         self.startScore()
         self.blockPlayer = False
         self.createObjectScene()
+        self.updateFootsteps()                                         # PORT ADDITION
+
+    # ---- PORT ADDITION: footsteps -----------------------------------------------------
+    @staticmethod
+    def footstepFile(slot):
+        """The footsteps at a ``countObjectScene``: a walk, then a run."""
+        name = FOOTSTEPS[0][0]
+        for file, start in FOOTSTEPS:
+            if slot >= start:
+                name = file
+        return name
+
+    def updateFootsteps(self):
+        """Start the footsteps, or change them when the slots have reached the next.
+        They ride on the player, so they move with every lane change, and are placed by the
+        lane, as the dash is; they go with the player at death."""
+        if not self.started or self.playerDead:
+            return
+        want = self.footstepFile(self.countObjectScene)
+        now = self.footsteps
+        if now is not None and now.file_name == want:
+            return
+        if now is not None:
+            now.removeFromParent()
+        steps = AudioNode(want, name='footsteps')
+        steps.by_lane = True
+        steps.volume = FOOTSTEP_VOLUME
+        self.footsteps = steps
+        self.player.addChild(steps)
 
     # GameScene.startScore 0x10001532c
     def startScore(self):

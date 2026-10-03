@@ -297,6 +297,37 @@ def test_the_music_volume_changes_during_a_game():
         volume.percents[volume.MUSIC_KEY] = 100
 
 
+def test_footsteps_loop_from_your_lane_and_quicken_with_the_cave():
+    """The dev: a walk, then a run, at 0.5, moving with you."""
+    from insidethecave.scene.audio import AudioEngine, placed
+    assert all(placed(n) for n, _ in G.FOOTSTEPS), 'mixed to mono'
+    g = _Game(debug=True)
+    s = g.scene
+    assert s.footsteps is None, 'none before the first slot'
+    g.start()
+    f = s.footsteps
+    assert f is not None and f.file_name == 'cave-walk.wav' and f.autoplayLooped
+    assert f.volume == 0.5 and f.by_lane and f.parent is s.player
+    s.movePlayerLeft()
+    g.run(0.3)
+    heard = AudioEngine(None, None).mapped(f, s.listener)
+    assert round(heard[0], 6) == -1.0, 'from the left lane, once you are there'
+    assert [G.GameScene.footstepFile(n) for n in (0, 1, 154, 155, 156, 400)] == [
+        'cave-walk.wav', 'cave-walk.wav', 'cave-walk.wav', 'cave-run.wav', 'cave-run.wav',
+        'cave-run.wav'], 'the run from slot 155 (the dev)'
+    s.countObjectScene = 154
+    s.createObjectScene()                       # the 155th slot
+    assert s.footsteps.file_name == 'cave-run.wav' and not f.in_scene, 'swapped, not doubled'
+
+
+def test_footsteps_stop_at_death():
+    g = _Game()
+    g.start()
+    f = g.scene.footsteps
+    _crash(g)
+    assert not f.in_scene
+
+
 def test_every_coin_carries_its_own_jingle():
     """The port's addition: the original's tilintar, looped, riding down with the coin."""
     g = _Game()
@@ -536,6 +567,42 @@ def test_a_game_runs_with_sound_on_the_null_driver():
             assert vc.scene.countObjectScene > 3
         vc.clearScene()
         al.check('clearing')
+    finally:
+        bank.release()
+        al.close()
+
+
+def test_footsteps_keep_playing_through_lane_changes_on_the_null_driver():
+    """The dev: "SOme times the footsteps sounds stop playing after I switch lanes." """
+    from insidethecave import paths
+    from insidethecave.platform import openal, sound
+    paths.set_game(None)
+    al = openal.AL()
+    al.open()
+    bank = sound.SoundBank(al)
+    try:
+        loop = runloop.RunLoop()
+        defaults = UserDefaults()
+        defaults.setInteger_forKey_(3, 'countTutorial')
+        vc = GameViewController(al, bank, defaults, _Said(), _Voice(), KeyMap(), loop,
+                                debug=True, language_code='en', rng=random.Random(7))
+        vc.viewDidLoad()
+        s = vc.scene
+        now = runloop.clock()
+        moves = (s.movePlayerLeft, s.movePlayerLeft, s.movePlayerRight, s.movePlayerRight,
+                 s.movePlayerRight, s.movePlayerLeft)
+        stopped = []
+        for i in range(200 * 30):                     # 200 s: past the change to the run
+            now += 1 / 30.0
+            loop.pump(now)
+            vc.frame(now)
+            if s.started and i % 7 == 0:
+                moves[(i // 7) % len(moves)]()
+            f = s.footsteps
+            if f is not None and f.in_scene and \
+                    al.source_state(f.source) != openal.AL_PLAYING:
+                stopped.append((i, f.file_name, f.source, s.actualPositionPlayer))
+        assert not stopped, stopped[:5]
     finally:
         bank.release()
         al.close()

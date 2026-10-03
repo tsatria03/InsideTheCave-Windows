@@ -65,8 +65,9 @@ def heard(volume):
     return min(max(0.0, float(volume)), MAX_GAIN)
 #: The sounds placed in their lanes, loaded mixed down to mono (base names): the roar, the
 #: bats and the jingle against the player; the dash and the wall by the lane itself (the
-#: dev, for the second release).
-PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'dash', 'movimentoproibido'))
+#: dev, for the second release), and the footsteps too (for the third).
+PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'dash', 'movimentoproibido',
+                    'cave-walk', 'cave-run'))
 
 
 def lane_position(scene_x):
