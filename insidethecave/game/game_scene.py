@@ -21,7 +21,8 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
 * every coin jingles as it comes (``createCoin``), the original's unused ``tilintar``;
 * the coin's collect sound is heard at the player, not from the middle lane
   (``createNodesSounds``);
-* the dash comes from the lane, left, middle or right (``soundMovePlayer``);
+* the dash and the wall come from the lane, left, middle or right (``soundMovePlayer``,
+  ``soundWall``);
 * "Torch low" is spoken as the torch starts to dim (``changeFalloffSize``);
 * the tutorial line in a Windows voice, then the key hints, then the first slot
   (``tutorial``);
@@ -508,6 +509,12 @@ class GameScene(Scene):
         s.runAction(A.changeVolumeTo(0.25, 0.0))                       # 0x10000fec4
 
 
+    def soundWall(self, fraction):
+        """The wall: MovimentoProibido, one-shot (0x10000f988, 0x10000fc14).  PORT: placed on
+        the side of the wall that was hit, where the original's was not placed."""
+        self.runAction(A.playSoundFileNamed('MovimentoProibido.wav', False,
+                                            lane_x=self.W * fraction))
+
     # GameScene.playMonsterRoarAtPoint: 0x10000f69c
     def playMonsterRoarAtPoint(self, point):
         self.roar.position = point
@@ -537,9 +544,9 @@ class GameScene(Scene):
             x = 0.3
             self.soundMovePlayer(x)
         elif lane == 2:
-            self.runAction(A.playSoundFileNamed('MovimentoProibido.wav', False))
             self.actualPositionPlayer = 2
             x = 0.3
+            self.soundWall(x)                                          # 0x10000f988
         else:
             x = 0.0
         self._move_to(x)
@@ -558,9 +565,9 @@ class GameScene(Scene):
             x = -0.3
             self.soundMovePlayer(x)
         elif lane == 0:
-            self.runAction(A.playSoundFileNamed('MovimentoProibido.wav', False))
             self.actualPositionPlayer = 0
             x = -0.3
+            self.soundWall(x)                                          # 0x10000fc14
         else:
             x = 0.0
         self._move_to(x)

@@ -260,19 +260,28 @@ def test_the_coin_sound_is_heard_at_the_player_in_every_lane():
         assert engine.mapped(g.scene.coinSound, g.scene.listener) == (0.0, 0.0, 0.0), lane
 
 
-def test_the_dash_comes_from_the_lane():
-    """The dev: the dash from the lane you are in."""
+def test_the_dash_and_the_wall_come_from_the_lane():
+    """The dev: the dash from the lane you are in, the wall from the side you hit."""
+    from insidethecave.scene import actions
     from insidethecave.scene.audio import AudioEngine, placed
     g = _Game(debug=True)
     g.start()
     s = g.scene
     engine = AudioEngine(None, None)
-    assert placed('dash.aiff'), 'mixed to mono'
+    assert placed('dash.aiff') and placed('MovimentoProibido.wav'), 'both mixed to mono'
     for move, x in ((s.movePlayerLeft, -1.0), (s.movePlayerRight, 0.0),
                     (s.movePlayerRight, 1.0)):
         move()
         heard = engine.mapped(s.movePlayerSound, s.listener)
         assert tuple(round(v, 6) for v in heard) == (x, 0.0, 0.0), (x, heard)
+    walls = []
+    s.runAction = lambda action, key=None: walls.append(action)
+    s.movePlayerRight()                                    # into the right wall
+    s.actualPositionPlayer = 0
+    s.movePlayerLeft()                                     # into the left wall
+    sounds = [a for a in walls if isinstance(a, actions.PlaySoundFile)]
+    assert [a.name for a in sounds] == ['MovimentoProibido.wav'] * 2
+    assert [round(a.lane_x / W, 2) for a in sounds] == [0.3, -0.3]
 
 
 def test_every_coin_carries_its_own_jingle():

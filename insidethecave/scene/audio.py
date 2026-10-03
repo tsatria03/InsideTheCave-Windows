@@ -21,10 +21,10 @@ with OpenAL's inverse distance, clamped, from ``REFERENCE_DISTANCE``.  HRTF is o
 
 **Mono for the placed sounds.**  OpenAL places only mono buffers, and plays stereo ones
 straight through, as Apple's 3D audio did with the original's stereo roar (**inferred**).
-The dev chose to place the roar, the bats and the coin jingle, and later the dash, which
-is placed by its lane, not against the player (``by_lane``, ``lane_position``): those
-four (``PLACED``) load mixed down to mono.  Every other positional node keeps its file
-as it is, so a
+The dev chose to place the roar, the bats and the coin jingle, and later the dash and the
+wall, which are placed by their lane, not against the player (``by_lane``,
+``lane_position``): those five (``PLACED``) load mixed down to mono.  Every other
+positional node keeps its file as it is, so a
 stereo one plays unplaced, as it most likely did on the iPhone; the music is mono already
 and sits at the player.
 
@@ -64,15 +64,16 @@ def heard(volume):
     """A volume the game sets, as it is played: 0 to ``MAX_GAIN``."""
     return min(max(0.0, float(volume)), MAX_GAIN)
 #: The sounds placed in their lanes, loaded mixed down to mono (base names): the roar, the
-#: bats and the jingle against the player; the dash by the lane itself (the dev, for the
-#: second release).
-PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'dash'))
+#: bats and the jingle against the player; the dash and the wall by the lane itself (the
+#: dev, for the second release).
+PLACED = frozenset(('rugido', 'batsound', 'tilintar', 'dash', 'movimentoproibido'))
 
 
 def lane_position(scene_x):
     """PORT ADDITION: where a sound placed by its lane is heard: across by the lane's place
     in the scene, the middle lane in the middle, whatever lane the player is in."""
     return (float(scene_x) / LANE_WIDTH * PAN_PER_LANE, 0.0, 0.0)
+
 
 def placed(file_name):
     return paths.base_name(file_name) in PLACED
@@ -182,13 +183,15 @@ class AudioEngine:
         if node.source:
             self.al.alSourcef(node.source, o.AL_GAIN, heard(node.volume))
 
-    def play_once(self, name):
-        """``playSoundFileNamed:``: not placed, at full volume.  Returns its length."""
+    def play_once(self, name, lane_x=None):
+        """``playSoundFileNamed:``: not placed, at full volume.  Returns its length.
+        PORT ADDITION: with ``lane_x``, a scene x, it is placed by that lane instead."""
         al = self.al
         s = al.gen_source()
-        al.alSourcei(s, o.AL_BUFFER, self.bank.buffer(name))
+        al.alSourcei(s, o.AL_BUFFER, self.bank.buffer(name, mono=placed(name)))
         al.alSourcei(s, o.AL_SOURCE_RELATIVE, 1)
-        al.alSource3f(s, o.AL_POSITION, 0.0, 0.0, 0.0)
+        where = (0.0, 0.0, 0.0) if lane_x is None else lane_position(lane_x)
+        al.alSource3f(s, o.AL_POSITION, *where)
         al.alSourcePlay(s)
         self._one_shots.append(s)
         return self.bank.seconds(name)

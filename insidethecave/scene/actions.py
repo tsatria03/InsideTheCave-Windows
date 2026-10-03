@@ -220,15 +220,16 @@ class PlaySoundFile(_Timed):
     """``playSoundFileNamed:waitForCompletion:``: a one-shot sound, not placed, at full
     volume; it takes the sound's length only when told to wait."""
 
-    def __init__(self, name, wait):
+    def __init__(self, name, wait, lane_x=None):
         super().__init__(0.0)
         self.name = name
         self.wait = bool(wait)
+        self.lane_x = lane_x        # PORT ADDITION: placed by this lane (audio.lane_position)
 
     def begin(self, node):
         scene = node.scene
         if scene is not None and scene.audio is not None:
-            length = scene.audio.play_once(self.name)
+            length = scene.audio.play_once(self.name, lane_x=self.lane_x)
             if self.wait:
                 self.duration = length
         return None
@@ -357,5 +358,5 @@ def stop():
     return Stop()
 
 
-def playSoundFileNamed(name, waitForCompletion=False):
-    return PlaySoundFile(name, waitForCompletion)
+def playSoundFileNamed(name, waitForCompletion=False, lane_x=None):
+    return PlaySoundFile(name, waitForCompletion, lane_x)
