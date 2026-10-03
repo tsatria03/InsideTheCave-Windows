@@ -249,6 +249,17 @@ def test_a_coin_is_ten_points_and_one_coin():
     assert g.scene.coinSound.playing
 
 
+def test_the_coin_sound_is_heard_at_the_player_in_every_lane():
+    """The port's fix: plim_moeda is mono, so placed it came from the middle lane."""
+    from insidethecave.scene.audio import AudioEngine
+    g = _Game(debug=True)
+    g.start()
+    engine = AudioEngine(None, None)
+    for lane in (0, 1, 2):
+        g.scene.player.position = (W * (-0.3, 0.0, 0.3)[lane], H * -0.25)
+        assert engine.mapped(g.scene.coinSound, g.scene.listener) == (0.0, 0.0, 0.0), lane
+
+
 def test_every_coin_carries_its_own_jingle():
     """The port's addition: the original's tilintar, looped, riding down with the coin."""
     g = _Game()

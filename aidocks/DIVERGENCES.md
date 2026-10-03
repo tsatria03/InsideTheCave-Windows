@@ -33,6 +33,9 @@ A slot makes the next slot when its own action reaches 0.33 H (`moveObstacleWith
 ### Every coin jingles as it comes (port addition, built 2026-10-02)
 The original loads "tilintar.aiff" as a positioned node and has `moveCoinSound` to carry it with a coin, but never plays it or calls that function (0x100013f3c); coins are silent until taken. In the port each coin carries its own jingle, looped, at 1.0, placed with the coin as it comes down its lane, stopping when the coin is taken or leaves the bottom (`createCoin`). It goes with the other sounds at death. The dev: "I want coins to have a sound."
 
+### The coin's collect sound is heard at the player (fix, built 2026-10-02)
+`coinSound` ("plim_moeda.wav") is a scene child the game never moves, so it stays at (0, 0), the middle lane, and it is positional by default (`createNodesSounds` 0x1000105b0 sets only `autoplayLooped`). It is the only mono file among the pickup sounds, so OpenAL placed it there: taken in a side lane, a coin sounded one lane over. The port makes it unplaced (`positional = False`), heard at the player like the stereo pickup sounds. Whether the iPhone placed it too is Apple's code (**inferred**). The dev found it by ear: "it plays the collect sound at a different lane".
+
 ### "Torch low" (port addition, built 2026-10-02)
 The original shows the light shrinking; its burning sound loses only about a quarter of its volume over a whole torch. The port says "Torch low" through the screen reader once a torch, the first time the light takes its dim step (falloff 3 or more, `changeFalloffSize` 0x100023a0c), about 29 slots before it goes out. A new torch picked up resets it. The dev: "I want to add a speech warning if possible. Along with the current sounds."
 

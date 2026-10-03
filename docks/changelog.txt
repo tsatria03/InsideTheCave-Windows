@@ -1,4 +1,5 @@
 unrelease:
+The sound of taking a coin comes from you, not from the middle lane.
 A game over says your score and your coins, and Enter plays again. The original's warning, menu, result and ranking screens are still to come.
 A torch can no longer be thrown in the second after you die.
 A coin, a torch on the path, or a monster reaching you always counts, however the game notices it touching you. The original could miss some of them.

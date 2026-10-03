@@ -19,6 +19,8 @@ The port's own changes, each in aidocks/DIVERGENCES.md:
   stops (``torchDidCollideWithObstacle``);
 * no throw once the player is dead (``throwTorch``);
 * every coin jingles as it comes (``createCoin``), the original's unused ``tilintar``;
+* the coin's collect sound is heard at the player, not from the middle lane
+  (``createNodesSounds``);
 * "Torch low" is spoken as the torch starts to dim (``changeFalloffSize``);
 * the tutorial line in a Windows voice, then the key hints, then the first slot
   (``tutorial``);
@@ -454,6 +456,10 @@ class GameScene(Scene):
                      self.movePlayerSound, self.deadMonster):
             node.autoplayLooped = False
             self.addChild(node)
+        # PORT: the coin's sound is the only mono one here, so OpenAL would place it at the
+        # node's own (0, 0), the middle lane, whatever lane the coin was taken in.  Unplaced,
+        # it is heard at the player, like the stereo pickup sounds beside it.
+        self.coinSound.positional = False
         for node in (self.coinTinkle, self.batSound):
             node.positional = True
             node.autoplayLooped = False
