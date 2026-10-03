@@ -20,6 +20,7 @@ metadata:
 
 ## The game in the tutorial
 - **Speed held at 5.0** (the dev: "held at 5.0"): the speed-up every 20 slots never applies. You can still die; the water at 81 and ice at 161 still come.
+- **No score at all** (the dev, while planning the status keys: "I want the score system to be switched off entirely in the tutorial."): the score loop does not run and coins add nothing to it; coins are still counted. The status keys there: C "Coins, 3.", S "No score to report.", E "No speed to report." ([[project_status_keys_plan]]).
 - **One thing at a time** (the dev: "a coin and a bat cannot appear in the same lane. Only in the tutorial."): a coin or torch that would come with a monster or bats (`coinTogether`, `torchTogether`, objectHeight 4) waits for the next empty slot and comes there on its own (the dev: "Move it to the next empty slot if possible."). That is nearly always the very next slot, since objectHeight is then 0 and no lone pickup comes that round. Normal games are unchanged.
 
 ## Announcements, in the Windows voice
