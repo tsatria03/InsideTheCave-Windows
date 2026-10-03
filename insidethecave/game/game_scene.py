@@ -108,14 +108,18 @@ MUSIC_GAIN = 1.0
 #: (0x1000157bc); the dev, for the third release: "The default speeds should now be 5.0 and
 #: 1.0. 5 being the slowest, and 1 being the fastest."
 START_SPEED = 5.0
-#: PORT: the lowest speedMonster goes, the fastest the game gets.  The original steps 0.12
-#: every 20 slots while at 2.0 or more, so from 2.08 to 1.96 at slot 340; the port steps on
-#: to 1.0, from 1.04 at slot 660 to 1.0 at slot 680, about 5 min 39 s in (the dev, above).
+#: PORT: the lowest speedMonster goes, the fastest the game gets.  The original steps every
+#: 20 slots while at 2.0 or more, so from 2.08 to 1.96 at slot 340; the port steps on to
+#: 1.0, reached at slot 800, about 6 min 42 s in (the dev, above).
 TOP_SPEED = 1.0
+#: PORT: what each step every 20 slots takes off speedMonster.  The original's is 0.12
+#: (0x10000c998); the dev, for the third release: "I want it set to 0.1 if possible.", so the
+#: speeds run in tenths, 5.0, 4.9, 4.8 ..., each whole number every 200 slots.
+SPEED_STEP = 0.1
 #: PORT ADDITION: your footsteps, looped, from your lane, quicker as the cave speeds up (the
 #: dev, for the third release, from the early versions' Running_On_Rocks).  Each is (file,
 #: the slot it starts at): a walk from the first slot, a run from slot 155 (the dev: "I want
-#: the running to start at slot 155."), about 1 min 58 s in, at speedMonster 4.16.
+#: the running to start at slot 155."), about 1 min 59 s in, at speedMonster 4.3.
 FOOTSTEPS = (('cave-walk.wav', 0), ('cave-run.wav', 155))
 FOOTSTEP_VOLUME = 0.5
 
@@ -329,10 +333,11 @@ class GameScene(Scene):
         self.updateFootsteps()                                         # PORT ADDITION
         self.changeFalloffSize()                                       # 0x10000c94c
         if self.countObjectScene % 20 == 0 and self.speedMonster > TOP_SPEED:
-            # 0x10000c958..0x10000c9a0 steps while 2.0 or more, 2.08 to 1.96 at slot 340;
-            # PORT: on down to TOP_SPEED, 1.0, the fastest the game goes (the dev, for the
-            # third release)
-            self.speedMonster = max(TOP_SPEED, self.speedMonster - 0.12)
+            # 0x10000c958..0x10000c9a0 steps 0.12 while 2.0 or more, 2.08 to 1.96 at slot
+            # 340; PORT: SPEED_STEP, 0.1, on down to TOP_SPEED, 1.0, the fastest the game
+            # goes (the dev, for the third release); rounded to hundredths so the tenths
+            # stay exact, as 0.1 has no exact binary value
+            self.speedMonster = max(TOP_SPEED, round(self.speedMonster - SPEED_STEP, 2))
 
     # ---- -[GameScene coinTogether] / torchTogether, and their helper 0x10000ca0c ---------
     def coinTogether(self):

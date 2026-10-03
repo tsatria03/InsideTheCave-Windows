@@ -115,7 +115,7 @@ Changes the dev asked for after the five phases, each confirmed by the dev and w
 - **Placing** (second release): the dash (`used/lane.wav`, renamed from `dash.wav`) from the lane you move into, the wall from the side you bump; the menus wrap around.
 - **Sounds on the path** (third release): tilintar now on the torches on the path, and the coins carry `used/coin.wav`; this replaces question 4's "coins get tilintar, torches stay silent".
 - **Footsteps and the torch** (third release): `cave-walk.wav`, then `cave-run.wav` from slot 155, at 0.5, by the lane; `tocha_acende.wav` once when the torch burns all the way out.
-- **Speeds** (third release): the cave starts at 5.0 (`GameScene.START_SPEED`) instead of the original's 4.0, and speeds up to 1.0 (`TOP_SPEED`), at slot 680, instead of stopping at 1.96.
+- **Speeds** (third release): the cave starts at 5.0 (`GameScene.START_SPEED`) instead of the original's 4.0, and speeds up to 1.0 (`TOP_SPEED`), at slot 800, instead of stopping at 1.96, by 0.1 every 20 slots (`SPEED_STEP`) instead of 0.12.
 
 ## Decisions the dev needs to make
 Each with a recommendation; none blocks phase 1 except question 1.

@@ -18,8 +18,8 @@ In the game, besides the game's own keys:
     Equals (=)      slower: the speed up by 0.1
 
 The speed is the game's ``speedMonster``: the seconds a thing takes to fall the whole
-height of the cave.  The game starts at 5.0 and, left to itself, steps down by 0.12 every
-20 slots until 1.0, at slot 680, and stays there.  Here it never changes by itself: it
+height of the cave.  The game starts at 5.0 and, left to itself, steps down by 0.1 every
+20 slots until 1.0, at slot 800, and stays there.  Here it never changes by itself: it
 stays where you put it, from 5.0, the slowest, to 1.0, the fastest, the game's own limits
 (the dev: "the speed checker script should cap to those speeds as well.").  A slot comes
 every 0.165 x the speed seconds, and a roar comes about 0.26 x the speed seconds before its

@@ -168,25 +168,28 @@ def test_the_game_speeds_up_every_twenty_slots():
     g.start()
     while g.scene.countObjectScene < 20:
         g.run(0.1)
-    assert abs(g.scene.speedMonster - 4.88) < 1e-9, g.scene.speedMonster
+    assert g.scene.speedMonster == 4.9, g.scene.speedMonster
     while g.scene.countObjectScene < 40:
         g.run(0.1)
-    assert abs(g.scene.speedMonster - 4.76) < 1e-9
+    assert g.scene.speedMonster == 4.8, g.scene.speedMonster
 
 
 def test_the_speed_steps_down_to_1_and_stays():
-    """The original stops stepping below 2.0, at 1.96; the port goes on to 1.0, reached at
-    slot 680 (the dev: 5 the slowest, 1 the fastest)."""
+    """The original steps 0.12 and stops below 2.0, at 1.96; the port steps 0.1 on to 1.0,
+    reached at slot 800 (the dev: 5 the slowest, 1 the fastest, by 0.1), every tenth exact
+    on the way."""
     g = _Game(debug=True)
     g.start()
     s = g.scene
     s.speedMonster, s.countObjectScene = G.START_SPEED, 0
     reached = None
-    for _ in range(800):
+    for _ in range(900):
         s.createObjectScene()
+        if s.countObjectScene % 200 == 0 and s.countObjectScene <= 800:
+            assert s.speedMonster == 5.0 - s.countObjectScene / 200, s.speedMonster
         if reached is None and s.speedMonster == G.TOP_SPEED:
             reached = s.countObjectScene
-    assert G.TOP_SPEED == 1.0 and reached == 680, reached
+    assert G.SPEED_STEP == 0.1 and G.TOP_SPEED == 1.0 and reached == 800, reached
     assert s.speedMonster == 1.0, s.speedMonster
 
 

@@ -4,6 +4,7 @@ Nothing is waiting here right now. New bugs, planned changes and anything still 
 
 ##Finished.
 
+The cave speeds up by 0.1 at a time, so its speeds run in even tenths.
 A bat that dodges your torch is heard going to its new lane.
 A bat your torch hits dodges into another lane and stays there.
 The cave starts at speed 5.0, its slowest, and speeds up to 1.0, its fastest.
