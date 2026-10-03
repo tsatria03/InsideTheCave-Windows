@@ -775,7 +775,10 @@ class GameScene(Scene):
     # GameScene.torchDidCollideWithBat:batB: 0x10001356c (it is handed only the bat)
     def torchDidCollideWithBat(self, torch, bat):
         """The bat dodges in 0.3 s: from the centre to a side at random, from a side to the
-        centre.  The original prints the bat's x and W / 3 to its console here."""
+        centre.  The original prints the bat's x and W / 3 to its console here.  PORT
+        ADDITION: the bats' sound, still playing from the sensor, goes with it to its new
+        lane over the same 0.3 s, where the original's stays put (the dev, for the third
+        release)."""
         W = self.W
         log.debug('bat at %.1f, %.1f', bat.position[0], W / 3.0)
         if bat.position[0] == 0.0:                                     # 0x1000136f4
@@ -783,6 +786,7 @@ class GameScene(Scene):
         else:
             fraction = 0.0
         bat.runAction(A.moveToX(fraction * W, 0.3))
+        self.batSound.runAction(A.moveToX(fraction * W, 0.3))          # PORT ADDITION
 
     # GameScene.obstacleDidCollideWithPlayer:obstacleE: 0x1000230c4
     def obstacleDidCollideWithPlayer(self, player, obstacle):

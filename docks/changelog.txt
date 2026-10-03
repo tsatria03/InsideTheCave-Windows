@@ -1,4 +1,5 @@
 unrelease:
+When a bat dodges your torch, its sound goes with it to its new lane, so you hear where it went.
 A bat your torch hits now dodges into another lane and stays there. Before, it went straight back into its lane, so throwing at a bat never saved you.
 The cave's top speed is now a touch slower: it stops speeding up at 2.0 instead of 1.96.
 Torches on the path now jingle from their lane as they come, so you can find them by ear, and coins ding instead, with the coin sound from the game's early versions.

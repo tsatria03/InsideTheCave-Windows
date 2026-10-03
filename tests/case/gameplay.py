@@ -525,6 +525,8 @@ def test_a_falling_bat_dodges_a_thrown_torch_and_stays_dodged():
     y = bat.position[1]
     g.run(1.0)
     assert abs(abs(bat.position[0] - lane) - 0.3 * W) < 1e-6, 'the bat went back to its lane'
+    assert abs(s.batSound.position[0] - bat.position[0]) < 1e-6, \
+        'the bats\' sound stayed behind (the dev: it should move off with the bat)'
     assert bat.position[1] < y, 'the bat stopped falling'
     g.run(4.0)
     assert not s.playerDead, 'the dodged bat still reached you'
