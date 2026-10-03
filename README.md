@@ -45,7 +45,7 @@ Windows 10 or later, and two packages:
 - **`prismatoid`** (Prism): speech through any screen reader other than NVDA, or through
   a Windows voice when none is running. Without it, only NVDA would speak.
 
-Everything else will be the standard library. The audio is OpenAL Soft through `ctypes`:
+Everything else is the standard library. The audio is OpenAL Soft through `ctypes`:
 `vendor/openal/soft_oal.dll` ships with the repository, so there is nothing to install for
 it. `vendor/nvda/nvdaControllerClient64.dll` ships too, so NVDA can speak directly. The
 port is for Windows only.
@@ -64,18 +64,21 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
   scores nothing; a bat it hits only dodges into another lane.
 - **Coins** come down too, each dinging from its lane: ten points each. The score also
   goes up four times a second while you live.
-- The cave **speeds up** every twenty things that come down, and turns from rock to water
-  and then ice as you go deeper.
+- Your **footsteps** follow you from your lane: a walk at first, then a run once the cave
+  has sped up, from about a minute and a half in.
+- The cave **speeds up** every twenty things that come down, until it reaches its top
+  speed, and turns from rock to water and then ice as you go deeper.
 - After a game you type your name, and a score that beats your fifth best goes into your
   **best five**, saved on your computer; a blank name is saved as "unnamed player". The
   original also sent them to an online leaderboard, which this port leaves out.
 
-**Keys**: on the menus, Up and Down move, Enter chooses and Escape goes back. In a game,
-A or Left Arrow and D or Right Arrow move, W or Up Arrow throws, and P or Escape pauses,
-opening a pause menu with Resume, Restart and Quit to menu, where Escape or P resumes.
-While a game runs, Home and End set the master volume. Everywhere, Page Up and Page Down
-set the music volume, F1 lists and changes the keys, and
-Alt+F4 quits. Leaving the window pauses. On your first three games a Windows voice says
+**Keys**: on the menus, Up and Down move, wrapping around at either end, Home and End go
+to the first and last row, Enter chooses and Escape goes back. In a game, A or Left Arrow
+and D or Right Arrow move, W or Up Arrow throws, and P or Escape pauses, opening a pause
+menu with Resume, Restart and Quit to menu, where Escape or P resumes. While a game runs,
+Home and End set the master volume. Page Up and Page Down set the game's music in a game,
+paused or not, and the menu music on the menus. F1 lists and changes the keys, and Alt+F4
+quits. Leaving the window pauses. On your first three games a Windows voice says
 the original's line in your language, and your screen reader then says the keys.
 
 ## Layout
@@ -113,8 +116,8 @@ The keyboard, the screens' rows, the pause menu and the F1 key-binding screen ar
 that goes from screen to screen.
 
 The save lives in `%APPDATA%\InsideTheCave`: `save.json` (the local top five and the
-tutorial count), `settings.json` (the master and music volumes) and `keys.json` (the key
-bindings).
+tutorial count), `settings.json` (the master, game music and menu music volumes) and
+`keys.json` (the key bindings).
 
 ### `game/`: the original's data
 
@@ -122,7 +125,7 @@ bindings).
 `InsideTheCave` executable, `Info.plist`, the SpriteKit scenes (`GameScene.sks`,
 `Actions.sks`, `Snow.sks`), the compiled asset catalogue `Assets.car`, the storyboards,
 the four fonts, the app icons, the Swift runtime in `Frameworks/`, and `_CodeSignature/`.
-The port never writes to it; the save will live in `%APPDATA%`.
+The port never writes to it; the save lives in `%APPDATA%`.
 
 The one thing that is not where the original kept it is the sounds. The original keeps its
 12 sounds loose in the bundle's top folder, as WAV, MP3 and AIFF; here they sit in
@@ -148,8 +151,8 @@ the earphone warning and the menu to `GameScene`, which is the game itself.
 The Swift symbols are stripped, so the port is recovered from what the binary still
 names: its Objective-C selectors and properties (`playMonsterRoarAtPoint:`, `throwTorch`,
 `speedMonster`), its strings, and its calls into SpriteKit, AVFoundation and UIKit. Every
-ported method will carry the address it came from, and every place the port differs from
-the original will be written down in `aidocks/DIVERGENCES.md`.
+ported method carries the address it came from, and every place the port differs from
+the original is written down in `aidocks/DIVERGENCES.md`.
 
 ## Tests
 
@@ -192,6 +195,22 @@ at once with a made-up score, or a game for the pause menu, over a made-up top f
 know what the Score screen should say:
 
     python tests/interact/screens_check.py
+
+`torch_check.py` starts the real game with only your torch to listen to: nearly burnt
+out, about to dim, or full for throwing, with nothing else coming down the cave except one
+torch after each throw.
+
+    python tests/interact/torch_check.py
+
+`coin_check.py` starts the real game with only coins coming down, as the game sends them
+or more of them, and a torch that never burns down.
+
+    python tests/interact/coin_check.py
+
+`speed_check.py`, a developer tool, is the full game at a speed you set yourself: Minus
+makes it faster and Equals slower, by 0.1 at a time, and it never speeds up on its own.
+
+    python tests/interact/speed_check.py
 
 ## Building and releasing
 
