@@ -11,13 +11,14 @@ metadata:
 
 ## Open
 
-- Port the game, in the five phases of [[project_port_plan]], once the dev has answered its questions.
-- Make the first real build and release with compiler.py and releaser.py once the port has an entry script; they were adapted on 2026-10-02 but cannot build yet ([[project_build_scripts]]).
 - Add tests/case/release.py for the releaser's version numbering, changelog filing and archive names.
-- Write README.md for developers and docks/readme.txt for players once there is a game to describe.
 
 ## Finished
 
+- By-ear tools for the third release: tests/interact/torch_check.py, coin_check.py and speed_check.py ([[project_tests_layout]]).
+- README.md for developers and docks/readme.txt and credits.txt for players are written, and kept in step with the game ([[project_player_readme]]).
+- compiler.py and releaser.py build and release the game: the dev compiled and released a test build, which worked ([[project_build_scripts]]).
+- The game is ported, in the five phases of [[project_port_plan]], every question answered and every phase confirmed by the dev.
 - The whole game is disassembled: arm64 tools in tools/, all 575 functions listed with coverage proved, the strings, scenes and storyboards decoded, and GAME_STRUCTURE.md written from the code ([[project_disassembly_plan]]).
 - The French, Russian and Chinese tutorial lines are found, in the binary's UTF-16 strings, spoken by GameScene.tutorial.
 - The boss the 2016 update described is not in version 2.32: the full disassembly has no boss anywhere.
