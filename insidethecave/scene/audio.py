@@ -47,7 +47,8 @@ log = logging.getLogger('audio')
 
 #: The lanes' spacing in the scene, 0.3 W (the lanes at -0.3 W, 0 and 0.3 W).
 LANE_WIDTH = 225.0
-#: Tunable by ear: OpenAL units across per lane, and in front per scene height.
+#: OpenAL units across per lane, and in front per scene height: tuned by ear, and kept as
+#: they are by the dev (2026-10-02: "I liked the panning amounts.").
 PAN_PER_LANE = 1.0
 DEPTH = 2.0
 #: OpenAL's inverse distance: full volume within this distance, quieter beyond it.
