@@ -1,4 +1,6 @@
 unrelease:
+
+26.10.02-1:
 A readme beside the game says how to play, and credits.txt says who made the game and lists the licenses.
 No two scores in your best five are ever the same. A score that is already there is not saved again.
 Pausing opens a menu with Resume, Restart and Quit to menu, and Escape or P still resumes the game.
