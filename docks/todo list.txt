@@ -1,0 +1,24 @@
+##Unfinished.
+
+Add the earphone warning that opens the game, in English or Portuguese as in the original.
+Add the main menu, with Play, Score and Quit.
+Add the result screen after a game, where you type your name and your score is saved.
+Add the ranking screen, with your best five scores.
+Add a readme that says how to play.
+Make a version of the game that can be downloaded and played without installing Python.
+
+##Finished.
+
+A game over says your score and your coins, and Enter plays again.
+A torch can no longer be thrown after you die.
+A coin, a torch on the path, or a monster reaching you always counts, however the game notices it touching you.
+Monsters keep coming after you kill one with a torch, instead of sometimes stopping for good.
+No sound is ever louder than full volume.
+Page Up and Page Down set the volume, and settings.json holds the overall and music volumes.
+F1 lists the keys and lets you change them.
+P or Escape pauses the game, and leaving the window pauses it too.
+The original's instructions are said by a Windows voice in your language, then your keys by your screen reader.
+Your screen reader says "Torch low" when your torch starts to dim.
+Every coin jingles as it comes down its lane.
+The roars and the bats come from their own lane, left, ahead or right.
+The game can be played on Windows from its source, with the original's own sounds.

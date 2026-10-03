@@ -1,0 +1,14 @@
+unrelease:
+A game over says your score and your coins, and Enter plays again. The original's warning, menu, result and ranking screens are still to come.
+A torch can no longer be thrown in the second after you die.
+A coin, a torch on the path, or a monster reaching you always counts, however the game notices it touching you. The original could miss some of them.
+Monsters keep coming after you kill one with a torch. In the original, a monster killed at the wrong moment could leave the cave silent for good.
+No sound is ever louder than full volume, so nothing peaks.
+Page Up and Page Down set the volume, and settings.json holds the overall volume and the music volume, from 0 to 100.
+F1 lists the keys and lets you change them. By default A or Left Arrow moves left, D or Right Arrow moves right, W or Up Arrow throws your torch, and P pauses.
+P or Escape pauses the game and continues it, and leaving the window pauses it too.
+On your first three games, a Windows voice says the original's instructions in your language, then your screen reader says your keys, and the first monster comes once both are done.
+Your screen reader says "Torch low" when your torch starts to dim.
+Every coin jingles as it comes down its lane, so you can find the coins by ear.
+Each monster's roar and the bats' sound come from their own lane, left, ahead or right, so you can hear which lane to leave.
+Inside The Cave can be played on Windows from its source, with the original game's own sounds.

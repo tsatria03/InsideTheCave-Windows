@@ -8,7 +8,7 @@ metadata:
 
 **Keep `docks/changelog.txt` up to date as game changes land.** Every commit that fixes a bug or adds an enhancement a player will notice also adds a line under `unrelease:` at the top of the changelog. It ships beside the game in the build's `docks` folder.
 
-**Why:** A standing rule the dev carries across their projects; a changelog left for later is missed. On 2026-10-02 the file is still empty, since nothing has been ported yet.
+**Why:** A standing rule the dev carries across their projects; a changelog left for later is missed. The first `unrelease:` block was written on 2026-10-02, when the game first became playable (phase 3): the dev asked for "like 10 entries or so that are player facing", in the reference port's style, and got 13, the game being playable first at the bottom and the newest change at the top.
 
 **How to apply:**
 - **Format.** This is what the build scripts' changelog parser reads:

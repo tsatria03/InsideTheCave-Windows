@@ -4,7 +4,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 
 ## Reference documents (not memory notes)
 - [Porting status](PORTING_STATUS.md), [Divergences](DIVERGENCES.md) and [Game structure](GAME_STRUCTURE.md): the three developer references. What is ported, where the port differs from the original, and the game's mechanism as read from the binary. On 2026-10-02 nothing is ported; the game structure is read from the full disassembly, with addresses.
-- The player documents, `readme.txt`, `changelog.txt` and `todo list.txt`, live in the repo's `docks/` folder; all three are empty on 2026-10-02.
+- The player documents, `readme.txt`, `changelog.txt`, `credits.txt` and `todo list.txt`, live in the repo's `docks/` folder. Since phase 3 (2026-10-02) the changelog has its first `unrelease:` block, 13 entries, and the todo list what is finished and what is not, written at the dev's request in the reference port's style; the readme and credits are empty.
 
 ## Project: what the port is and how to work on it
 - [Provenance](project_provenance.md): the original was made by Iago Barbosa, Juliana Barros and Victor Leal at BEPiD Recife (MacMagazine, 2016-09-06, confirmed by the dev); it is no longer on the App Store. The port is solo, by tsatria03, with no contributors now or planned.

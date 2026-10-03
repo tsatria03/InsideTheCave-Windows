@@ -26,4 +26,4 @@ Its format:
 - **Keep each item as short as the others**, one or two short sentences. The how and why go in the changelog, `DIVERGENCES.md` or memory.
 - After editing, check the line endings with a byte check.
 - Move an item to `##Finished.` only when the dev confirms it is done, not when code lands ([[feedback_dont_run_or_build]]).
-- On 2026-10-02 the file is empty. When the first item goes in, write both headings.
+- First written on 2026-10-02 at the dev's request ("update the todo list file to list what's finished vs what isn't"), with phase 3: the screens, the readme and a download under `##Unfinished.`, and the game's features under `##Finished.`. The phase 3 features went straight to finished because the dev asked for that list then, ahead of hearing them; if one fails by ear, it moves back to unfinished as a bug.
