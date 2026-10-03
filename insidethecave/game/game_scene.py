@@ -134,7 +134,7 @@ class GameScene(Scene):
         self.getTorchSound = AudioNode('pegou_tocha.wav')
         self.playTorchSound = AudioNode('lancar_tocha.wav')
         self.backgroundTorch = AudioNode('tocha.wav')
-        self.backgroundMusic = AudioNode('SC.wav')
+        self.backgroundMusic = AudioNode('SC.wav')           # used/game-music.wav (paths.RENAMED)
         self.movePlayerSound = AudioNode('dash.aiff')
         self.deadMonster = AudioNode('MonsterDead.mp3')
         self.falloffSize = FALLOFF_START                     # 0x100015ba0

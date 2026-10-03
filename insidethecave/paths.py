@@ -96,6 +96,12 @@ def game() -> str:
     return _game
 
 
+#: Sounds the dev renamed in ``game/sounds``: the name the binary asks for, by base name,
+#: and the file's name now.  "SC.wav", the game's music, is ``used/game-music.wav``
+#: (2026-10-02).
+RENAMED = {'sc': 'game-music'}
+
+
 def base_name(name: str) -> str:
     """A file name without its folder or extension, in lower case: the key a sound is
     found by.  ``"dash.aiff"`` and ``"Dash.wav"`` are both ``"dash"``."""
@@ -123,8 +129,11 @@ def _sounds_by_name() -> dict[str, str]:
 
 def sound(name: str) -> str | None:
     """The file for a sound the binary names, such as ``"Rugido.mp3"``, by its base name,
-    or None when there is none.  Case does not matter, as it does not on Windows."""
-    return _sounds_by_name().get(base_name(name))
+    or None when there is none.  Case does not matter, as it does not on Windows.  A name
+    the dev has renamed (``RENAMED``) finds the file under its new name."""
+    key = base_name(name)
+    index = _sounds_by_name()
+    return index.get(key) or index.get(RENAMED.get(key, key))
 
 
 def user_dir() -> str:

@@ -1,9 +1,10 @@
 ##Unfinished.
 
+Add menu music on the main menu, the Score screen and the result screen, and keep it off while a game is paused.
 Make the dash sound play from the lane you are in, on the left, in the middle or on the right.
 The sound of bumping into the cave wall always plays in the middle, instead of on the side you bumped into.
 Make the menus wrap around, from the last row to the first and from the first row to the last.
-Make Page Up and Page Down change the music volume, and say music volume.
+Make Page Up and Page Down change the menu music on the menus and say menu volume, and change the game's music in a game and say track volume.
 Make Home and End change the master volume while a game is running, and say master volume. On the menus and the pause menu they still go to the first and last row.
 
 ##Finished.

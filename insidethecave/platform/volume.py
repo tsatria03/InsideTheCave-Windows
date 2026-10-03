@@ -9,14 +9,16 @@ in settings.json:
     MASTERVOLUME    everything the game plays; Home and End set it during a game, in steps
                     of ten
     MUSICVOLUME     the game's music, the track, on top of its 0.2; Page Up and Page Down
-                    set it, saying "Track volume"
+                    set it in a game, saying "Track volume"
+    MENUVOLUME      the menu music (a port addition), on top of its own gain; Page Up and
+                    Page Down set it on the menus, saying "Menu volume"
 
 (the dev, 2026-10-02, for the second release).
 
 Each is a whole number from 0 to 100; 100, the default, is the original's mix, and anything
 else counts as 100.  The percentage is squared into the gain (``percent_gain``), so each
 step sounds about as big as the last.  ``load`` reads them when the game starts and writes
-any that are missing, so settings.json shows both.
+any that are missing, so settings.json shows every one.
 """
 from __future__ import annotations
 
@@ -24,8 +26,9 @@ import math
 
 MASTER_KEY = 'MASTERVOLUME'
 MUSIC_KEY = 'MUSICVOLUME'
+MENU_KEY = 'MENUVOLUME'
 #: The settings.json keys, in the order that file lists them (defaults.SETTINGS_KEYS).
-VOLUME_KEYS = (MASTER_KEY, MUSIC_KEY)
+VOLUME_KEYS = (MASTER_KEY, MUSIC_KEY, MENU_KEY)
 
 DEFAULT_PERCENT = 100
 #: How far one press of a volume key moves its volume.
@@ -115,6 +118,15 @@ def change_music(defaults, step):
     """Page Up (+1) or Page Down (-1) in a game: the track's volume."""
     return change(defaults, MUSIC_KEY, step)
 
+
+def change_menu(defaults, step):
+    """Page Up (+1) or Page Down (-1) on the menus: the menu music's volume."""
+    return change(defaults, MENU_KEY, step)
+
+
+def menu(g: float) -> float:
+    """The menu music's gain, with ``MENUVOLUME``."""
+    return g * percent_gain(percents[MENU_KEY])
 
 def master_gain() -> float:
     """What every sound's gain is multiplied by: OpenAL's listener gain."""

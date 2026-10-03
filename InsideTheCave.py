@@ -39,6 +39,9 @@ WINDOW_SIZE = (720, 440)
 TITLE = 'Inside The Cave'
 FPS = 120
 LINES, LINE_HEIGHT = 19, 22
+#: PORT ADDITION: the screens the menu music plays on (ui/menu_music.py); not the warning,
+#: and not a game, paused or not.
+MENU_MUSIC_SCREENS = ('menu', 'ranking', 'result')
 KEY_LINES = ['Keys: your move and throw keys, P or Escape pause, F1 key bindings,',
              'Page Up / Page Down track volume, Home / End master volume, Alt+F4 quit.']
 
@@ -53,6 +56,7 @@ class App:
         from insidethecave.platform.speech import Speech, TutorialVoice
         from insidethecave.ui.game_input import GameInput
         from insidethecave.ui.keybind_screen import KeyBindScreen
+        from insidethecave.ui.menu_music import MenuMusic
 
         self.pygame = pygame
         self.openal, self.runloop, self.volume = openal, runloop, volume
@@ -76,6 +80,7 @@ class App:
         self.input = GameInput(self.keymap, self.speech)
         self.keys_screen = KeyBindScreen(self.keymap, self.speech)
         self.keys_open = False
+        self.menu_music = MenuMusic(self.al, self.bank)
         self.game = GameViewController(self.al, self.bank, self.defaults, self.speech,
                                        self.voice, self.keymap, self.loop, debug=args.debug,
                                        language_code=self.language_code,
@@ -99,6 +104,10 @@ class App:
         log.info('-> %s', kind)
         if self.kind == 'game' and kind != 'game':
             self.leave_game()
+        if kind in MENU_MUSIC_SCREENS:
+            self.menu_music.start()             # carries on from one menu to the next
+        else:
+            self.menu_music.stop()              # a game, the warning, or quitting
         if kind == 'quit':
             self.running = False
             return
@@ -163,11 +172,17 @@ class App:
 
     # ---- keys -------------------------------------------------------------------------
     def change_music(self, step):
-        """Page Up or Page Down: the game's music, the track, heard at once in a game."""
-        now = self.volume.change_music(self.defaults, step)
-        if self.game.scene is not None:
-            self.game.scene.applyMusicVolume()
-        self.speech.speak('Track volume %d percent.' % now)
+        """Page Up or Page Down: in a game, paused or not, the game's music, the track; on
+        the menus, the menu music.  Heard at once."""
+        if self.kind == 'game':
+            now = self.volume.change_music(self.defaults, step)
+            if self.game.scene is not None:
+                self.game.scene.applyMusicVolume()
+            self.speech.speak('Track volume %d percent.' % now)
+        else:
+            now = self.volume.change_menu(self.defaults, step)
+            self.menu_music.apply_volume()
+            self.speech.speak('Menu volume %d percent.' % now)
 
     def change_master(self, step):
         """Home or End, while a game is running: everything's volume."""
@@ -299,6 +314,7 @@ class App:
             pass
         if self.game.engine is not None:
             self.game.engine.release()
+        self.menu_music.stop()
         self.bank.release()
         self.al.close()
         self.pygame.display.quit()

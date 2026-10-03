@@ -146,11 +146,23 @@ def test_every_sound_the_binary_names_is_in_the_used_folder():
     assert not missing, 'not in game/sounds/used: %s' % ', '.join(missing)
 
 
-def test_the_used_folder_holds_only_what_the_binary_names():
+#: The sounds the port plays that the 2.32 binary never names: the menu music (the dev).
+PORT_NAMES = ('background-music.wav',)
+
+
+def test_the_used_folder_holds_only_what_the_game_plays():
+    """What the binary names, under the dev's new names, and the port's own."""
     paths.set_game(None)
     used = os.path.join(paths.game(), 'sounds', 'used')
     names = {paths.base_name(n) for n in os.listdir(used)}
-    assert names == {paths.base_name(n) for n in BINARY_NAMES}, sorted(names)
+    wanted = {paths.RENAMED.get(paths.base_name(n), paths.base_name(n))
+              for n in BINARY_NAMES + PORT_NAMES}
+    assert names == wanted, sorted(names ^ wanted)
+
+
+def test_a_renamed_sound_is_found_by_the_binary_s_name():
+    paths.set_game(None)
+    assert paths.sound('SC.wav').endswith('game-music.wav')
 
 
 def test_the_save_goes_where_insidethecave_user_dir_points():

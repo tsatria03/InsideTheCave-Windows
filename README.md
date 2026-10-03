@@ -82,8 +82,8 @@ the original's line in your language, and your screen reader then says the keys.
 
 ```
 game/                    the original app bundle, unpacked
-  sounds/used/           the 12 sounds version 2.32 plays, as WAV, under their own names
-  sounds/unused/         14 sounds from the game's older versions
+  sounds/used/           the 12 sounds version 2.32 plays, and the menu music, as WAV
+  sounds/unused/         13 sounds from the game's older versions
 InsideTheCave.py         the entry point: python InsideTheCave.py
 insidethecave/           the Python package: the game, the SpriteKit stand-in, the
                          platform layer and the keyboard
@@ -127,10 +127,12 @@ The port never writes to it; the save will live in `%APPDATA%`.
 The one thing that is not where the original kept it is the sounds. The original keeps its
 12 sounds loose in the bundle's top folder, as WAV, MP3 and AIFF; here they sit in
 `game/sounds/used/`, all converted to 16-bit WAV under their original names, from the roar
-(`Rugido.wav`) and the bats to the torch, the coins and the music (`SC.wav`). The
-original asks for some by another extension, such as `dash.aiff`, so the port finds a sound
-by its name without the extension. `game/sounds/unused/` keeps 14 sounds from the game's
-older versions, which version 2.32 never plays.
+(`Rugido.wav`) and the bats to the torch and the coins; the music, `SC.wav` in the
+original, is `game-music.wav`. The original asks for some by another extension, such as
+`dash.aiff`, so the port finds a sound by its name without the extension. `used/` also
+holds the menu music, `background-music.wav`, from the game's early versions, and
+`game/sounds/unused/` keeps 13 more sounds from the older versions, which version 2.32
+never plays.
 
 ## Where this came from
 

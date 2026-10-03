@@ -87,6 +87,35 @@ def test_the_keys_move_pause_and_change_the_volume():
         app.close()
 
 
+def test_the_menu_music_plays_on_the_menus_and_page_keys_set_its_volume():
+    app = _app('warning')
+    pg = app.pygame
+    try:
+        assert not app.menu_music.playing, 'none on the warning'
+        _press(app, pg.K_x, unicode='x')
+        assert app.kind == 'menu' and app.menu_music.playing
+        p = app.volume.percents
+        menu, music = p['MENUVOLUME'], p['MUSICVOLUME']
+        _press(app, pg.K_PAGEDOWN)
+        assert p['MENUVOLUME'] == max(0, menu - 10) and p['MUSICVOLUME'] == music
+        _press(app, pg.K_PAGEUP)
+        assert p['MENUVOLUME'] == menu
+        source = app.menu_music.source
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'ranking' and app.menu_music.source == source, 'carries on'
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'game' and not app.menu_music.playing, 'stops for a game'
+        _press(app, pg.K_ESCAPE)
+        assert app.input.paused and not app.menu_music.playing, 'not on the pause menu'
+        _press(app, pg.K_END)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'menu' and app.menu_music.playing
+    finally:
+        app.close()
+
+
 def test_home_and_end_set_the_master_volume_only_while_a_game_runs():
     app = _app()
     pg = app.pygame
