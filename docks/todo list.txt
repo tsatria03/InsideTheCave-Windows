@@ -1,9 +1,10 @@
 ##Unfinished.
 
-The cave speeds up past 2.0, to 1.96, at its top speed.
+Nothing is waiting here right now. New bugs, planned changes and anything still to be decided will be listed here as they come up.
 
 ##Finished.
 
+The cave stops speeding up at 2.0, its top speed.
 Torches on the path jingle from their lane, and coins ding with the early versions' coin sound.
 A sound plays when your torch burns all the way out.
 Footsteps loop from your lane, a walk at first, then a run from about a minute and a half in.
