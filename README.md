@@ -127,9 +127,10 @@ The port never writes to it; the save will live in `%APPDATA%`.
 The one thing that is not where the original kept it is the sounds. The original keeps its
 12 sounds loose in the bundle's top folder, as WAV, MP3 and AIFF; here they sit in
 `game/sounds/used/`, all converted to 16-bit WAV under their original names, from the roar
-(`Rugido.wav`) and the bats to the torch and the coins; the music, `SC.wav` in the
-original, is `game-music.wav`. The original asks for some by another extension, such as
-`dash.aiff`, so the port finds a sound by its name without the extension. `used/` also
+(`Rugido.wav`) and the bats to the torch and the coins; two are renamed, the music, `SC.wav`
+in the original, as `game-music.wav`, and the move, `dash.aiff`, as `lane.wav`. The
+original asks for some by another extension, such as `dash.aiff`, so the port finds a sound
+by its name without the extension, and a renamed one under its new name. `used/` also
 holds the menu music, `background-music.wav`, from the game's early versions, and
 `game/sounds/unused/` keeps 13 more sounds from the older versions, which version 2.32
 never plays.

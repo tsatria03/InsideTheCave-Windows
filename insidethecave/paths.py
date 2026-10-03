@@ -97,9 +97,9 @@ def game() -> str:
 
 
 #: Sounds the dev renamed in ``game/sounds``: the name the binary asks for, by base name,
-#: and the file's name now.  "SC.wav", the game's music, is ``used/game-music.wav``
-#: (2026-10-02).
-RENAMED = {'sc': 'game-music'}
+#: and the file's name now.  "SC.wav", the game's music, is ``used/game-music.wav``, and
+#: "dash.aiff", the move, is ``used/lane.wav`` (2026-10-02).
+RENAMED = {'sc': 'game-music', 'dash': 'lane'}
 
 
 def base_name(name: str) -> str:

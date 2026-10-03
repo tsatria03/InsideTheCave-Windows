@@ -163,6 +163,7 @@ def test_the_used_folder_holds_only_what_the_game_plays():
 def test_a_renamed_sound_is_found_by_the_binary_s_name():
     paths.set_game(None)
     assert paths.sound('SC.wav').endswith('game-music.wav')
+    assert paths.sound('dash.aiff').endswith('lane.wav')
 
 
 def test_the_save_goes_where_insidethecave_user_dir_points():
