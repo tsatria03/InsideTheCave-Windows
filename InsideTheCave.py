@@ -44,7 +44,7 @@ LINES, LINE_HEIGHT = 19, 22
 #: PORT ADDITION: the screens the menu music plays on (ui/menu_music.py); not the warning,
 #: and not a game, paused or not.
 MENU_MUSIC_SCREENS = ('menu', 'choose_game', 'choose_ranking', 'ranking', 'choose_stats',
-                      'stats', 'result')
+                      'stats', 'result', 'caught')
 KEY_LINES = ['Keys: your move and throw keys, P or Escape pause, F1 key bindings,',
              'Page Up / Page Down track volume, Home / End master volume, Alt+F4 quit.']
 
@@ -114,8 +114,17 @@ class App:
         from insidethecave.ui.difficulty_screen import DifficultyScreen
         from insidethecave.ui.stats_screen import StatsScreen
 
+        from insidethecave.ui.caught_screen import CaughtScreen
+
         log.info('-> %s', kind)
         chosen = getattr(self.page, 'chosen', None)     # a difficulty, from its screen
+        if kind == 'tutorial':
+            # PORT ADDITION: the tutorial, a game of its own; its welcome only from the menu
+            self.game.tutorial = True
+            self.game.welcome = self.kind == 'menu'
+            kind = 'game'
+        elif kind == 'game':
+            self.game.tutorial = False
         if kind == 'game' and chosen is not None:
             self.game.difficulty = chosen               # Replay and Restart keep it
             self.played_difficulty = chosen
@@ -151,6 +160,8 @@ class App:
         elif kind == 'ranking':
             self.page = RankingViewController(self.defaults, self.speech,
                                               self.ranking_difficulty or self.game.difficulty)
+        elif kind == 'caught':
+            self.page = CaughtScreen(self.speech)
         elif kind == 'result':
             score, coins = self.over or (0, 0)
             run = self.game.last_run or {}
@@ -164,7 +175,7 @@ class App:
         """After keys and timers: go where the screen, or the pause menu, asked to."""
         if self.kind == 'game':
             if self.over is not None:
-                self.go('result')
+                self.go('caught' if self.game.tutorial else 'result')
             elif self.input.request == 'restart':
                 self.restart_game()
             elif self.input.request == 'menu':
@@ -204,7 +215,7 @@ class App:
         Quit to menu never reach here (the dev: "restarts and quits do not count")."""
         from insidethecave.game import stats
         self.over = (score, coins)
-        if self.game.last_run is not None:
+        if self.game.last_run is not None and not self.game.tutorial:  # never the tutorial
             stats.record(self.defaults, self.game.difficulty, self.game.last_run)
 
     # ---- keys -------------------------------------------------------------------------
@@ -250,12 +261,24 @@ class App:
         elif self.page is not None and hasattr(self.page, 'say_row'):
             self.page.say_row()
 
+    def hush(self):
+        """PORT ADDITION: Ctrl stops the Windows voice, as it stops a screen reader, and
+        drops the tutorial's waiting lines (the dev, for the fourth release)."""
+        try:
+            self.voice.stop()
+        except Exception:
+            pass
+        if self.kind == 'game' and self.game.scene is not None:
+            self.game.scene.hushTutorial()
+
     def keydown(self, event):
         pg = self.pygame
         name = pg.key.name(event.key)
         if name == 'f4' and event.mod & pg.KMOD_ALT:
             self.running = False
             return
+        if name in ('left ctrl', 'right ctrl'):
+            self.hush()                 # and on, in case it starts a chord
         if name == 'f1':
             self.open_keys()
             return

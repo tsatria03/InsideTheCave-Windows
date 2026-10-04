@@ -1,10 +1,11 @@
 ##Unfinished.
 
-Add a Tutorial to the main menu, after Play, where the cave never speeds up and a Windows voice tells you what each thing is and what to do.
-Make Play say your keys only on your first two games, instead of the original's instructions on your first three.
+Nothing is waiting here right now. New bugs, planned changes and anything still to be decided will be listed here as they come up.
 
 ##Finished.
 
+The Tutorial on the main menu teaches the game at a speed that never rises, a Windows voice saying what each thing is, where, and what to do.
+Play says your keys on your first two games only.
 The result screen is a list of rows: your score, coins, how long you survived and the speed you reached.
 Each saved score also says its coins and time, and Score on the main menu is now Scores.
 Stats on the main menu reads your games, runs, coins, torches, and the monsters and bats you killed, frightened and dodged, for each difficulty and all time.

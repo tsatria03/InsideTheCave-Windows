@@ -115,6 +115,26 @@ SPEED_COUNT_FROM = 5.0
 #: catching you; one a torch killed or frightened is counted as that instead.
 RUN_COUNTS = ('torchesPicked', 'batsFrightened', 'monstersKilled', 'batsDodged',
               'monstersDodged')
+
+# ---- PORT ADDITION: the tutorial (the dev, for the fourth release;
+# aidocks/project_tutorial_plan.md).  English only for now (the dev), in the Windows voice.
+TUTORIAL_WELCOME = ("Welcome to the tutorial. You're in a dark cave with three lanes, and "
+                    "things will come down them toward you. I'll tell you what each one is, "
+                    "and what to do. The cave won't speed up here, so take your time.")
+NO_SCORE, NO_SPEED = 'No score to report.', 'No speed to report.'
+MONSTER_HIT = "The monster was hit! It's gone."
+BATS_HIT = 'The bats were hit, and dodged to your %s.'
+TORCH_MISSED = 'Your torch flew off without hitting anything.'
+OUT_OF_LIGHT = "You're out of light now. Find another torch soon."
+#: Said as each falls past your row without being taken, killed or catching you (the dev:
+#: "when you pass any entity, it will say past. Examples, monster past, coin past").
+PASSED = {'monster': 'Monster passed.', 'bat': 'Bats passed.', 'coin': 'Coin passed.',
+          'torch': 'Torch passed.'}
+#: Said as you pick one up (the dev: "If you catch something, it should say coin caught,
+#: torch caught.").
+CAUGHT = {'coin': 'Coin caught.', 'torch': 'Torch caught.'}
+#: Seconds the voice is given before its silence is believed: it may not have begun.
+VOICE_SETTLE = 0.5
 #: PORT ADDITION: the sound each coin and each torch on the path carries, looped, at
 #: SpriteKit's default volume (question 4).  The coins had tilintar until the dev gave it to
 #: the torches, and the coins the early versions' coin.wav (for the third release).
@@ -152,7 +172,8 @@ SPEED_STEP = 0.1
 #: faster than Easy ever walks, at 4.0 and 3.0, so they run from the first slot.
 FOOTSTEPS = {'easy': (('cave-walk.wav', 0), ('cave-run.wav', 155)),
              'medium': (('cave-run.wav', 0),),
-             'hard': (('cave-run.wav', 0),)}
+             'hard': (('cave-run.wav', 0),),
+             'tutorial': (('cave-walk.wav', 0),)}     # held at 5.0: a walk throughout
 FOOTSTEP_VOLUME = 0.5
 
 
@@ -161,10 +182,18 @@ class GameScene(Scene):
 
     def __init__(self, audio=None, delegate=None, speech=None, voice=None, keymap=None,
                  defaults=None, loop=None, language_code='en', rng=None, debug=False,
-                 difficulty=DEFAULT_DIFFICULTY):
+                 difficulty=DEFAULT_DIFFICULTY, tutorial=False, welcome=False):
         super().__init__(audio=audio)
+        #: PORT ADDITION: the tutorial: Easy's torch, the speed held at 5.0, no score, one
+        #: thing at a time, everything announced; ``welcome`` from the main menu only
+        self.tutorialMode = bool(tutorial)
+        self.welcome = bool(welcome)
+        if self.tutorialMode:
+            difficulty = 'easy'                 # the dev: "I want the easy longer one."
         self.difficulty = difficulty if difficulty in DIFFICULTIES else DEFAULT_DIFFICULTY
         self.startSpeed, self.topSpeed, self.torchLength = DIFFICULTIES[self.difficulty]
+        if self.tutorialMode:
+            self.topSpeed = self.startSpeed     # the dev: "held at 5.0"
         self.gameSceneDelegate = delegate
         self.speech = speech
         self.voice = voice
@@ -220,6 +249,13 @@ class GameScene(Scene):
         self.runSeconds = 0.0           # in the cave: from the first slot, not paused
         self._lastFrame = None
         self.threats = []               # monsters and bats in your lane at their sound
+        # PORT ADDITION: the tutorial's state
+        self.pendingCompanion = None    # a coin or torch waiting for an empty slot
+        self._lines = []                # (line, urgent) waiting for the voice
+        self._watching = []             # things announced, to say when they pass you
+        self._voiceFreeAt = 0.0
+        self._speakingUrgent = False    # the line being said is a monster, bats or throw
+        self._threwOnce = False
 
     # ---- helpers the binary inlines -----------------------------------------------------
     @property
@@ -349,7 +385,11 @@ class GameScene(Scene):
             else:
                 node = self.createMonster()
             if self.objectHeight == 4:                                 # 0x10000c7c4
-                if self.countSubObstacles & 3:
+                if self.tutorialMode:
+                    # PORT: one thing at a time; the companion waits for an empty slot
+                    self.pendingCompanion = (self.createCoin if self.countSubObstacles & 3
+                                             else self.createTorchObstacle)
+                elif self.countSubObstacles & 3:
                     self.coinTogether()
                 else:
                     self.torchTogether()
@@ -360,6 +400,7 @@ class GameScene(Scene):
             self.addChild(node)
             node.runAction(self.moveObstacleWithBorn(node))
             self.countObstacles += 1                                   # 0x10000c888
+            self.announce(node)                                        # PORT: the tutorial
         else:
             if (self.countObstacles % 3 == 0 and self.objectHeight <= 3
                     and s % 4 == self.objectHeight):                   # 0x10000c6dc..0x10000c720
@@ -368,8 +409,11 @@ class GameScene(Scene):
                 else:
                     slot = self.createTorchObstacle()
                 self.countSubObstacles += 1                            # 0x10000c8c0
+            elif self.pendingCompanion is not None:                    # PORT: the tutorial
+                slot, self.pendingCompanion = self.pendingCompanion(), None
             self.addChild(slot)                                        # 0x10000c8d4
             slot.runAction(self.moveObstacleWithBorn(slot))
+            self.announce(slot)                                        # PORT: the tutorial
         self.countObjectScene += 1                                     # 0x10000c93c
         self.updateFootsteps()                                         # PORT ADDITION
         self.changeFalloffSize()                                       # 0x10000c94c
@@ -757,7 +801,7 @@ class GameScene(Scene):
 
     def sayScore(self):
         if not self.playerDead:
-            self.say(SAY_SCORE % self._status('score'))
+            self.say(NO_SCORE if self.tutorialMode else SAY_SCORE % self._status('score'))
 
     def sayCoins(self):
         if not self.playerDead:
@@ -765,7 +809,7 @@ class GameScene(Scene):
 
     def saySpeed(self):
         if not self.playerDead:
-            self.say(SAY_SPEED % self.speedCount())
+            self.say(NO_SPEED if self.tutorialMode else SAY_SPEED % self.speedCount())
 
     # GameScene.throwTorch 0x10001111c
     def throwTorch(self):
@@ -789,9 +833,15 @@ class GameScene(Scene):
         self.falloffSize = FALLOFF_OUT                                 # 0x100011400
         self.lightTorch.falloff = FALLOFF_OUT
         fly = self.speedMonster * 0.5
-        torch.runAction(A.sequence([A.moveToY(self.H, fly), A.removeFromParent()]))
+        flight = [A.moveToY(self.H, fly), A.removeFromParent()]
+        if self.tutorialMode:           # PORT: the tutorial says if it hit nothing
+            flight.insert(1, A.runBlock(lambda: self.tutorialMissed(torch)))
+        torch.runAction(A.sequence(flight))
         light.runAction(A.sequence([A.moveToY(self.H, fly), A.removeFromParent()]))
         self.changeSpritePlayer(False)
+        if self.tutorialMode and not self._threwOnce:
+            self._threwOnce = True      # the dev: a throw uses the torch up
+            self.tutorialSay(OUT_OF_LIGHT)
 
     # ---- contacts -----------------------------------------------------------------------
     # -[GameScene didBeginContact:]~closure1 0x100012984
@@ -829,6 +879,121 @@ class GameScene(Scene):
         elif (p := pair(PLAYER, MONSTER)) or (p := pair(PLAYER, BAT)):
             self.obstacleDidCollideWithPlayer(p[0], p[1])
 
+    # ---- PORT ADDITION: the tutorial's voice -------------------------------------------
+    def laneOf(self, x):
+        """0, 1 or 2: the lane a scene x is in."""
+        return min(range(3), key=lambda i: abs((i - 1) * 0.3 * self.W - x))
+
+    @staticmethod
+    def where(diff):
+        """Words for a lane ``diff`` lanes from yours: 'on your left', 'two lanes to your
+        right'."""
+        side = 'left' if diff < 0 else 'right'
+        return 'on your %s' % side if abs(diff) == 1 else 'two lanes to your %s' % side
+
+    def announcement(self, node):
+        """What the tutorial says as ``node`` appears, or None (the dev: "It should be more
+        conversational. Example, A coin appeared on your left...")."""
+        kind = node.name
+        if kind not in ('coin', 'torch', 'monster', 'bat'):
+            return None
+        diff = self.laneOf(node.position[0]) - self.actualPositionPlayer
+        lit = self.falloffSize < FALLOFF_LAST
+        if kind in ('coin', 'torch'):
+            what, verb = ('A coin', 'grab it') if kind == 'coin' else ('A torch', 'pick it up')
+            if diff == 0:
+                return '%s is coming right at you. Stay where you are.' % what
+            move = ('left' if diff < 0 else 'right') + (' twice' if abs(diff) == 2 else '')
+            return '%s appeared %s. Move %s to %s.' % (what, self.where(diff), move, verb)
+        bats = kind == 'bat'
+        if diff != 0:
+            return ('%s %s. Stay out of %s way.'
+                    % ('Bats appeared' if bats else 'A monster appeared', self.where(diff),
+                       'their' if bats else 'its'))
+        line = 'Bats are coming right at you! ' if bats else 'A monster is coming right at you! '
+        way = {0: 'Move right', 1: 'Move left or right', 2: 'Move left'}[
+            self.actualPositionPlayer]
+        if lit:
+            return line + way + (', or throw your torch to scare them off.' if bats
+                                 else ', or throw your torch at it.')
+        return line + way + '!'
+
+    def announce(self, node):
+        """A thing appeared: in the tutorial, say what and where.  A monster or bats cuts
+        in; a coin or a torch waits its turn."""
+        if not self.tutorialMode:
+            return
+        text = self.announcement(node)
+        if text:
+            self.tutorialSay(text, urgent=node.name in ('monster', 'bat'))
+            self._watching.append(node)
+
+    def _caught(self, node):
+        """In the tutorial, a coin or torch picked up from the cave is said ("Coin
+        caught."); one not in the cave, as a tool's relit torch, is not."""
+        if self.tutorialMode and node.parent is not None and node.name in CAUGHT:
+            if node in self._watching:
+                self._watching.remove(node)
+            self.tutorialSay(CAUGHT[node.name], urgent=True)
+
+    def watchPassing(self):
+        """A thing announced that has fallen below your row, still there, while you are
+        alive, has passed you: say so.  One taken, killed or gone is forgotten."""
+        if self.playerDead:
+            self._watching.clear()
+            return
+        row = self.player.position[1]
+        for node in list(self._watching):
+            if node.parent is None:
+                self._watching.remove(node)
+            elif node.position[1] < row:
+                self._watching.remove(node)
+                self.tutorialSay(PASSED[node.name], urgent=True)
+
+    def _voiceBusy(self):
+        now = self.time or 0.0
+        if now < self._voiceFreeAt:
+            return True
+        return self.voice is not None and bool(getattr(self.voice, 'speaking', False))
+
+    def _speakNow(self, text, urgent=False):
+        now = self.time or 0.0
+        self._speakingUrgent = urgent
+        if self.voice is not None and self.voice.speak(text):
+            self._voiceFreeAt = now + VOICE_SETTLE
+        else:                       # no Windows voice: the screen reader, timed by length
+            self.say(text)
+            self._voiceFreeAt = now + max(VOICE_SETTLE, len(text) / HINT_CHARS_PER_SECOND)
+
+    def tutorialSay(self, text, urgent=False):
+        """The tutorial's lines, in the Windows voice.  An urgent one, a monster, bats or a
+        throw, is said at once, cutting off whatever the voice was saying, another warning
+        included (the dev, after hearing both ways: "I think I liked it better when the
+        speech interupted when another entity was approaching, rather than waiting for it
+        to finish.").  A coin or torch line cuts off anything too, a warning included (the
+        dev: "Please interupt the coin and torch lines, just encase a new one appears, and
+        I grabbed the other one."; then "Please cut off the warnings as well."): every new
+        line is said at once, the newest always heard."""
+        self._lines.clear()
+        self._speakNow(text, urgent=urgent)
+
+    def hushTutorial(self):
+        """Ctrl (the dev: "pressing control can interupt the window speech"): the lines
+        waiting are dropped, and the voice, stopped by the caller, is free at once."""
+        self._lines.clear()
+        self._voiceFreeAt = 0.0
+        self._speakingUrgent = False
+
+    def _nextLine(self):
+        if self._lines and not self._voiceBusy() and not self.paused:
+            text, urgent = self._lines.pop(0)
+            self._speakNow(text, urgent)
+
+    def tutorialMissed(self, torch):
+        """A thrown torch has reached the top of the cave: did it hit anything?"""
+        if not getattr(torch, 'hit', False) and not self.playerDead:
+            self.tutorialSay(TORCH_MISSED, urgent=True)
+
     # ---- PORT ADDITION: what the run counts -------------------------------------------
     def _threat(self, node):
         """A monster or bats at the sensor: in your lane, as the roar's own test has it
@@ -854,13 +1019,18 @@ class GameScene(Scene):
                 if not self.playerDead:
                     key = 'batsDodged' if node.name == 'bat' else 'monstersDodged'
                     self.run[key] += 1
+        if self.tutorialMode:
+            self.watchPassing()
+            self._nextLine()
 
     # GameScene.playerDidCollideWithCoin:playerP: 0x10001390c
     def playerDidCollideWithCoin(self, coin, player):
         self.coinSound.runAction(A.play())
         self.coinSound.runAction(A.changeVolumeTo(0.2, 0.0))           # 0x1000139ac
+        self._caught(coin)                                             # PORT: the tutorial
         coin.removeFromParent()
-        self.delegate('scoreUpWithValue', 10)                          # 0x100013a10
+        if not self.tutorialMode:       # PORT: no score at all in the tutorial (the dev)
+            self.delegate('scoreUpWithValue', 10)                      # 0x100013a10
         self.delegate('coinUpWithValue', 1)
 
     # -[GameScene playerDidCollideWithTorch:]~closure1 0x1000137b8
@@ -868,6 +1038,7 @@ class GameScene(Scene):
         self.getTorchSound.runAction(A.play())
         self.getTorchSound.runAction(A.changeVolumeTo(1.5, 0.0))       # 0x100013854
         self.createBackgroundTorch()
+        self._caught(torch)                                            # PORT: the tutorial
         torch.removeFromParent()
         self.falloffSize = FALLOFF_START                               # 0x1000138bc
         self.lightTorch.falloff = FALLOFF_START
@@ -891,6 +1062,9 @@ class GameScene(Scene):
         monster.removeFromParent()
         self._settle(monster)                                          # PORT: the stats
         self.run['monstersKilled'] += 1
+        torch.hit = True
+        if self.tutorialMode:                                          # PORT: the tutorial
+            self.tutorialSay(MONSTER_HIT, urgent=True)
         if self.throwLightTorch is not None:
             self.throwLightTorch.removeFromParent()
         self.lightTorch.falloff = FALLOFF_OUT
@@ -914,6 +1088,10 @@ class GameScene(Scene):
         if not getattr(bat, 'frightened', False):
             bat.frightened = True
             self.run['batsFrightened'] += 1
+        torch.hit = True
+        if self.tutorialMode:                                          # PORT: the tutorial
+            side = 'left' if fraction * W < self.player.position[0] else 'right'
+            self.tutorialSay(BATS_HIT % side, urgent=True)
 
     # GameScene.obstacleDidCollideWithPlayer:obstacleE: 0x1000230c4
     def obstacleDidCollideWithPlayer(self, player, obstacle):
@@ -951,23 +1129,39 @@ class GameScene(Scene):
     # ---- starting -----------------------------------------------------------------------
     # GameScene.tutorial 0x10000dea8
     def tutorial(self):
-        """On the first three games, the line in the game's language (en, pt, es, zh, ru,
-        fr; else English), then the first slot.  PORT: the line in a Windows voice at rate
-        0.5, then the key hints through the screen reader, and the first slot once both are
-        done, not 4 s after the line began (0x10000e634)."""
+        """The original: on the first three games, its line in the game's language (en, pt,
+        es, zh, ru, fr; else English), then the first slot 4 s after the line began
+        (0x10000e634); later games start after 2 s (0x10000e010, 0x10000e0e0).
+
+        PORT, since the fourth release (aidocks/project_tutorial_plan.md): the original's
+        line is no longer said.  Play gives the key hints through the screen reader on the
+        first two games (the dev: "So for the first 2 games, and on the third game, it's
+        silent."), then the first slot; the Tutorial, chosen from the main menu, says its
+        own welcome in an English Windows voice, then the key hints, then the first slot;
+        its Replay and Restart start after the 2 s, as later games do."""
+        if self.tutorialMode:
+            if self.welcome:
+                self.speakThenHints(TUTORIAL_WELCOME, 'en')
+            else:
+                self.loop.scheduledTimer(2.0, self, 'startGame')
+            return
         count = self.defaults.integerForKey_(COUNT_TUTORIAL_KEY) if self.defaults else 3
-        if count > 2:                                                  # 0x10000e010
+        if count > 1:                   # the original's > 2 (0x10000e010); PORT: two games
             self.loop.scheduledTimer(2.0, self, 'startGame')           # 0x10000e0e0
             return
-        want = language.pick(self.language_code, language.TUTORIAL_LANGUAGES)
-        lang = self.voice.choose(want) if self.voice is not None else want
-        line = TUTORIAL_LINES.get(lang, TUTORIAL_LINES['en'])
+        self.defaults.setInteger_forKey_(count + 1, COUNT_TUTORIAL_KEY)  # 0x10000e5bc
+        self.defaults.synchronize()
+        self.keyHints()
+
+    def speakThenHints(self, line, lang):
+        """``line`` in the Windows voice (or the screen reader without one), then the key
+        hints once it is done, then the first slot."""
+        if self.voice is not None:
+            self.voice.choose(lang)
         self.tutorial_line = line
         spoken = self.voice is not None and self.voice.speak(line)
         if not spoken:
             self.say(line)
-        self.defaults.setInteger_forKey_(count + 1, COUNT_TUTORIAL_KEY)  # 0x10000e5bc
-        self.defaults.synchronize()
         if spoken:
             self._tutorial_polls = 0
             self._tutorial_poll = self.loop.scheduledTimer(0.1, self, 'tutorialPoll',
@@ -1008,7 +1202,8 @@ class GameScene(Scene):
     # -[GameScene startGame] 0x1000152e4
     def startGame(self, timer=None):
         self.started = True
-        self.startScore()
+        if not self.tutorialMode:       # PORT: no score at all in the tutorial (the dev)
+            self.startScore()
         self.blockPlayer = False
         self.createObjectScene()
         self.updateFootsteps()                                         # PORT ADDITION
@@ -1031,7 +1226,8 @@ class GameScene(Scene):
         lane, as the dash is; they go with the player at death."""
         if not self.started or self.playerDead:
             return
-        want = self.footstepFile(self.countObjectScene, self.difficulty)
+        want = self.footstepFile(self.countObjectScene,
+                                 'tutorial' if self.tutorialMode else self.difficulty)
         now = self.footsteps
         if now is not None and now.file_name == want:
             return

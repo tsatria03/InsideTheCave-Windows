@@ -102,6 +102,7 @@ def test_the_menu_music_plays_on_the_menus_and_page_keys_set_its_volume():
         assert p['MENUVOLUME'] == menu
         source = app.menu_music.source
         _press(app, pg.K_DOWN)
+        _press(app, pg.K_DOWN)
         _press(app, pg.K_RETURN)
         assert app.kind == 'choose_ranking' and app.menu_music.source == source
         _press(app, pg.K_RETURN)
@@ -205,6 +206,7 @@ def test_score_shows_the_ranking_and_escape_goes_back():
     pg = app.pygame
     try:
         _press(app, pg.K_DOWN)
+        _press(app, pg.K_DOWN)
         _press(app, pg.K_RETURN)
         assert app.kind == 'choose_ranking'
         _press(app, pg.K_HOME)
@@ -301,6 +303,56 @@ def test_a_game_over_goes_to_the_result_screen_and_replay_saves():
         first = app.defaults.objectForKey_('rank')[0]
         assert (first['Name'], first['Score'], first['Coins']) == ('Al', '25', '2'), first
         assert app.defaults.objectForKey_('stats')['easy']['games'] >= 1, 'counted'
+    finally:
+        app.close()
+
+
+def test_the_tutorial_from_the_menu_then_caught_then_replay():
+    """The dev's tutorial: its welcome from the menu, "You were caught." with Replay and
+    Menu, nothing saved or counted, and Replay without the welcome."""
+    from insidethecave.game import stats
+    app = _app('menu')
+    pg = app.pygame
+    try:
+        before = (stats.load(app.defaults), app.defaults.objectForKey_('rank'),
+                  app.defaults.integerForKey_('countTutorial'))
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)                # Tutorial
+        s = app.game.scene
+        assert app.kind == 'game' and s.tutorialMode and s.welcome
+        assert s.speedMonster == 5.0 and s.topSpeed == 5.0
+        app.game.score = 50
+        s.clear()                               # caught
+        _frames(app, 0.05)
+        assert app.kind == 'caught' and app.page.current() == 'tutorial'
+        assert (stats.load(app.defaults), app.defaults.objectForKey_('rank'),
+                app.defaults.integerForKey_('countTutorial')) == before, 'nothing counted'
+        _press(app, pg.K_RETURN)                # Replay
+        s = app.game.scene
+        assert app.kind == 'game' and s.tutorialMode and not s.welcome
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_END)
+        _press(app, pg.K_RETURN)                # Quit to menu
+        _press(app, pg.K_RETURN)                # Play
+        _press(app, pg.K_RETURN)                # Easy
+        assert app.kind == 'game' and not app.game.scene.tutorialMode
+    finally:
+        app.close()
+
+
+def test_ctrl_hushes_the_windows_voice_and_the_tutorial():
+    app = _app('menu')
+    pg = app.pygame
+    try:
+        stopped = []
+        app.voice.stop = lambda: stopped.append(True)
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)                # the tutorial
+        s = app.game.scene
+        s._lines[:] = [('a coin line', False)]
+        _press(app, pg.K_LCTRL)
+        assert stopped and s._lines == [], 'the voice stopped, the waiting lines gone'
+        assert app.kind == 'game' and not app.input.paused, 'nothing else happened'
     finally:
         app.close()
 

@@ -5,7 +5,7 @@ metadata:
   type: project
 ---
 
-**Status: FINISHED 2026-10-03, confirmed by the dev by ear ("Everything works.", trying them in the speed check too), built on the dev's go-ahead ("Yes.").** Agreed the same day ("Yes please."), settled one question at a time ([[feedback_record_plans_first]]). **The tutorial's part (S and E saying there is nothing to report) is built with the tutorial**, since the tutorial does not exist yet.
+**Status: FINISHED 2026-10-03, confirmed by the dev by ear ("Everything works.", trying them in the speed check too), built on the dev's go-ahead ("Yes.").** Agreed the same day ("Yes please."), settled one question at a time ([[feedback_record_plans_first]]). **The tutorial's part (S and E saying there is nothing to report) was built with the tutorial**, 2026-10-03, confirmed with it (`GameScene.sayScore`, `saySpeed`, `NO_SCORE`, `NO_SPEED`).
 
 **As built:** `keymap.py` (`score` S, `coins` C, `speed` E, "Say the score", "Say the coins", "Say the speed"; an older `keys.json` gains them), `game_input.py`, `game_scene.py` (`SAY_SCORE`, `SAY_COINS`, `SAY_SPEED`, `SPEED_COUNT_FROM` 5.0, `speedCount`, `sayScore`, `sayCoins`, `saySpeed`; the score and coins read from `GameViewController`). Tests: `gameplay.py` (the words, the count at each whole speed and after 140 slots, nothing after death), `keymap.py`, `screens.py` (the keys reach the game, not the pause menu). Goes with [[project_torch_key_plan]] (T) and [[project_tutorial_plan]].
 

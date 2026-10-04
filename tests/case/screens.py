@@ -192,6 +192,8 @@ def test_the_menu_rows_and_keys():
     _keys(m, 'down')
     assert said.last == 'Play', 'and Down on the last to the first'
     _keys(m, 'down')
+    assert said.last == 'Tutorial'
+    _keys(m, 'down')
     assert said.last == 'Scores'
     _keys(m, 'down')
     assert said.last == 'Stats'
@@ -209,8 +211,8 @@ def test_the_menu_rows_and_keys():
 def test_score_goes_to_the_ranking_and_escape_quits():
     m = HomeScreenViewController(_defaults(), _Said())
     m.viewDidLoad()
-    _keys(m, 'down', 'space')
-    assert m.next == 'choose_ranking', 'Score asks for a difficulty first'
+    _keys(m, 'down', 'down', 'space')
+    assert m.next == 'choose_ranking', 'Scores asks for a difficulty first'
     m.next = None
     _keys(m, 'escape')
     assert m.next == 'quit'

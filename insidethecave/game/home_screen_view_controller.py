@@ -37,8 +37,8 @@ class HomeScreenViewController(RowScreen):
         self.defaults = defaults
         # the buttons' titles, play and score; PORT: each asks for a difficulty first, Score
         # is "Scores", and Stats and Quit are added (the dev; project_scores_stats_plan.md)
-        self.rows = [('choose_game', 'Play'), ('choose_ranking', 'Scores'),
-                     ('choose_stats', 'Stats'), ('quit', 'Quit')]
+        self.rows = [('choose_game', 'Play'), ('tutorial', 'Tutorial'),
+                     ('choose_ranking', 'Scores'), ('choose_stats', 'Stats'), ('quit', 'Quit')]
 
     # HomeScreenViewController.viewDidLoad 0x100019fa4
     def viewDidLoad(self, announce=True):

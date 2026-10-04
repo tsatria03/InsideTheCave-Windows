@@ -23,9 +23,9 @@ extract it, and run `InsideTheCave.exe`. To run it from source instead:
 
     python InsideTheCave.py
 
-It opens as the original does, on the earphone warning, then the menu: Play, Score and
-Quit. A game over goes to the result screen, where you type your name and choose Replay or
-Menu; Score reads your best five. `--stage` starts straight on a game. The whole
+It opens as the original does, on the earphone warning, then the menu: Play, Tutorial,
+Scores, Stats and Quit. A game over goes to the result screen,
+where you type your name and choose Replay or Menu; Scores reads your best five. `--stage` starts straight on a game. The whole
 original game has been disassembled: every function of its code is listed in
 `analysis/disasm/`, and `aidocks/GAME_STRUCTURE.md` describes how the
 game works, read from that code. `aidocks/PORTING_STATUS.md` keeps track of what is done,
@@ -86,8 +86,9 @@ Escape pauses, opening a pause
 menu with Resume, Restart and Quit to menu, where Escape or P resumes. While a game runs,
 Home and End set the master volume. Page Up and Page Down set the game's music in a game,
 paused or not, and the menu music on the menus. F1 lists and changes the keys, and Alt+F4
-quits. Leaving the window pauses. On your first three games a Windows voice says
-the original's line in your language, and your screen reader then says the keys.
+quits. Leaving the window pauses. On your first two games your screen reader says the
+keys. The **Tutorial** teaches the game at a speed that never rises, one thing at a time,
+a Windows voice saying what each is, where, and what to do; nothing in it is saved.
 
 ## Layout
 
@@ -221,6 +222,12 @@ or in debug mode. Throw your torch at one: your screen reader says which lane it
 to, and your torch is lit again a second later.
 
     python tests/interact/bat_check.py
+
+`tutorial_check.py` starts the Tutorial, with or without its welcome, or with only coins
+and torches, or only monsters and bats with your torch lit again after each throw, so you
+can hear every announcement and throw line; debug mode is a choice.
+
+    python tests/interact/tutorial_check.py
 
 `speed_check.py`, a developer tool, is the full game at a speed you set yourself: Equals
 makes it faster and Minus slower, one speed-up at a time from 0 to 40, as the E key counts

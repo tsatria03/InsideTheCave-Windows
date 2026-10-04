@@ -42,6 +42,10 @@ class GameViewController:
         #: PORT ADDITION: the difficulty the next game is played at, set by the screen loop
         #: (aidocks/project_difficulty_plan.md); Replay and Restart keep it.
         self.difficulty = DEFAULT_DIFFICULTY
+        #: PORT ADDITION: the next game is the tutorial, and with its welcome (from the main
+        #: menu only; aidocks/project_tutorial_plan.md)
+        self.tutorial = False
+        self.welcome = False
         self.last_run = None
         self.scene = None
         self.engine = None
@@ -60,7 +64,9 @@ class GameViewController:
         self.scene = GameScene(audio=self.engine, delegate=self, speech=self.speech,
                                voice=self.voice, keymap=self.keymap, defaults=self.defaults,
                                loop=self.loop, language_code=self.language_code,
-                               rng=self.rng, debug=self.debug, difficulty=self.difficulty)
+                               rng=self.rng, debug=self.debug, difficulty=self.difficulty,
+                               tutorial=self.tutorial, welcome=self.welcome)
+        self.welcome = False            # Replay and Restart start without it
         self.scene.didMoveToView()                                     # presentScene:
 
     unwindToGameSegue = viewDidLoad

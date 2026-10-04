@@ -16,7 +16,7 @@ If no Windows voice can be used, your screen reader says the warning instead.
 
 The main menu
 
-The main menu has four rows: Play, Scores, Stats and Quit.
+The main menu has five rows: Play, Tutorial, Scores, Stats and Quit.
 Up and Down move between the rows, and your screen reader says each one.
 The rows wrap around, so Down on the last row goes back to the first, and Up on the first row goes to the last.
 Home and End go to the first and the last row.
@@ -36,12 +36,26 @@ Everything else is the same on every difficulty: how often monsters, bats, coins
 Each difficulty has its own best five scores.
 Replay and the pause menu's Restart play the same difficulty again.
 
-The first three games
+Your first two games
 
-On your first three games, a Windows voice says the original's instructions in your language.
-Then your screen reader says the keys to move and to throw your torch.
-The first monster comes once both are done.
-From the fourth game on, the game starts two seconds after you choose Play.
+On your first two games, your screen reader says the keys to move and to throw your torch, and the first monster comes once it is done.
+From the third game on, the game starts two seconds after you choose a difficulty.
+
+The tutorial
+
+Choose Tutorial on the main menu to learn the game at your own pace.
+A Windows voice welcomes you, then your screen reader says your keys, and the cave begins.
+The cave never speeds up, your torch lasts as long as on Easy, and your footsteps walk.
+Only one thing comes down at a time, and as each appears the Windows voice says what it is, where it is, and what to do, such as A coin appeared on your left. Move left to grab it.
+A monster or bats coming at you tells you to move, or to throw your torch if you have one.
+When a monster, bats, a coin or a torch falls past you without being taken, killed or catching you, the voice says so: Monster passed, Bats passed, Coin passed or Torch passed.
+When you pick up a coin or a torch, the voice says Coin caught or Torch caught.
+Each new line cuts off whatever the voice was saying, so you always hear about the newest thing.
+After a throw, the voice says whether your torch hit a monster or frightened bats, or flew off without hitting anything, and the first time, that you are out of light until you find another torch.
+There is no score in the tutorial: S and E say there is nothing to report, and C counts your coins.
+When you are caught, you hear You were caught, then Replay, which starts the tutorial again without the welcome, and Menu.
+A tutorial game is never saved and never counts in your scores or stats.
+The tutorial speaks in English.
 
 Controls
 
@@ -57,6 +71,7 @@ F1 opens the key bindings.
 Home and End make the whole game louder and quieter while you play, in steps of ten percent, and your screen reader says the new master volume.
 In a game, Page Up and Page Down make the music louder and quieter, and your screen reader says the new track volume.
 On the menus, Page Up and Page Down do the same for the menu music, and your screen reader says the new menu volume.
+Control stops the Windows voice at once, whatever it is saying, as it stops a screen reader.
 Alt+F4 quits the game at any moment.
 
 How to play

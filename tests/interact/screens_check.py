@@ -19,20 +19,27 @@ The starting points:
         which gets into the ranking at third place
      3  the result screen at once, with a made-up score of 5, too low to get in
      4  straight into a game, to try the pause menu (P or Escape) and a real game over
+     5  the tutorial, with its welcome, as if chosen from the main menu
 
-Each start writes a made-up top five first, so you know what to expect on the Score screen:
+Each start writes a made-up Easy best five first, so you know what to expect on the Scores
+screen, saved before coins and times were kept:
 
-     1, Ana, 300   2, Ben, 200   3, Cleo, 100   4, Dev, 50   5, Eli, 10
+     1, Ana. Score, 300.   2, Ben. Score, 200.   3, Cleo. Score, 100.   4, Dev ...
 
 Things to listen for:
 
 * the warning, then the menu after 3 seconds, or at once on a key;
-* the menu: Play, Score, Quit; Up, Down, Home, End, Enter; Escape quits;
-* the result screen: "Game over. Score 150. Coins 4. Insert name"; each letter said as you
-  type it, Backspace saying what it took, at most 15 characters; Enter in the name goes on
-  to Replay; Replay and Menu (and Escape) save first, a blank name as "unnamed player";
-* the Score screen afterwards, with your name in the right place;
-* the pause menu: "Paused. Resume", then Restart and Quit to menu; Escape or P resumes.
+* the menu: Play, Tutorial, Scores, Stats, Quit; Up, Down, Home, End, Enter; Escape quits;
+  Play, Scores and Stats asking for a difficulty first, Stats with All-time too;
+* the result screen: "Game over. Score, 150.", then Down for Coins, Time survived, Speed
+  reached and the name; each letter said as you type it, Backspace saying what it took, at
+  most 15 characters; Enter in the name goes on to Replay; Replay and Menu (and Escape)
+  save first, a blank name as "unnamed player";
+* the Scores screen afterwards, your entry with its coins and time;
+* Stats after a real game over, and nothing counted after Restart or Quit to menu;
+* the pause menu: "Paused. Resume", then Restart and Quit to menu; Escape or P resumes;
+* the tutorial: the welcome in the Windows voice, the key hints, everything announced as it
+  appears, "You were caught." with Replay (no welcome) and Menu.
 
 **Your save is never touched**: its own save in
 ``%APPDATA%\\InsideTheCave\\screens_check``, with a copy of your key bindings and volume
@@ -58,7 +65,8 @@ Window.TITLE = 'Inside The Cave - screens check'
 STARTS = (('the whole program, from the earphone warning', 'warning', None),
           ('the result screen, score 150 and 4 coins, third place', 'result', (150, 4)),
           ('the result screen, score 5, too low to get in', 'result', (5, 0)),
-          ('straight into a game, for the pause menu and a game over', 'game', None))
+          ('straight into a game, for the pause menu and a game over', 'game', None),
+          ('the tutorial, with its welcome', 'tutorial', None))
 SAMPLE_RANK = [{'Name': n, 'Score': s} for n, s in
                (('Ana', '300'), ('Ben', '200'), ('Cleo', '100'), ('Dev', '50'),
                 ('Eli', '10'))]
@@ -122,6 +130,8 @@ def main():
     app.defaults.synchronize()
     if made_up is not None:
         app.over = made_up                 # as if a game had just ended
+    if first == 'tutorial':
+        app.kind = 'menu'                  # as if chosen there, so with its welcome
     app.run(first)
     return 0
 
