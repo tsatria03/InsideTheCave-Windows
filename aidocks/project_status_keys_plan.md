@@ -1,6 +1,6 @@
 ---
 name: project_status_keys_plan
-description: "FINISHED 2026-10-03, confirmed by the dev, except the tutorial's answers, which come with the tutorial: three rebindable keys in a game, S \"Score, 412.\", C \"Coins, 7.\", E \"Speed, 0.\" to \"Speed, 40.\" (speed-ups so far); in the tutorial C as usual, S \"No score to report.\", E \"No speed to report.\"."
+description: "FINISHED 2026-10-03, confirmed by the dev, the tutorial's answers with the tutorial: three rebindable keys in a game, S \"Score, 412.\", C \"Coins, 7.\", E \"Speed, 0.\" to \"Speed, 40.\" (speed-ups so far); in the tutorial C as usual, S \"No score to report.\", E \"No speed to report.\"."
 metadata:
   type: project
 ---
