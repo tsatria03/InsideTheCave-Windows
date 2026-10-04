@@ -12,7 +12,9 @@ The screen loop stands in for the original's storyboard and navigation controlle
 menu's Play to the game and Score to the ranking; a game over to the result screen
 (``GameToResult``), whose Replay starts a new game (``unwindToGameSegue``) and Menu goes back
 to the menu (``unwindToHomeScreenSegue``).  The pause menu's Restart and Quit to menu are
-the port's own.
+the port's own, and so, since the fourth release, is "Choose a difficulty" between Play or
+Score and what they open ('choose_game', 'choose_ranking'); Replay and Restart keep the
+difficulty.
 
 The keys: on a screen, Up and Down, Enter, Escape to go back; in a game, your bindings to
 move and throw, P or Escape to pause, Home and End for the master volume.  Everywhere, F1
@@ -41,7 +43,7 @@ FPS = 120
 LINES, LINE_HEIGHT = 19, 22
 #: PORT ADDITION: the screens the menu music plays on (ui/menu_music.py); not the warning,
 #: and not a game, paused or not.
-MENU_MUSIC_SCREENS = ('menu', 'ranking', 'result')
+MENU_MUSIC_SCREENS = ('menu', 'choose_game', 'choose_ranking', 'ranking', 'result')
 KEY_LINES = ['Keys: your move and throw keys, P or Escape pause, F1 key bindings,',
              'Page Up / Page Down track volume, Home / End master volume, Alt+F4 quit.']
 
@@ -85,8 +87,14 @@ class App:
                                        self.voice, self.keymap, self.loop, debug=args.debug,
                                        language_code=self.language_code,
                                        on_game_over=self.game_over)
-        #: The screen showing: 'warning', 'menu', 'ranking', 'result' or 'game'.
+        #: The screen showing: 'warning', 'menu', 'choose_game', 'choose_ranking',
+        #: 'ranking', 'result' or 'game'.
         self.kind = None
+        #: PORT ADDITION: the best five the Score screen shows (the difficulty chosen for it).
+        self.ranking_difficulty = None
+        #: PORT ADDITION: the difficulty last played since the game was opened, where the
+        #: difficulty screens open; None, so Easy, at first (the dev: not kept in the save).
+        self.played_difficulty = None
         #: Its object; None during a game, which is ``self.game``.
         self.page = None
         self.over = None                # (score, coins) once a game is over
@@ -100,8 +108,15 @@ class App:
         from insidethecave.game.ranking_view_controller import RankingViewController
         from insidethecave.game.result_view_controller import ResultViewController
         from insidethecave.game.warning_view_controller import WarningViewController
+        from insidethecave.ui.difficulty_screen import DifficultyScreen
 
         log.info('-> %s', kind)
+        chosen = getattr(self.page, 'chosen', None)     # a difficulty, from its screen
+        if kind == 'game' and chosen is not None:
+            self.game.difficulty = chosen               # Replay and Restart keep it
+            self.played_difficulty = chosen
+        elif kind == 'ranking' and chosen is not None:
+            self.ranking_difficulty = chosen
         if self.kind == 'game' and kind != 'game':
             self.leave_game()
         if kind in MENU_MUSIC_SCREENS:
@@ -121,11 +136,16 @@ class App:
                                               voice=self.voice)
         elif kind == 'menu':
             self.page = HomeScreenViewController(self.defaults, self.speech)
+        elif kind in ('choose_game', 'choose_ranking'):
+            self.page = DifficultyScreen(self.speech, then=kind[len('choose_'):],
+                                         last=self.played_difficulty)
         elif kind == 'ranking':
-            self.page = RankingViewController(self.defaults, self.speech)
+            self.page = RankingViewController(self.defaults, self.speech,
+                                              self.ranking_difficulty or self.game.difficulty)
         elif kind == 'result':
             score, coins = self.over or (0, 0)
-            self.page = ResultViewController(score, coins, self.defaults, self.speech)
+            self.page = ResultViewController(score, coins, self.defaults, self.speech,
+                                             difficulty=self.game.difficulty)
         self.page.viewDidLoad()
 
     def follow(self):

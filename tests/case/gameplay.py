@@ -62,7 +62,8 @@ class _Voice:
 class _Game:
     """A game, and the clock it runs on."""
 
-    def __init__(self, count=3, debug=False, seed=1, voice=None, language='en'):
+    def __init__(self, count=3, debug=False, seed=1, voice=None, language='en',
+                 difficulty='easy'):
         self.defaults = UserDefaults()
         self.defaults.setInteger_forKey_(count, 'countTutorial')
         self.base = 1000.0
@@ -76,6 +77,7 @@ class _Game:
                                      debug=debug, language_code=language,
                                      rng=random.Random(seed),
                                      on_game_over=lambda s, c: self.overs.append((s, c)))
+        self.vc.difficulty = difficulty
         self.vc.viewDidLoad()
         self.scene = self.vc.scene
         self.step(0.0)
@@ -174,23 +176,52 @@ def test_the_game_speeds_up_every_twenty_slots():
     assert g.scene.speedMonster == 4.8, g.scene.speedMonster
 
 
-def test_the_speed_steps_down_to_1_and_stays():
-    """The original steps 0.12 and stops below 2.0, at 1.96; the port steps 0.1 on to 1.0,
-    reached at slot 800 (the dev: 5 the slowest, 1 the fastest, by 0.1), every tenth exact
-    on the way."""
-    g = _Game(debug=True)
-    g.start()
-    s = g.scene
-    s.speedMonster, s.countObjectScene = G.START_SPEED, 0
-    reached = None
-    for _ in range(900):
-        s.createObjectScene()
-        if s.countObjectScene % 200 == 0 and s.countObjectScene <= 800:
-            assert s.speedMonster == 5.0 - s.countObjectScene / 200, s.speedMonster
-        if reached is None and s.speedMonster == G.TOP_SPEED:
-            reached = s.countObjectScene
-    assert G.SPEED_STEP == 0.1 and G.TOP_SPEED == 1.0 and reached == 800, reached
-    assert s.speedMonster == 1.0, s.speedMonster
+def test_each_difficulty_steps_from_its_start_to_its_top_and_stays():
+    """The original steps 0.12 and stops below 2.0, at 1.96; the port steps 0.1, every tenth
+    exact, from each difficulty's start to its top, reached at slot 400 (the dev: Easy 5.0
+    to 3.0, Medium 4.0 to 2.0, Hard 3.0 to 1.0)."""
+    for difficulty, start, top in (('easy', 5.0, 3.0), ('medium', 4.0, 2.0),
+                                   ('hard', 3.0, 1.0)):
+        g = _Game(debug=True, difficulty=difficulty)
+        s = g.scene
+        assert s.speedMonster == start, (difficulty, s.speedMonster)
+        reached = None
+        for _ in range(500):
+            s.createObjectScene()
+            if s.countObjectScene % 200 == 0 and s.countObjectScene <= 400:
+                assert s.speedMonster == start - s.countObjectScene / 200, s.speedMonster
+            if reached is None and s.speedMonster == top:
+                reached = s.countObjectScene
+        assert reached == 400 and s.speedMonster == top, (difficulty, reached)
+    assert G.SPEED_STEP == 0.1 and G.START_SPEED == 5.0 and G.TOP_SPEED == 1.0
+
+
+def test_on_medium_and_hard_the_first_footsteps_are_the_run():
+    for difficulty in ('medium', 'hard'):
+        g = _Game(difficulty=difficulty)
+        g.start()
+        assert g.scene.footsteps.file_name == 'cave-run.wav', difficulty
+
+
+def test_each_difficulty_s_torch_lasts_its_own_length():
+    """Easy's torch 1.5 times as long, Medium's the original's, Hard's three quarters;
+    "Torch low" at the same falloff on each (the dev)."""
+    lasts = {}
+    for difficulty in ('easy', 'medium', 'hard'):
+        g = _Game(difficulty=difficulty)
+        s = g.scene
+        slots = low = 0
+        while s.falloffSize < G.FALLOFF_OUT:
+            s.changeFalloffSize()
+            slots += 1
+            if not low and G.TORCH_LOW in g.speech.lines:
+                low = slots
+        lasts[difficulty] = (slots, low)
+    assert 69 <= lasts['medium'][0] <= 71, lasts
+    assert abs(lasts['easy'][0] - 1.5 * lasts['medium'][0]) <= 2, lasts
+    assert abs(lasts['hard'][0] - 0.75 * lasts['medium'][0]) <= 2, lasts
+    for slots, low in lasts.values():
+        assert 0.55 < low / slots < 0.65, lasts          # "Torch low" at the same point
 
 
 def test_every_seventh_obstacle_is_bats_and_the_rest_monsters():
@@ -321,7 +352,7 @@ def test_the_music_volume_changes_during_a_game():
 def test_footsteps_loop_from_your_lane_and_quicken_with_the_cave():
     """The dev: a walk, then a run, at 0.5, moving with you."""
     from insidethecave.scene.audio import AudioEngine, placed
-    assert all(placed(n) for n, _ in G.FOOTSTEPS), 'mixed to mono'
+    assert all(placed(n) for steps in G.FOOTSTEPS.values() for n, _ in steps), 'mono'
     g = _Game(debug=True)
     s = g.scene
     assert s.footsteps is None, 'none before the first slot'
@@ -335,7 +366,10 @@ def test_footsteps_loop_from_your_lane_and_quicken_with_the_cave():
     assert round(heard[0], 6) == -1.0, 'from the left lane, once you are there'
     assert [G.GameScene.footstepFile(n) for n in (0, 1, 154, 155, 156, 400)] == [
         'cave-walk.wav', 'cave-walk.wav', 'cave-walk.wav', 'cave-run.wav', 'cave-run.wav',
-        'cave-run.wav'], 'the run from slot 155 (the dev)'
+        'cave-run.wav'], 'the run from slot 155 on Easy (the dev)'
+    for difficulty in ('medium', 'hard'):
+        assert {G.GameScene.footstepFile(n, difficulty) for n in (0, 154, 400)} == \
+            {'cave-run.wav'}, 'Medium and Hard run from the start (the dev)'
     s.countObjectScene = 154
     s.createObjectScene()                       # the 155th slot
     assert s.footsteps.file_name == 'cave-run.wav' and not f.in_scene, 'swapped, not doubled'
@@ -541,7 +575,7 @@ def test_a_falling_bat_dodges_a_thrown_torch_and_stays_dodged():
 
 
 def test_the_torch_burns_out_and_says_torch_low_once():
-    g = _Game()
+    g = _Game(difficulty='medium')              # the original's torch
     s = g.scene
     steps = 0
     while s.falloffSize < G.FALLOFF_OUT:
@@ -639,8 +673,9 @@ def test_no_throw_after_death():
 
 def test_t_says_the_torch_by_slot():
     """The torch key (the dev, option A by slot): full to slot 19, half to 39, low from the
-    game's own "Torch low", almost out for the last 8 slots, then none."""
-    g = _Game()
+    game's own "Torch low", almost out for the last 8 slots, then none; on Medium, the
+    original's torch."""
+    g = _Game(difficulty='medium')
     s = g.scene
     said, warned = [], None
     for slot in range(80):

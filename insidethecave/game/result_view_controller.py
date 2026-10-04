@@ -27,14 +27,17 @@ PORT, each in aidocks/DIVERGENCES.md:
 * a score equal to one already in the top five is not saved again, so no two are tied (the
   dev, 2026-10-02: "There should not be any tied scores."); the one already there stays;
 * the screen is rows: the name field, Replay and Menu.  On the field, typed characters go
-  in and are said, Backspace deletes and says what it took, and Enter goes on to Replay.
+  in and are said, Backspace deletes and says what it took, and Enter goes on to Replay;
+* the score is saved in the best five of the difficulty played (the fourth release,
+  aidocks/project_difficulty_plan.md).
 """
 from __future__ import annotations
 
 import logging
 
-from ..platform.defaults import RANK_KEY
+from ..platform.defaults import RANK_KEYS
 from ..ui.rows import MODIFIERS, RowScreen
+from .game_scene import DEFAULT_DIFFICULTY
 from .home_screen_view_controller import default_rank
 
 log = logging.getLogger('screens')
@@ -80,11 +83,13 @@ class ResultViewController(RowScreen):
     keys_line = ('Type your name   Up/Down move   Enter choose   Escape menu   '
                  'F1 key bindings')
 
-    def __init__(self, score=0, coins=0, defaults=None, speech=None):
+    def __init__(self, score=0, coins=0, defaults=None, speech=None,
+                 difficulty=DEFAULT_DIFFICULTY):
         super().__init__(speech)
         self.score = int(score)
         self.coins = int(coins)
         self.defaults = defaults
+        self.rank_key = RANK_KEYS[difficulty]
         self.name = ''
         self.saved = False
         self.rows = [('name', ''), ('replay', 'Replay'), ('menu', 'Menu')]
@@ -144,11 +149,11 @@ class ResultViewController(RowScreen):
         if self.saved or self.defaults is None:
             return False
         self.saved = True
-        rank = self.defaults.objectForKey_(RANK_KEY)
+        rank = self.defaults.objectForKey_(self.rank_key)
         new = ranked(rank if isinstance(rank, list) else [], self.saved_name(), self.score)
         if new is None:
             return False
-        self.defaults.setObject_forKey_(new, RANK_KEY)
+        self.defaults.setObject_forKey_(new, self.rank_key)
         self.defaults.synchronize()
         log.info('saved %s, %d', self.saved_name(), self.score)
         return True

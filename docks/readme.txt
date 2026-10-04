@@ -22,7 +22,19 @@ The rows wrap around, so Down on the last row goes back to the first, and Up on 
 Home and End go to the first and the last row.
 Enter or Space chooses the row you are on.
 Escape in the main menu quits the game.
-Music plays on the main menu, the Score screen and the result screen, and stops when a game starts.
+Play and Score both ask you to choose a difficulty first: Easy, Medium or Hard.
+The difficulty screen opens on Easy when you start the game, and after that on the difficulty you last played, until you close the game. Escape goes back to the main menu.
+Music plays on the main menu, the difficulty screens, the Score screen and the result screen, and stops when a game starts.
+
+The difficulties
+
+Easy starts slowly, at speed 5.0, speeds up to 3.0, and your torch lasts one and a half times as long.
+Medium starts at 4.0, the original game's speed, speeds up to 2.0, and your torch lasts as long as in the original.
+Hard starts at 3.0, speeds up all the way to 1.0, and your torch lasts three quarters as long.
+Each speeds up a little every twenty things that come down, and reaches its top speed after four hundred of them.
+Everything else is the same on every difficulty: how often monsters, bats, coins and torches come.
+Each difficulty has its own best five scores.
+Replay and the pause menu's Restart play the same difficulty again.
 
 The first three games
 
@@ -38,7 +50,7 @@ D or Right Arrow moves you one lane to the right.
 Each move sounds from the lane you move into, and trying to go past the left or right lane bumps into the cave wall on that side.
 W or Up Arrow throws your torch up your lane.
 T says how much torch you have left.
-S says your score, C your coins, and E the speed: how many times the cave has sped up, from 0 at the start to 40 at its fastest.
+S says your score, C your coins, and E the speed: how many times the cave has sped up since speed 5.0, from 0 to 20 on Easy, 10 to 30 on Medium, and 20 to 40 on Hard.
 P or Escape pauses the game.
 Switching away from the game window pauses the game as well.
 F1 opens the key bindings.
@@ -53,8 +65,8 @@ You stand at the bottom of the middle lane, and monsters come down the lanes tow
 As a monster comes within reach it roars from its lane, about a second before it reaches you.
 Move out of its lane before it gets there.
 Bats come down the same way, with a sound of their own, and every seventh thing in your way is bats.
-The cave speeds up as you go deeper, until it reaches its top speed.
-Your footsteps run with you from your lane, a walk at first, then a run after about two minutes.
+The cave speeds up as you go deeper, until it reaches the top speed of your difficulty.
+Your footsteps run with you from your lane: on Easy a walk at first, then a run after about two minutes, and on Medium and Hard a run from the start.
 
 Your torch
 
@@ -88,14 +100,15 @@ Then type your name, up to fifteen characters.
 Your screen reader says each character as you type it, and Backspace says the one it removes.
 Enter or Down goes on to the Replay row, and the Menu row is below it.
 Replay plays again, and Menu or Escape goes back to the main menu.
-Both save your score first, if it is in your best five.
+Both save your score first, if it is in the best five of the difficulty you played.
 A blank name is saved as unnamed player.
 A score that is already in your best five is not saved again, so no two of them are the same.
 
 Your best five
 
-Choose Score in the main menu to hear your best five scores, best first, with their names.
-Up and Down move through them, and Menu or Escape goes back to the main menu.
+Choose Score in the main menu, then a difficulty, to hear that difficulty's best five scores, best first, with their names.
+Up and Down move through them, and Menu or Escape goes back to the difficulties, where Escape again goes back to the main menu.
+The best five you had before the difficulties came are your Easy best five.
 
 Changing the keys
 

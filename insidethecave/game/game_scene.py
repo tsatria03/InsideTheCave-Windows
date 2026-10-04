@@ -120,14 +120,20 @@ TORCH_JINGLE = 'tilintar.aiff'
 #: 0x100010a6c); PORT: 1.0, the file as recorded (the dev: "Please put the game music volume
 #: to 1.0 as well. Again, I can turn that down as well."), turned down with Page Down.
 MUSIC_GAIN = 1.0
-#: PORT: speedMonster at the start, the slowest the game is.  The original's is 4.0
+#: PORT: the slowest speedMonster any game is, Easy's start.  The original starts at 4.0
 #: (0x1000157bc); the dev, for the third release: "The default speeds should now be 5.0 and
 #: 1.0. 5 being the slowest, and 1 being the fastest."
 START_SPEED = 5.0
-#: PORT: the lowest speedMonster goes, the fastest the game gets.  The original steps every
-#: 20 slots while at 2.0 or more, so from 2.08 to 1.96 at slot 340; the port steps on to
-#: 1.0, reached at slot 800, about 6 min 42 s in (the dev, above).
+#: PORT: the lowest speedMonster goes, the fastest any game gets, Hard's top.  The original
+#: steps every 20 slots while at 2.0 or more, so from 2.08 to 1.96 at slot 340.
 TOP_SPEED = 1.0
+#: PORT ADDITION: the difficulties, chosen when Play is (the dev, for the fourth release;
+#: aidocks/project_difficulty_plan.md): (start, top, how many times as long a torch lasts).
+#: Each spans 20 steps, reaching its top at slot 400, and overlaps the next by half.  Easy's
+#: torch burns two-thirds as fast, Hard's a third faster, passing the same falloff points.
+DIFFICULTIES = {'easy': (5.0, 3.0, 1.5), 'medium': (4.0, 2.0, 1.0), 'hard': (3.0, 1.0, 0.75)}
+DIFFICULTY_ORDER = ('easy', 'medium', 'hard')
+DEFAULT_DIFFICULTY = 'easy'
 #: PORT: what each step every 20 slots takes off speedMonster.  The original's is 0.12
 #: (0x10000c998); the dev, for the third release: "I want it set to 0.1 if possible.", so the
 #: speeds run in tenths, 5.0, 4.9, 4.8 ..., each whole number every 200 slots.
@@ -136,7 +142,12 @@ SPEED_STEP = 0.1
 #: dev, for the third release, from the early versions' Running_On_Rocks).  Each is (file,
 #: the slot it starts at): a walk from the first slot, a run from slot 155 (the dev: "I want
 #: the running to start at slot 155."), about 1 min 59 s in, at speedMonster 4.3.
-FOOTSTEPS = (('cave-walk.wav', 0), ('cave-run.wav', 155))
+#: By difficulty since the fourth release (the dev: "The footstep sound should match the
+#: difficulty as well."): Easy walks and runs from 155 as before; Medium and Hard start
+#: faster than Easy ever walks, at 4.0 and 3.0, so they run from the first slot.
+FOOTSTEPS = {'easy': (('cave-walk.wav', 0), ('cave-run.wav', 155)),
+             'medium': (('cave-run.wav', 0),),
+             'hard': (('cave-run.wav', 0),)}
 FOOTSTEP_VOLUME = 0.5
 
 
@@ -144,8 +155,11 @@ class GameScene(Scene):
     """``GameScene``, an ``SKScene`` and its own ``SKPhysicsContactDelegate``."""
 
     def __init__(self, audio=None, delegate=None, speech=None, voice=None, keymap=None,
-                 defaults=None, loop=None, language_code='en', rng=None, debug=False):
+                 defaults=None, loop=None, language_code='en', rng=None, debug=False,
+                 difficulty=DEFAULT_DIFFICULTY):
         super().__init__(audio=audio)
+        self.difficulty = difficulty if difficulty in DIFFICULTIES else DEFAULT_DIFFICULTY
+        self.startSpeed, self.topSpeed, self.torchLength = DIFFICULTIES[self.difficulty]
         self.gameSceneDelegate = delegate
         self.speech = speech
         self.voice = voice
@@ -174,7 +188,7 @@ class GameScene(Scene):
         self.playerDead = False
         self.blockPlayer = True
         self.positionX = 0.0
-        self.speedMonster = START_SPEED                      # 0x1000157bc 4.0; PORT 5.0
+        self.speedMonster = self.startSpeed                  # 0x1000157bc 4.0; PORT by difficulty
         self.roar = AudioNode('Rugido.mp3')                  # 0x1000157d8
         self.batSound = AudioNode('BatSound.wav')
         self.coinTinkle = AudioNode('tilintar.aiff')
@@ -315,7 +329,7 @@ class GameScene(Scene):
         the slot objectHeight picks, every 3rd obstacle round; otherwise an empty slot that
         only keeps the chain going.  Then the light dims a step, and every 20th slot the
         game speeds up, the original's while speedMonster is 2.0 or more, the port's while
-        it is above TOP_SPEED."""
+        it is above the difficulty's top."""
         s = self.countObjectScene
         slot = SpriteNode(name='slot')                                 # an empty sprite
         if s & 3 == 0:
@@ -348,12 +362,13 @@ class GameScene(Scene):
         self.countObjectScene += 1                                     # 0x10000c93c
         self.updateFootsteps()                                         # PORT ADDITION
         self.changeFalloffSize()                                       # 0x10000c94c
-        if self.countObjectScene % 20 == 0 and self.speedMonster > TOP_SPEED:
+        if self.countObjectScene % 20 == 0 and self.speedMonster > self.topSpeed:
             # 0x10000c958..0x10000c9a0 steps 0.12 while 2.0 or more, 2.08 to 1.96 at slot
-            # 340; PORT: SPEED_STEP, 0.1, on down to TOP_SPEED, 1.0, the fastest the game
-            # goes (the dev, for the third release); rounded to hundredths so the tenths
-            # stay exact, as 0.1 has no exact binary value
-            self.speedMonster = max(TOP_SPEED, round(self.speedMonster - SPEED_STEP, 2))
+            # 340; PORT: SPEED_STEP, 0.1, on down to the difficulty's top (the dev, for the
+            # third and fourth releases); rounded to hundredths so the tenths stay exact,
+            # as 0.1 has no exact binary value
+            self.speedMonster = max(self.topSpeed,
+                                    round(self.speedMonster - SPEED_STEP, 2))
 
     # ---- -[GameScene coinTogether] / torchTogether, and their helper 0x10000ca0c ---------
     def coinTogether(self):
@@ -673,17 +688,18 @@ class GameScene(Scene):
     # GameScene.changeFalloffSize 0x100023a0c
     def changeFalloffSize(self):
         f = self.falloffSize
+        # PORT: each step divided by the difficulty's torch length (1.0 on Medium)
         if f < FALLOFF_DIM:
-            self.falloffSize = f + 0.025
+            self.falloffSize = f + 0.025 / self.torchLength
             self.lightTorch.falloff = self.falloffSize
-            self.backgroundTorch.runAction(A.changeVolumeBy(-0.003, 0.0))
+            self.backgroundTorch.runAction(A.changeVolumeBy(-0.003 / self.torchLength, 0.0))
         elif f < FALLOFF_LAST:
             if not self.torch_low_said:                                # PORT ADDITION
                 self.torch_low_said = True
                 self.say(TORCH_LOW)
-            self.falloffSize = f + 0.07
+            self.falloffSize = f + 0.07 / self.torchLength
             self.lightTorch.falloff = self.falloffSize
-            self.backgroundTorch.runAction(A.changeVolumeBy(-0.0045, 0.0))
+            self.backgroundTorch.runAction(A.changeVolumeBy(-0.0045 / self.torchLength, 0.0))
         elif f != FALLOFF_OUT:
             self.falloffSize = FALLOFF_OUT
             self.lightTorch.falloff = FALLOFF_OUT
@@ -952,10 +968,12 @@ class GameScene(Scene):
 
     # ---- PORT ADDITION: footsteps -----------------------------------------------------
     @staticmethod
-    def footstepFile(slot):
-        """The footsteps at a ``countObjectScene``: a walk, then a run."""
-        name = FOOTSTEPS[0][0]
-        for file, start in FOOTSTEPS:
+    def footstepFile(slot, difficulty=DEFAULT_DIFFICULTY):
+        """The footsteps at a ``countObjectScene``: on Easy a walk, then a run; on Medium
+        and Hard a run."""
+        steps = FOOTSTEPS[difficulty]
+        name = steps[0][0]
+        for file, start in steps:
             if slot >= start:
                 name = file
         return name
@@ -966,7 +984,7 @@ class GameScene(Scene):
         lane, as the dash is; they go with the player at death."""
         if not self.started or self.playerDead:
             return
-        want = self.footstepFile(self.countObjectScene)
+        want = self.footstepFile(self.countObjectScene, self.difficulty)
         now = self.footsteps
         if now is not None and now.file_name == want:
             return

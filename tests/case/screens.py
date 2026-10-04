@@ -18,6 +18,7 @@ from insidethecave.game.ranking_view_controller import RankingViewController  # 
 from insidethecave.game.warning_view_controller import WarningViewController  # noqa: E402
 from insidethecave.platform import runloop                      # noqa: E402
 from insidethecave.platform.defaults import UserDefaults        # noqa: E402
+from insidethecave.ui.difficulty_screen import DifficultyScreen  # noqa: E402
 from insidethecave.platform.keymap import KeyMap                 # noqa: E402
 from insidethecave.ui.game_input import GameInput               # noqa: E402
 
@@ -200,14 +201,14 @@ def test_the_menu_rows_and_keys():
     _keys(m, 'left shift')
     assert len(said.lines) == n, 'Shift alone says nothing'
     _keys(m, 'return')
-    assert m.next == 'game'
+    assert m.next == 'choose_game', 'Play asks for a difficulty first'
 
 
 def test_score_goes_to_the_ranking_and_escape_quits():
     m = HomeScreenViewController(_defaults(), _Said())
     m.viewDidLoad()
     _keys(m, 'down', 'space')
-    assert m.next == 'ranking'
+    assert m.next == 'choose_ranking', 'Score asks for a difficulty first'
     m.next = None
     _keys(m, 'escape')
     assert m.next == 'quit'
@@ -328,16 +329,56 @@ def test_the_ranking_reads_the_five_and_menu():
     d = _defaults(rank=[{'Name': 'Ana', 'Score': '120'}] + default_rank()[:4])
     s = RankingViewController(d, said)
     s.viewDidLoad()
-    assert said.last == 'Score, your best five. 1, Ana, 120'
+    assert said.last == 'Easy, your best five. 1, Ana, 120', said.last
     _keys(s, 'down')
     assert said.last == '2, Player, 0'
     _keys(s, 'end')
     assert said.last == 'Menu'
     _keys(s, 'return')
-    assert s.next == 'menu'
+    assert s.next == 'choose_ranking', 'back to the difficulties'
     s.next = None
     _keys(s, 'home', 'escape')
-    assert s.next == 'menu'
+    assert s.next == 'choose_ranking'
+
+
+# ---- the difficulties ----------------------------------------------------------------------
+
+def test_the_difficulty_screen_opens_on_easy_or_on_the_one_last_played():
+    said = _Said()
+    s = DifficultyScreen(said, then='game')
+    s.viewDidLoad()
+    assert said.last == 'Choose a difficulty. Easy'
+    _keys(s, 'down', 'down')
+    assert said.last == 'Hard'
+    _keys(s, 'return')
+    assert s.chosen == 'hard' and s.next == 'game'
+    again = DifficultyScreen(said, then='game', last='hard')
+    again.viewDidLoad()
+    assert said.last == 'Choose a difficulty. Hard', 'it opens on the one last played'
+
+
+def test_escape_on_the_difficulties_goes_back_to_the_menu():
+    s = DifficultyScreen(_Said())
+    _keys(s, 'escape')
+    assert s.next == 'menu' and s.chosen is None
+
+
+def test_each_difficulty_has_its_own_best_five():
+    """Easy keeps the original's rank, so the best five saved before became Easy's."""
+    old = [{'Name': 'Ana', 'Score': '300'}] + default_rank()[:4]
+    d = _defaults(rank=old)
+    for key in ('rankMedium', 'rankHard'):
+        d.removeObjectForKey_(key)
+    HomeScreenViewController(d, _Said()).viewDidLoad()
+    assert d.objectForKey_('rank') == old
+    assert d.objectForKey_('rankMedium') == default_rank() == d.objectForKey_('rankHard')
+    r = R.ResultViewController(150, 3, d, _Said(), difficulty='hard')
+    assert r.checkRank()
+    assert d.objectForKey_('rankHard')[0] == {'Name': 'unnamed player', 'Score': '150'}
+    assert d.objectForKey_('rank') == old and d.objectForKey_('rankMedium') == default_rank()
+    said = _Said()
+    RankingViewController(d, said, 'hard').viewDidLoad()
+    assert said.last == 'Hard, your best five. 1, unnamed player, 150', said.last
 
 
 # ---- the pause menu ------------------------------------------------------------------------

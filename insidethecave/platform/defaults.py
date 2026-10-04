@@ -46,6 +46,10 @@ SETTINGS_FILE = 'settings.json'
 
 RANK_KEY = 'rank'                     # 0x100026d32
 COUNT_TUTORIAL_KEY = 'countTutorial'  # 0x100025237
+#: PORT ADDITION: a best five for each difficulty (aidocks/project_difficulty_plan.md).
+#: Easy keeps the original's own ``rank``, so the best five saved before the difficulties
+#: became Easy's without being moved.
+RANK_KEYS = {'easy': RANK_KEY, 'medium': 'rankMedium', 'hard': 'rankHard'}
 
 #: The keys that are settings rather than progress, in the order settings.json lists them.
 SETTINGS_KEYS = ('MASTERVOLUME', 'MUSICVOLUME', 'MENUVOLUME')

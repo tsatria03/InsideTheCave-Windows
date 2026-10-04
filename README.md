@@ -64,10 +64,13 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
   scores nothing; a bat it hits only dodges into another lane.
 - **Coins** come down too, each dinging from its lane: ten points each. The score also
   goes up four times a second while you live.
-- Your **footsteps** follow you from your lane: a walk at first, then a run once the cave
-  has sped up, from about two minutes in.
+- Your **footsteps** follow you from your lane: on Easy a walk at first, then a run once
+  the cave has sped up, from about two minutes in; on Medium and Hard a run from the start.
 - The cave **speeds up** every twenty things that come down, until it reaches its top
   speed, and turns from rock to water and then ice as you go deeper.
+- **Difficulties**: Play asks for Easy (speed 5.0 to 3.0, a longer torch), Medium (4.0 to
+  2.0, the original's start and torch) or Hard (3.0 to 1.0, a shorter torch), each with its
+  own best five.
 - After a game you type your name, and a score that beats your fifth best goes into your
   **best five**, saved on your computer; a blank name is saved as "unnamed player". The
   original also sent them to an online leaderboard, which this port leaves out.
@@ -117,8 +120,8 @@ The keyboard, the screens' rows, the pause menu and the F1 key-binding screen ar
 `insidethecave/ui/`, and `InsideTheCave.py` is the entry point, the window and the loop
 that goes from screen to screen.
 
-The save lives in `%APPDATA%\InsideTheCave`: `save.json` (the local top five and the
-tutorial count), `settings.json` (the master, game music and menu music volumes) and
+The save lives in `%APPDATA%\InsideTheCave`: `save.json` (a best five for each
+difficulty, and the tutorial count), `settings.json` (the master, game music and menu music volumes) and
 `keys.json` (the key bindings).
 
 ### `game/`: the original's data
@@ -186,8 +189,9 @@ sensor, and "now" when it would reach you.
 
     python tests/interact/scene_check.py
 
-`stage_chooser.py` starts the real game from the beginning, a little before the water, a
-little before the ice, or at the top speed, with the tutorial and debug mode (where
+`stage_chooser.py` starts the real game on any difficulty from the beginning, a little
+before the water, a little before the ice, or at the top speed, with the tutorial and debug
+mode (where
 nothing can kill you) on or off:
 
     python tests/interact/stage_chooser.py

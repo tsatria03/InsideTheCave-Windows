@@ -103,8 +103,13 @@ def test_the_menu_music_plays_on_the_menus_and_page_keys_set_its_volume():
         source = app.menu_music.source
         _press(app, pg.K_DOWN)
         _press(app, pg.K_RETURN)
+        assert app.kind == 'choose_ranking' and app.menu_music.source == source
+        _press(app, pg.K_RETURN)
         assert app.kind == 'ranking' and app.menu_music.source == source, 'carries on'
         _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_HOME)
+        _press(app, pg.K_RETURN)
         _press(app, pg.K_RETURN)
         assert app.kind == 'game' and not app.menu_music.playing, 'stops for a game'
         _press(app, pg.K_ESCAPE)
@@ -188,6 +193,8 @@ def test_the_warning_then_the_menu_then_a_game():
         assert app.kind == 'menu'
         assert app.lines()[0] == 'Inside The Cave - Main menu'
         _press(app, pg.K_RETURN)
+        assert app.kind == 'choose_game'
+        _press(app, pg.K_RETURN)
         assert app.kind == 'game' and app.game.scene is not None
     finally:
         app.close()
@@ -199,13 +206,58 @@ def test_score_shows_the_ranking_and_escape_goes_back():
     try:
         _press(app, pg.K_DOWN)
         _press(app, pg.K_RETURN)
-        assert app.kind == 'ranking'
+        assert app.kind == 'choose_ranking'
+        _press(app, pg.K_HOME)
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'ranking' and app.page.difficulty == 'medium'
+        _press(app, pg.K_ESCAPE)
+        assert app.kind == 'choose_ranking', 'back to the difficulties'
         _press(app, pg.K_ESCAPE)
         assert app.kind == 'menu'
         _press(app, pg.K_ESCAPE)
         assert not app.running, 'Escape on the menu quits'
     finally:
         app.close()
+
+
+def test_play_asks_for_a_difficulty_and_restart_and_replay_keep_it():
+    """The dev's difficulties: Hard starts at 3.0, and saves into Hard's best five; Play
+    opens on Easy when the game is opened, then on the one last played."""
+    app = _app('menu')
+    pg = app.pygame
+    try:
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'choose_game' and app.page.current() == 'easy'
+        _press(app, pg.K_END)
+        _press(app, pg.K_RETURN)
+        assert app.kind == 'game' and app.game.scene.speedMonster == 3.0
+        assert app.defaults.objectForKey_('difficulty') is None, 'never in the save'
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)                # Restart
+        assert app.game.scene.difficulty == 'hard'
+        app.game.score = 77
+        app.game.scene.clear()
+        _frames(app, 0.05)
+        assert app.kind == 'result'
+        _press(app, pg.K_RETURN)
+        _press(app, pg.K_RETURN)                # Replay
+        assert app.kind == 'game' and app.game.scene.difficulty == 'hard'
+        assert app.defaults.objectForKey_('rankHard')[0]['Score'] == '77'
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_END)
+        _press(app, pg.K_RETURN)                # Quit to menu
+        _press(app, pg.K_RETURN)                # Play
+        assert app.kind == 'choose_game' and app.page.current() == 'hard', 'last played'
+    finally:
+        app.close()
+    fresh = _app('menu')                        # the game opened again
+    try:
+        _press(fresh, fresh.pygame.K_RETURN)
+        assert fresh.page.current() == 'easy', 'not remembered between openings'
+    finally:
+        fresh.close()
 
 
 def test_the_pause_menu_restarts_and_quits_to_the_menu():

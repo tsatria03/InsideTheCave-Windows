@@ -19,7 +19,7 @@ import logging
 
 from ..platform import language
 from ..scene.audio import AudioEngine
-from .game_scene import COUNTERS, ROCK, GameScene
+from .game_scene import COUNTERS, DEFAULT_DIFFICULTY, ROCK, GameScene
 
 log = logging.getLogger('game')
 
@@ -39,6 +39,9 @@ class GameViewController:
         self.language_code = language_code or language.code()
         self.rng = rng
         self.on_game_over = on_game_over
+        #: PORT ADDITION: the difficulty the next game is played at, set by the screen loop
+        #: (aidocks/project_difficulty_plan.md); Replay and Restart keep it.
+        self.difficulty = DEFAULT_DIFFICULTY
         self.scene = None
         self.engine = None
         self.score = 0
@@ -56,7 +59,7 @@ class GameViewController:
         self.scene = GameScene(audio=self.engine, delegate=self, speech=self.speech,
                                voice=self.voice, keymap=self.keymap, defaults=self.defaults,
                                loop=self.loop, language_code=self.language_code,
-                               rng=self.rng, debug=self.debug)
+                               rng=self.rng, debug=self.debug, difficulty=self.difficulty)
         self.scene.didMoveToView()                                     # presentScene:
 
     unwindToGameSegue = viewDidLoad

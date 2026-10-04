@@ -11,11 +11,13 @@
 * ``unwindToHomeScreenSegue:`` (0x100019fa0) is empty: coming back runs nothing.
 
 PORT: the buttons are rows, with a third, "Quit", which an iPhone app never had; Escape
-quits too.
+quits too.  Since the fourth release Play and Score first ask for a difficulty
+(``ui/difficulty_screen.py``), and each difficulty has its own best five, set like
+``rank`` when missing (aidocks/project_difficulty_plan.md).
 """
 from __future__ import annotations
 
-from ..platform.defaults import COUNT_TUTORIAL_KEY, RANK_KEY
+from ..platform.defaults import COUNT_TUTORIAL_KEY, RANK_KEYS
 from ..ui.rows import RowScreen
 
 #: The local ranking a new save starts with (viewDidLoad, 0x10001a00c..0x10001a334).
@@ -33,17 +35,19 @@ class HomeScreenViewController(RowScreen):
     def __init__(self, defaults=None, speech=None):
         super().__init__(speech)
         self.defaults = defaults
-        self.rows = [('game', 'Play'), ('ranking', 'Score'),   # the buttons' titles
-                     ('quit', 'Quit')]                          # PORT ADDITION
+        # the buttons' titles; PORT: each asks for a difficulty first, and Quit is added
+        self.rows = [('choose_game', 'Play'), ('choose_ranking', 'Score'),
+                     ('quit', 'Quit')]
 
     # HomeScreenViewController.viewDidLoad 0x100019fa4
     def viewDidLoad(self, announce=True):
         d = self.defaults
         if d is not None:
             changed = False
-            if d.objectForKey_(RANK_KEY) is None:
-                d.setObject_forKey_(default_rank(), RANK_KEY)
-                changed = True
+            for key in RANK_KEYS.values():                         # PORT: one each
+                if d.objectForKey_(key) is None:
+                    d.setObject_forKey_(default_rank(), key)
+                    changed = True
             if d.objectForKey_(COUNT_TUTORIAL_KEY) is None:
                 d.setInteger_forKey_(0, COUNT_TUTORIAL_KEY)
                 changed = True
