@@ -19,7 +19,7 @@ metadata:
 - Being caught ends the tutorial as now; Replay starts the 12 again, newly shuffled.
 
 ## After the 12th
-- **The closing line**, waiting its turn as now: "You've met everything in the cave. From now on, listen for them yourself."
+- **The closing line**, waiting its turn as now, **reworded** to say the player can now practise (the dev: "I want to rephrase it to let the player know that they can now practice what they've learned."; the dev's draft "Well done! You've met everything in the cave! Now practise what you've learned, at your own pace, just like the real game. I'll stay quiet, so listen for them yourself.", then "You can rephrase it again if you'd like."): "Well done! You've met everything in the cave! Now practice what you've learned, just like the real game, but at a steady pace. I'll stay quiet from here, so trust your ears." It was "You've met everything in the cave. From now on, listen for them yourself."
 - **Then the real game** (the dev: "I want the real game to play out after."), once the closing line has been said: the original's `createObjectScene` unchanged, **pairs included** (`coinTogether`, `torchTogether`; `pendingCompanion` only while teaching), still held at 5.0, still no score, nothing saved.
 - **No tutorial lines at all** (the dev: "the speeches for coin and toarch caught will no longer play after the intruductory parts are over."; the torch lines too: "They should stop announcing them after the main screen is done.", meaning the teaching part): no arrivals, passed, caught or torch lines. The status keys and Ctrl work as now.
 
