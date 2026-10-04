@@ -1,0 +1,30 @@
+---
+name: project_tutorial_steered_plan
+description: "PLANNED 2026-10-03, waiting for the go-ahead: the tutorial's teaching part sends exactly 12 things, each kind in each cave lane once, shuffled, one at a time, the next only 3 s after the last is passed, killed or caught; then the closing line, and the real game at 5.0, pairs included, with no tutorial lines."
+metadata:
+  type: project
+---
+
+**Status: PLANNED 2026-10-03, agreed with the dev one question at a time; waiting for the go-ahead to build.** It builds on [[project_tutorial_teaching_plan]] (the arrival, passed, caught and torch lines, the closing line, every line but the closing one cutting in) and [[project_tutorial_plan]] (speed held at 5.0, Easy's torch, no score, the welcome, "You were caught.", nothing saved), which otherwise stay as they are.
+
+**Why:** the dev: "It seems like every entity appears one after another. ... I was thinking that an entity will not spawn untill the user has fully either A, past it, B, torched it, and or C, caught it. It should give me breathing room to wait for the next one to spawn, and only 1 entity on a lane, not 1 on each lane, not 2 on one lane, etc. ... It can resume spawning them like normal after the closing line speaks." Now, at 5.0, a slot comes every 0.825 s, each made by the one before at 0.33 H (`moveObstacleWithBorn`, 0x100013a5c), and a thing takes about 4 s to reach the player, so the next is on its way before the last has gone.
+
+## The teaching part: 12 things, steered
+- **Exactly 12 things**, one of each kind (coin, torch, monster, bats) in each cave lane (left, middle, right), **in a shuffled order**, new each tutorial; none repeats (the dev: "I like steered."). They replace the original's choice in `createObjectScene` while teaching; the arrival line for each is said as now, so all 12 are heard.
+- **One at a time:** while a thing of the 12 is in the cave, no other comes. It is **done** when:
+  - **passed**: it falls below the player's row (the passed line's moment);
+  - **torched**: a monster killed; bats only dodge, so they are done once they have passed;
+  - **caught**: a coin or torch picked up.
+- **Then a 3 s pause** (the dev, on Claude's recommendation: "Yes."): the cave stays empty, its empty slots going on, before the next thing; about 8 s from one done to the next reaching the player. The slot chain itself never stops, so the original's rhythm, the light's dimming per slot and the slot counts (water at 81, ice at 161) go on; with fewer things per slot those come in their own time.
+- Being caught ends the tutorial as now; Replay starts the 12 again, newly shuffled.
+
+## After the 12th
+- **The closing line**, waiting its turn as now: "You've met everything in the cave. From now on, listen for them yourself."
+- **Then the real game** (the dev: "I want the real game to play out after."), once the closing line has been said: the original's `createObjectScene` unchanged, **pairs included** (`coinTogether`, `torchTogether`; `pendingCompanion` only while teaching), still held at 5.0, still no score, nothing saved.
+- **No tutorial lines at all** (the dev: "the speeches for coin and toarch caught will no longer play after the intruductory parts are over."; the torch lines too: "They should stop announcing them after the main screen is done.", meaning the teaching part): no arrivals, passed, caught or torch lines. The status keys and Ctrl work as now.
+
+## Where it goes
+- `game/game_scene.py`: the shuffled 12 (a list of (kind, lane) made at the tutorial's start), a teaching flag cleared once the closing line has been said, the slot chain placing the next of the 12 only when the last is done and 3 s have gone (empty slots meanwhile), the done moments (passed in `watchPassing`, caught in `_caught`, killed in `torchDidCollideWithObstacle`), each tutorial line said only while teaching; a monster's or bats' lane, and a coin's or torch's, set to the planned lane.
+- Tests (`gameplay.py`): exactly the 12, each once, in a shuffled order differing between seeds; never two in the cave; the next only 3 s after the last is done, for each way of being done; bats torched done when passed; the closing line then pairs possible, the speed still 5.0; no tutorial lines after the closing line; Replay starting the 12 again.
+- By ear: `tests/interact/tutorial_check.py`: its starts 3 and 4 (only pickups, only threats) need rethinking, as the 12 are mixed; perhaps a start just after the closing line ([[feedback_interactive_tests]]).
+- Docs: `docks/readme.txt` (the Tutorial section), the changelog, `DIVERGENCES.md`, the todo list (Finished only once the dev has heard it), [[project_tutorial_teaching_plan]] pointing here.
