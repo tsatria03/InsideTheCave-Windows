@@ -1,4 +1,6 @@
 unrelease:
+
+26.10.03-2:
 Control stops the Windows voice at once, as it stops a screen reader.
 A Tutorial on the main menu, after Play, teaches the game at a pace that never speeds up: one thing comes at a time, and a Windows voice says what each one is, where it is and what to do, when it has passed you or you have caught it, and what your thrown torch did. Nothing in it is saved or counted.
 Play now says your keys on your first two games only, and the original's short instructions are no longer said; the Tutorial takes their place.
