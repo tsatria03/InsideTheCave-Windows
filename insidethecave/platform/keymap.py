@@ -17,6 +17,8 @@ rebind them from the screen F1 opens:
     coins        C                    the port's own: says the coins
     speed        E                    the port's own: says how many times the cave has
                                       sped up (aidocks/project_status_keys_plan.md)
+    skip_practice  Enter              the port's own: leaves the tutorial's practice for
+                                      the main menu (aidocks/project_skip_practice_plan.md)
 
 Keys are stored by pygame's name for them ("left", "a"), not by keycode, so a saved keymap
 survives a pygame update.
@@ -51,6 +53,7 @@ ACTIONS = (
     ('score', 'Say the score', (('s',),)),
     ('coins', 'Say the coins', (('c',),)),
     ('speed', 'Say the speed', (('e',),)),
+    ('skip_practice', 'Skip the practice', (('return',),)),
 )
 
 ACTION_IDS = [a[0] for a in ACTIONS]

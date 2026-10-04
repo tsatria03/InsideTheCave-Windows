@@ -4,6 +4,7 @@ Nothing is waiting here right now. New bugs, planned changes and anything still 
 
 ##Finished.
 
+Enter skips the Tutorial's practice for the main menu, and can be changed with F1.
 The Tutorial teaches twelve things one at a time, then plays like the real game with nothing said.
 The Tutorial names each kind of thing once in each cave lane, then says when you have met everything.
 The Tutorial on the main menu teaches the game at a speed that never rises, a Windows voice saying what each thing is, where, and what to do.

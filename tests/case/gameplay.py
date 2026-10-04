@@ -253,6 +253,8 @@ def test_the_12_come_one_at_a_time_then_the_closing_line_then_the_real_game():
     last = s.lesson
     came.append(s.time)
     while s.teaching and g.t < 200.0:
+        assert not s.practicing(), 'no skipping the lessons'
+        assert not any('Tutorial finished' in line for line in g.speech.lines)
         g.voice.speaking = False
         g.run(0.1)
         inside = [n for n in s.children if n.name in G.ARRIVAL]
@@ -270,6 +272,10 @@ def test_the_12_come_one_at_a_time_then_the_closing_line_then_the_real_game():
     arrivals = [line for line in g.voice.lines if 'appeared' in line]
     assert len(arrivals) == 12 == len(set(arrivals)), arrivals
     assert G.TUTORIAL_CLOSING in g.voice.lines
+    assert g.speech.lines[-1] == ('Tutorial finished. Practice as long as you like, or press '
+                                  'Enter to skip it and go to the main menu.'), \
+        'the hint, through the screen reader, with the key'
+    assert s.practicing()
     said = len(g.voice.lines)
     obstacles = s.countObstacles
     g.run(30.0)
@@ -299,6 +305,17 @@ def test_a_lesson_killed_or_torched_bats_passed_is_done():
     assert s.lesson is bats, 'frightened bats still to pass'
     g.run(6.0)
     assert s.lesson is not bats
+
+
+def test_the_practice_hint_without_a_key_and_never_in_play():
+    g = _tutorial()
+    s = g.scene
+    s.keymap.bindings['skip_practice'] = []     # unbound in F1
+    s.sayPracticeHint()
+    assert g.speech.lines[-1] == 'Tutorial finished.', 'no key to name'
+    play = _Game()
+    play.start()
+    assert not play.scene.practicing(), 'Play has no practice'
 
 
 def test_no_tutorial_lines_after_the_teaching_part():

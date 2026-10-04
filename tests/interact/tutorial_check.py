@@ -41,8 +41,11 @@ aidocks/project_tutorial_teaching_plan.md and aidocks/project_tutorial_steered_p
 * after the 12th, the closing line, waiting for the one before to finish: "Well done!
   You've met everything in the cave! Now practice what you've learned, just like the real
   game, but at a steady pace. I'll stay quiet from here, so trust your ears.";
-* once it is said (and from the start in start 3): the real game, a monster or bats with a
-  coin or torch beside it at times, the cave at 5.0, and no tutorial line at all;
+* once it is said (and from the start in start 3): your screen reader saying "Tutorial
+  finished. Practice as long as you like, or press Enter to skip it and go to the main
+  menu.", then the real game, a monster or bats with a coin or torch beside it at times,
+  the cave at 5.0, and no tutorial line at all;
+* Enter in the practice: "Practice skipped. Main menu. Play"; Enter in the lessons, nothing;
 * throughout: your footsteps walking, S "No score to report.", E "No speed to report.", C
   your coins, Control stopping the voice;
 * caught: "You were caught.", Replay (no welcome, a new 12) and Menu; nothing saved.
@@ -140,6 +143,7 @@ def main():
             if practice:                    # the teaching part over before it began
                 s.lessons.clear()
                 s.teaching = False
+                s.sayPracticeHint()
 
     app = TutorialApp(Args())
     if welcome:

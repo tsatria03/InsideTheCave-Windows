@@ -360,6 +360,35 @@ def test_ctrl_hushes_the_windows_voice_and_the_tutorial():
         app.close()
 
 
+def test_enter_skips_the_practice_to_the_main_menu_and_not_the_lessons():
+    """The dev: "enter can skip the practice, but only after the closing line of the
+    teaching lessons"; "the main menu because you need to choose a difficulty any way"."""
+    from insidethecave.game import stats
+    app = _app('menu')
+    pg = app.pygame
+    try:
+        said = []
+        real = app.speech.speak
+        app.speech.speak = lambda text, interrupt=True: (said.append(text),
+                                                          real(text, interrupt))[1]
+        before = stats.load(app.defaults)
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)                # the tutorial
+        _frames(app, 0.1)
+        s = app.game.scene
+        _press(app, pg.K_RETURN)                # in the lessons: nothing
+        assert app.kind == 'game' and app.game.scene is s
+        s.lessons.clear()
+        s.teaching = False
+        s.started = True
+        _press(app, pg.K_RETURN)                # in the practice
+        assert app.kind == 'menu', app.kind
+        assert said[-1] == 'Practice skipped. Main menu. Play', said[-3:]
+        assert stats.load(app.defaults) == before, 'nothing counted'
+    finally:
+        app.close()
+
+
 def test_restart_and_quit_count_nothing_in_the_stats():
     """The dev: "restarts and quits do not count in a game." """
     from insidethecave.game import stats

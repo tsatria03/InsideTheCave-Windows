@@ -1,11 +1,13 @@
 ---
 name: project_skip_practice_plan
-description: "PLANNED 2026-10-03, waiting for the go-ahead: once the tutorial's closing line has been said, the screen reader says \"Tutorial finished. Practice as long as you like, or press Enter to skip it and go to the main menu.\"; a new rebindable action, \"Skip the practice\" (Enter), says \"Practice skipped.\" and goes to the main menu. Optional; before the closing line it does nothing."
+description: "FINISHED 2026-10-03, confirmed by the dev: once the tutorial's closing line has been said, the screen reader says \"Tutorial finished. Practice as long as you like, or press Enter to skip it and go to the main menu.\"; a new rebindable action, \"Skip the practice\" (Enter), says \"Practice skipped.\" and goes to the main menu. Optional; before the closing line it does nothing."
 metadata:
   type: project
 ---
 
-**Status: PLANNED 2026-10-03, agreed with the dev one question at a time; waiting for the go-ahead to build.** Follows [[project_tutorial_steered_plan]]: the Tutorial row now holds the lessons (the 12) and the practice after them (the real game at 5.0).
+**Status: FINISHED 2026-10-03, confirmed by the dev by ear ("All good here.").** Built on the dev's go-ahead ("Yes, you can build and run your full tests."); agreed the same day one question at a time.
+
+**As built:** `platform/keymap.py` (`skip_practice`, "Skip the practice", Enter); `game/game_scene.py` (`PRACTICE_HINT`, `TUTORIAL_FINISHED`, `PRACTICE_SKIPPED`; `sayPracticeHint`, said by `watchLesson` as `teaching` turns off; `practicing`); `ui/game_input.py` (the action sets `request` to 'skip' only while `practicing`); `InsideTheCave.py` (`follow` on 'skip' goes to the menu with `menu_before`); `game/home_screen_view_controller.py` (`before`, said in the same breath as "Main menu": "Practice skipped. Main menu. Play"). Tests: `keymap.py` (the default, the label, at once, an old file gaining it), `gameplay.py` (the hint after the closing line and never before, no practice during the lessons or in Play, the hint without a key), `app.py` (Enter in the lessons does nothing; in the practice, the menu with "Practice skipped.", nothing counted). `tests/interact/tutorial_check.py`'s start 3 says the hint. Follows [[project_tutorial_steered_plan]]: the Tutorial row now holds the lessons (the 12) and the practice after them (the real game at 5.0).
 
 **Why:** the dev: "Can you add a new thing where enter can skip the practice, but only after the closing line of the teaching lessons? Also your screen reader should tell you how to do it, just like it does for the key hints in the beginning of the tutorial. If the user presses enter, it will say practice skipped. I say practice because the tutorial option in the main menu does double dooty."
 

@@ -101,6 +101,7 @@ class App:
         #: Its object; None during a game, which is ``self.game``.
         self.page = None
         self.over = None                # (score, coins) once a game is over
+        self.menu_before = None         # said before the main menu's name, once
         self.next_device_check = 0.0
         self.running = True
 
@@ -150,7 +151,8 @@ class App:
             self.page = WarningViewController(self.speech, self.loop, self.language_code,
                                               voice=self.voice)
         elif kind == 'menu':
-            self.page = HomeScreenViewController(self.defaults, self.speech)
+            before, self.menu_before = self.menu_before, None
+            self.page = HomeScreenViewController(self.defaults, self.speech, before=before)
         elif kind in ('choose_game', 'choose_ranking', 'choose_stats'):
             self.page = DifficultyScreen(self.speech, then=kind[len('choose_'):],
                                          last=self.played_difficulty)
@@ -179,6 +181,10 @@ class App:
             elif self.input.request == 'restart':
                 self.restart_game()
             elif self.input.request == 'menu':
+                self.go('menu')
+            elif self.input.request == 'skip':          # PORT ADDITION: Enter, the practice
+                from insidethecave.game.game_scene import PRACTICE_SKIPPED
+                self.menu_before = PRACTICE_SKIPPED
                 self.go('menu')
         elif self.page is not None and self.page.next:
             self.go(self.page.next)

@@ -55,6 +55,8 @@ After a throw, the voice says whether your torch hit a monster or frightened bat
 Each line is said at once, cutting off whatever the voice was saying, and Control stops it.
 After the twelfth, the voice tells you that you have met everything and can now practise.
 From then on the cave plays like the real game, a monster or bats sometimes with a coin or torch beside it, and the voice says nothing more.
+Your screen reader then says Tutorial finished, and that you can practise as long as you like, or press Enter to skip the practice and go to the main menu.
+Skipping is up to you: Enter says Practice skipped and opens the main menu, and it does nothing during the twelve lessons.
 There is no score in the tutorial: S and E say there is nothing to report, and C counts your coins.
 When you are caught, you hear You were caught, then Replay, which starts the tutorial again without the welcome, its twelve in a new order, and Menu.
 A tutorial game is never saved and never counts in your scores or stats.
@@ -70,6 +72,7 @@ T says how much torch you have left.
 S says your score, C your coins, and E the speed: how many times the cave has sped up since speed 5.0, from 0 to 20 on Easy, 10 to 30 on Medium, and 20 to 40 on Hard.
 P or Escape pauses the game.
 Switching away from the game window pauses the game as well.
+In the tutorial's practice, Enter skips it and goes to the main menu.
 F1 opens the key bindings.
 Home and End make the whole game louder and quieter while you play, in steps of ten percent, and your screen reader says the new master volume.
 In a game, Page Up and Page Down make the music louder and quieter, and your screen reader says the new track volume.

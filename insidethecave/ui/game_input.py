@@ -6,10 +6,10 @@ and a tap, left or right by where it lands.  Here the player's bindings
 (``platform/keymap.py``) call the same methods; a tap's two halves are the two move keys.
 
 The rest is the port's own: T says how much torch is left (``GameScene.sayTorch``), S, C
-and E the score, the coins and the speed (``sayScore``, ``sayCoins``, ``saySpeed``), and P
-(and Escape, fixed) pause and open the pause menu
-(``ui/pause_menu.py``), where the same keys resume.  The menu's Restart and Quit to menu are
-left in ``request`` for the screen loop.
+and E the score, the coins and the speed (``sayScore``, ``sayCoins``, ``saySpeed``), Enter
+leaves the tutorial's practice (``GameScene.practicing``), and P (and Escape, fixed) pause
+and open the pause menu (``ui/pause_menu.py``), where the same keys resume.  The menu's
+Restart and Quit to menu, and Enter's skip, are left in ``request`` for the screen loop.
 """
 from __future__ import annotations
 
@@ -36,7 +36,8 @@ class GameInput:
         self.speech = speech
         self.scene = None
         self.menu = PauseMenu(speech)
-        #: What the pause menu asked the screen loop for: 'restart' or 'menu'.
+        #: What the pause menu asked the screen loop for, 'restart' or 'menu', or 'skip',
+        #: the tutorial's practice skipped.
         self.request = None
         self._settle_at = None
 
@@ -99,6 +100,8 @@ class GameInput:
             s.sayCoins()
         elif action == 'speed':
             s.saySpeed()
+        elif action == 'skip_practice' and s.practicing():
+            self.request = 'skip'               # PORT ADDITION: Enter, out of the practice
 
     # ---- the pause menu ---------------------------------------------------------------
     def menu_key(self, name):

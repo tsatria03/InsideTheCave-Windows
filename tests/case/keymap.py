@@ -71,6 +71,8 @@ def test_the_defaults_are_the_agreed_keys():
     assert km.bindings['torch'] == [('t',)], 'the torch key (the dev, fourth release)'
     assert (km.bindings['score'], km.bindings['coins'], km.bindings['speed']) == \
         ([('s',)], [('c',)], [('e',)]), 'the status keys (the dev, fourth release)'
+    assert km.bindings['skip_practice'] == [('return',)], 'the dev: "make this bindable."'
+    assert km.label('skip_practice') == 'Skip the practice'
 
 
 def test_every_default_key_acts_at_once():
@@ -79,7 +81,7 @@ def test_every_default_key_acts_at_once():
     for name, action in (('a', 'move_left'), ('left', 'move_left'), ('d', 'move_right'),
                          ('right', 'move_right'), ('w', 'throw'), ('up', 'throw'),
                          ('p', 'pause'), ('t', 'torch'), ('s', 'score'), ('c', 'coins'),
-                         ('e', 'speed')):
+                         ('e', 'speed'), ('return', 'skip_practice')):
         assert km.press(name) == (action, False), name
         km.release(name)
 
@@ -118,6 +120,7 @@ def test_an_older_key_file_gains_the_new_keys():
     with open(path, encoding='utf-8') as f:
         saved = json.load(f)
     assert saved['torch'] == [['t']] and saved['score'] == [['s']], 'not written back'
+    assert saved['skip_practice'] == [['return']]
 
 
 def test_a_new_key_never_takes_one_the_player_already_uses():

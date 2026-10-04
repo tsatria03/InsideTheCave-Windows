@@ -149,6 +149,12 @@ LESSONS = tuple((kind, lane) for kind in ARRIVAL for lane in range(len(LANE_NAME
 #: Seconds the cave stays empty after one is passed, killed or caught (the dev: "It should
 #: give me breathing room to wait for the next one to spawn"; 3 s, "Yes.").
 LESSON_PAUSE = 3.0
+#: Said by the screen reader once the closing line has been, with the player's own keys
+#: (the dev's wording, then "I like option 3 the best."; aidocks/project_skip_practice_plan.md)
+PRACTICE_HINT = ('Tutorial finished. Practice as long as you like, or press {skip} to skip it '
+                 'and go to the main menu.')
+TUTORIAL_FINISHED = 'Tutorial finished.'        # the same, with no key to skip
+PRACTICE_SKIPPED = 'Practice skipped.'
 #: Said as one announced falls past your row without being taken, killed or catching you
 #: (the dev: "when you pass any entity, it will say past"; then "something like, coin
 #: past, on your left, on your right, in the middle.").
@@ -965,6 +971,19 @@ class GameScene(Scene):
         if self._closing and TUTORIAL_CLOSING not in self._lines and not self._voiceBusy():
             self.teaching = False
             self._watching.clear()
+            self.sayPracticeHint()
+
+    def sayPracticeHint(self):
+        """The practice begins: how to leave it, through the screen reader as the key hints
+        (the dev: "your screen reader should tell you how to do it")."""
+        keys = self.keymap.hint_keys('skip_practice') if self.keymap else None
+        self.say(PRACTICE_HINT.format(skip=keys) if keys else TUTORIAL_FINISHED)
+
+    def practicing(self):
+        """In the tutorial's practice, alive and playing: the skip key works (the dev: "only
+        after the closing line of the teaching lessons")."""
+        return (self.tutorialMode and not self.teaching and self.started
+                and not self.playerDead and not self.paused)
 
     def _caught(self, node):
         """In the tutorial, a coin or torch picked up from the cave is said ("Coin

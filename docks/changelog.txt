@@ -1,4 +1,5 @@
 unrelease:
+Once the Tutorial's lessons are over, your screen reader says how to skip the practice: press Enter to say Practice skipped and go to the main menu. You can change the key with F1.
 The Tutorial now teaches exactly twelve things, a coin, a torch, a monster and bats in each lane, one at a time in a shuffled order, each waiting until the last has passed, been killed or been caught, then three more seconds. After that it tells you to practise, and the cave plays like the real game at a steady speed, with nothing more said.
 The Tutorial now names each kind of thing only the first time it appears in each of the cave's three lanes, such as A coin appeared in the left lane, then lets you learn it by its sound, and says when you have met everything. Passed lines now say the lane, such as Coin passed, in the left lane.
 

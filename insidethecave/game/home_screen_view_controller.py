@@ -32,9 +32,12 @@ class HomeScreenViewController(RowScreen):
     title = 'Main menu'
     keys_line = 'Up/Down move   Enter choose   Escape quit   F1 key bindings   Alt+F4 quit'
 
-    def __init__(self, defaults=None, speech=None):
+    def __init__(self, defaults=None, speech=None, before=None):
         super().__init__(speech)
         self.defaults = defaults
+        #: PORT ADDITION: said first, in the same breath, so the menu does not cut it off
+        #: ("Practice skipped."; aidocks/project_skip_practice_plan.md)
+        self.before = before
         # the buttons' titles, play and score; PORT: each asks for a difficulty first, Score
         # is "Scores", and Stats and Quit are added (the dev; project_scores_stats_plan.md)
         self.rows = [('choose_game', 'Play'), ('tutorial', 'Tutorial'),
@@ -55,7 +58,7 @@ class HomeScreenViewController(RowScreen):
             if changed:
                 d.synchronize()
         if announce:
-            self.announce(self.title)
+            self.announce('%s %s' % (self.before, self.title) if self.before else self.title)
 
     def choose(self, key):
         self.next = key
