@@ -262,8 +262,8 @@ class App:
             self.page.say_row()
 
     def hush(self):
-        """PORT ADDITION: Ctrl stops the Windows voice, as it stops a screen reader, and
-        drops the tutorial's waiting lines (the dev, for the fourth release)."""
+        """PORT ADDITION: Ctrl stops the Windows voice, as it stops a screen reader; in the
+        tutorial the next line waiting follows (the dev, for the fourth release)."""
         try:
             self.voice.stop()
         except Exception:

@@ -166,8 +166,36 @@ def _tutorial(seed=1):
     g.voice.lines.clear()
     g.voice.speaking = False
     g.scene._lines.clear()
+    g.scene._taught.clear()         # the first slot's, said as the game started
+    g.scene._watching.clear()
     g.scene._voiceFreeAt = 0.0
     return g
+
+
+def _quiet(g):
+    """Nothing more comes down the cave: each slot is an empty node."""
+    for make in ('createMonster', 'createBats', 'createCoin', 'createTorchObstacle'):
+        setattr(g.scene, make, lambda: G.SpriteNode(name='slot'))
+
+
+def _hear(g, seconds):
+    """Run, the voice finishing each line in a little over the half second it is given."""
+    end = g.t + seconds
+    while g.t < end - 1e-9:
+        g.voice.speaking = False
+        g.run(min(0.6, end - g.t))
+
+
+def _coming(g, kind, lane, moving=True):
+    """``kind`` appearing at the top of cave lane ``lane`` (0 left, 1 middle, 2 right)."""
+    s = g.scene
+    n = G.SpriteNode(name=kind)
+    n.position = ((lane - 1) * 0.3 * W, 0.5 * H)
+    s.addChild(n)
+    if moving:
+        n.runAction(s.moveObstacle())
+    s.announce(n)
+    return n
 
 
 def test_the_tutorial_holds_the_speed_scores_nothing_and_walks():
@@ -211,120 +239,176 @@ def test_in_the_tutorial_a_companion_waits_for_the_next_empty_slot():
     assert s.pendingCompanion is None or s.countObjectScene % 4 == 1
 
 
-def test_the_tutorial_says_what_appeared_and_where():
+def test_the_tutorial_names_the_cave_lanes_wherever_you_stand():
+    """The dev: "Name the cave lanes."; "I like these lines."."""
     g = _tutorial()
     s = g.scene
-    s.actualPositionPlayer = 1
-    s.player.position = (0.0, s.player.position[1])
 
     def node(kind, lane):
         n = G.SpriteNode(name=kind)
         n.position = ((lane - 1) * 0.3 * W, 0.5 * H)
         return n
-    assert s.announcement(node('coin', 0)) == ('A coin appeared on your left. Move left to '
-                                               'grab it.')
-    assert s.announcement(node('torch', 1)) == ('A torch is coming right at you. Stay where '
-                                                'you are.')
-    assert s.announcement(node('monster', 1)) == ('A monster is coming right at you! Move '
-                                                  'left or right, or throw your torch at it.')
-    assert s.announcement(node('bat', 2)) == 'Bats appeared on your right. Stay out of their way.'
-    s.actualPositionPlayer = 0
-    assert s.announcement(node('coin', 2)) == ('A coin appeared two lanes to your right. Move '
-                                               'right twice to grab it.')
-    assert s.announcement(node('monster', 2)) == ('A monster appeared two lanes to your right. '
-                                                  'Stay out of its way.')
+    for stand in (0, 1, 2):
+        s.actualPositionPlayer = stand
+        s.player.position = ((stand - 1) * 0.3 * W, s.player.position[1])
+        assert s.announcement(node('coin', 0)) == ('A coin appeared in the left lane. Go there '
+                                                   'to grab it.')
+        assert s.announcement(node('torch', 1)) == ('A torch appeared in the middle lane. Go '
+                                                    'there to pick it up.')
+        assert s.announcement(node('monster', 2)) == ('A monster appeared in the right lane. '
+                                                      'Stay out of it, or throw your torch at '
+                                                      'it.')
+        assert s.announcement(node('bat', 0)) == ('Bats appeared in the left lane. Stay out of '
+                                                  'that lane, or throw your torch to scare '
+                                                  'them off.')
     s.falloffSize = G.FALLOFF_OUT
-    assert s.announcement(node('bat', 0)) == 'Bats are coming right at you! Move right!'
+    assert s.announcement(node('monster', 2)) == 'A monster appeared in the right lane. Stay ' \
+                                                 'out of it.'
+    assert s.announcement(node('bat', 1)) == 'Bats appeared in the middle lane. Stay out of ' \
+                                             'that lane.'
 
 
-def test_every_new_tutorial_line_cuts_off_the_last():
-    """The dev: "Please interupt the coin and torch lines, just encase a new one appears";
-    then "Please cut off the warnings as well."."""
+def test_each_kind_is_taught_once_in_each_cave_lane_then_the_closing_line():
+    """The dev: "It gives people the feel for what's going to be in a level without
+    bombarding them with so much info over and over."; "Do a closing line."."""
     g = _tutorial()
+    _quiet(g)
     s = g.scene
-    s.tutorialSay('first pickup')
-    s.tutorialSay('second pickup')
-    assert g.voice.lines == ['first pickup', 'second pickup'], 'the newest at once'
-    s.tutorialSay('a monster', urgent=True)
-    assert g.voice.lines[-1] == 'a monster', 'a warning cuts off a pickup line'
-    s.tutorialSay('third pickup')
-    assert g.voice.lines[-1] == 'third pickup', 'and a pickup line cuts off a warning'
-    g.voice.speaking = False
-    g.run(1.0)
-    assert g.voice.lines == ['first pickup', 'second pickup', 'a monster', 'third pickup'], \
-        'nothing was left waiting'
+    _coming(g, 'coin', 0, moving=False)
+    _coming(g, 'coin', 0, moving=False)         # the same, once taught
+    _hear(g, 2.0)
+    assert g.voice.lines == ['A coin appeared in the left lane. Go there to grab it.']
+    for kind in ('coin', 'torch', 'monster', 'bat'):
+        for lane in (0, 1, 2):
+            _coming(g, kind, lane, moving=False)
+    _hear(g, 15.0)
+    arrivals = [line for line in g.voice.lines if 'appeared' in line]
+    assert len(arrivals) == 12 == len(set(arrivals)), arrivals
+    assert g.voice.lines[-1] == G.TUTORIAL_CLOSING, 'after the 12th'
+    for kind in ('coin', 'torch', 'monster', 'bat'):
+        _coming(g, kind, 1, moving=False)
+    _hear(g, 5.0)
+    assert g.voice.lines.count(G.TUTORIAL_CLOSING) == 1 and len(g.voice.lines) == 13, \
+        'silent once taught'
 
 
-def test_hushing_drops_the_waiting_lines_and_frees_the_voice():
-    """Ctrl (the dev): the app stops the voice; the scene leaves it free, nothing to come."""
+def test_tutorial_lines_wait_their_turn_and_a_throw_line_cuts_in():
+    """The dev: "It will do this non interuptively"; the throw lines "should interupt, not
+    wait."."""
     g = _tutorial()
+    _quiet(g)
     s = g.scene
-    s.tutorialSay('a monster', urgent=True)
+    s.tutorialSay('first')
+    s.tutorialSay('second')
+    g.step(0.0)
+    assert g.voice.lines == ['first'], 'the second waits'
+    g.run(2.0)
+    assert g.voice.lines == ['first'], 'while the voice is speaking'
+    s.tutorialSay(G.MONSTER_HIT, urgent=True)
+    assert g.voice.lines == ['first', G.MONSTER_HIT], 'cut in at once'
+    _hear(g, 2.0)
+    assert g.voice.lines == ['first', G.MONSTER_HIT, 'second'], 'the waiting line carries on'
+
+
+def test_ctrl_skips_one_line_and_the_next_follows():
+    """The dev: Ctrl "will just interupt one line and go onto the next one"."""
+    g = _tutorial()
+    _quiet(g)
+    s = g.scene
+    for text in ('one', 'two', 'three'):
+        s.tutorialSay(text)
+    g.step(0.0)
+    assert g.voice.lines == ['one']
     g.voice.stop()                              # what App.hush does first
     s.hushTutorial()
-    g.run(1.0)
-    assert g.voice.lines == ['a monster'] and not g.voice.speaking, 'nothing more said'
-    s.tutorialSay('a coin')
-    assert g.voice.lines[-1] == 'a coin', 'the next line is said at once'
+    g.step(0.0)
+    assert g.voice.lines == ['one', 'two'], 'the next at once'
+    assert s._lines == ['three'], 'the rest still waiting'
 
 
-def test_a_danger_line_cuts_off_another_danger_line():
-    """The dev, after hearing both ways: the speech interrupted when another came."""
+def test_an_arrival_cuts_in_and_the_waiting_lines_carry_on():
+    """The dev: "Please make all 12 lines interupt."."""
     g = _tutorial()
+    _quiet(g)
     s = g.scene
-    s.tutorialSay('a monster', urgent=True)
-    s.tutorialSay('bats', urgent=True)
-    assert g.voice.lines == ['a monster', 'bats'], 'the bats cut the monster off'
+    s.tutorialSay('a long line')
+    s.tutorialSay('Coin caught.')
+    g.step(0.0)
+    _coming(g, 'bat', 1)
+    _coming(g, 'monster', 2)
+    arrivals = ['Bats appeared in the middle lane. Stay out of that lane, or throw your '
+                'torch to scare them off.',
+                'A monster appeared in the right lane. Stay out of it, or throw your torch '
+                'at it.']
+    assert g.voice.lines == ['a long line'] + arrivals, 'each at once, the newest cutting in'
+    _hear(g, 1.0)
+    assert g.voice.lines[-1] == 'Coin caught.', 'the waiting line after'
 
 
-def test_the_tutorial_says_when_a_thing_passes_you():
-    """The dev: "when you pass any entity, it will say past"; a coin taken says nothing."""
+def test_passed_and_caught_lines_cut_in():
+    """The dev: "When the monster past, it did not cut off the previous speech."; caught
+    lines: "These should interupt as well."."""
     g = _tutorial()
+    _quiet(g)
     s = g.scene
-    for make in ('createMonster', 'createBats', 'createCoin', 'createTorchObstacle'):
-        setattr(s, make, lambda: G.SpriteNode(name='slot'))
-    s.actualPositionPlayer = 1
-    s.player.position = (0.0, s.player.position[1])
-
-    def coming(kind, lane):
-        n = G.SpriteNode(name=kind)
-        n.position = ((lane - 1) * 0.3 * W, 0.5 * H)
-        s.addChild(n)
-        n.runAction(s.moveObstacle())
-        s.announce(n)
-        return n
-    coming('coin', 0)
-    g.run(5.0)
-    assert g.voice.lines[-1] == 'Coin passed.', g.voice.lines
-    taken = coming('torch', 2)
-    g.run(1.0)
-    s.playerDidCollideWithTorch(taken)          # picked up before it passed
-    assert g.voice.lines[-1] == 'Torch caught.', 'the dev: "torch caught"'
-    g.run(5.0)
-    assert 'Torch passed.' not in g.voice.lines
-    coin = coming('coin', 1)
+    _coming(g, 'monster', 0)
+    g.run(5.0)                                  # the voice never finishes
+    assert g.voice.lines[-1] == 'Monster passed, in the left lane.', g.voice.lines
+    coin = _coming(g, 'coin', 0)
     s.playerDidCollideWithCoin(coin, s.player)
     assert g.voice.lines[-1] == 'Coin caught.'
+    torch = _coming(g, 'torch', 1)
+    s.playerDidCollideWithTorch(torch)
+    assert g.voice.lines[-1] == 'Torch caught.'
+    assert s._lines == [], 'nothing left waiting'
+
+
+def test_the_tutorial_says_when_an_announced_thing_passes_you():
+    """The dev: "It should be like the arriveals."; "something like, coin past, on your
+    left, on your right, in the middle."; caught lines every time."""
+    g = _tutorial()
+    _quiet(g)
+    s = g.scene
+    s.actualPositionPlayer = 1
+    s.player.position = (0.0, s.player.position[1])
+    _coming(g, 'coin', 0)
+    _hear(g, 5.0)
+    assert g.voice.lines[-1] == 'Coin passed, in the left lane.', g.voice.lines
+    _coming(g, 'coin', 0)                       # taught already: no arrival, no passed
+    _hear(g, 5.0)
+    assert g.voice.lines.count('Coin passed, in the left lane.') == 1
+    taken = _coming(g, 'torch', 2)
+    _hear(g, 1.0)
+    s.playerDidCollideWithTorch(taken)          # picked up before it passed
+    _hear(g, 5.0)
+    assert g.voice.lines[-1] == 'Torch caught.', 'the dev: "torch caught"'
+    coin = _coming(g, 'coin', 1)
+    s.playerDidCollideWithCoin(coin, s.player)
+    _hear(g, 1.0)
+    coin = _coming(g, 'coin', 1)
+    s.playerDidCollideWithCoin(coin, s.player)
+    _hear(g, 1.0)
+    assert g.voice.lines[-2:] == ['Coin caught.', 'Coin caught.'], 'every time'
     s.playerDidCollideWithTorch(G.SpriteNode(name='torch'))     # not from the cave
+    _hear(g, 1.0)
     assert g.voice.lines[-1] == 'Coin caught.', 'a relit torch is not caught'
-    coming('bat', 2)
-    g.run(5.0)
-    assert g.voice.lines[-1] == 'Bats passed.'
-    coming('monster', 0)
-    g.run(5.0)
-    assert g.voice.lines[-1] == 'Monster passed.'
-    assert g.voice.lines.count('Coin passed.') == 1, 'said once'
+    _coming(g, 'bat', 2)
+    _hear(g, 5.0)
+    assert g.voice.lines[-1] == 'Bats passed, in the right lane.'
+    _coming(g, 'monster', 0)
+    _hear(g, 5.0)
+    assert g.voice.lines[-1] == 'Monster passed, in the left lane.'
 
 
 def test_the_tutorial_says_what_a_throw_did():
     g = _tutorial(seed=3)
+    _quiet(g)
     s = g.scene
-    for make in ('createMonster', 'createBats', 'createCoin', 'createTorchObstacle'):
-        setattr(s, make, lambda: G.SpriteNode(name='slot'))
+    s.tutorialSay('a waiting line')
     s.throwTorch()
-    assert G.OUT_OF_LIGHT in g.voice.lines, 'the first throw: a throw uses the torch up'
-    g.voice.speaking = False
-    g.run(5.0)
+    assert g.voice.lines == [G.OUT_OF_LIGHT], 'the light gone, at once'
+    _hear(g, 5.0)
+    assert g.voice.lines[:2] == [G.OUT_OF_LIGHT, 'a waiting line'], 'the waiting line after'
     assert G.TORCH_MISSED in g.voice.lines
     torch = s.createTorch()
     m = G.SpriteNode(name='monster')

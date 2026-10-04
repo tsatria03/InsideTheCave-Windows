@@ -126,10 +126,25 @@ MONSTER_HIT = "The monster was hit! It's gone."
 BATS_HIT = 'The bats were hit, and dodged to your %s.'
 TORCH_MISSED = 'Your torch flew off without hitting anything.'
 OUT_OF_LIGHT = "You're out of light now. Find another torch soon."
-#: Said as each falls past your row without being taken, killed or catching you (the dev:
-#: "when you pass any entity, it will say past. Examples, monster past, coin past").
-PASSED = {'monster': 'Monster passed.', 'bat': 'Bats passed.', 'coin': 'Coin passed.',
-          'torch': 'Torch passed.'}
+#: The cave's lanes, by ``laneOf`` (the dev: "Name the cave lanes."; a line waiting its
+#: turn stays true wherever you have moved; aidocks/project_tutorial_teaching_plan.md).
+LANE_NAMES = ('left', 'middle', 'right')
+#: Said the first time each kind appears in each cave lane, 12 at most (the dev: "It gives
+#: people the feel for what's going to be in a level without bombarding them with so much
+#: info over and over."): the line, and what it adds while you have a torch to throw.
+ARRIVAL = {'coin': ('A coin appeared in the %s lane. Go there to grab it', ''),
+           'torch': ('A torch appeared in the %s lane. Go there to pick it up', ''),
+           'monster': ('A monster appeared in the %s lane. Stay out of it',
+                       ', or throw your torch at it'),
+           'bat': ('Bats appeared in the %s lane. Stay out of that lane',
+                   ', or throw your torch to scare them off')}
+#: Said once all 12 have been (the dev: "Do a closing line.").
+TUTORIAL_CLOSING = "You've met everything in the cave. From now on, listen for them yourself."
+#: Said as one announced falls past your row without being taken, killed or catching you
+#: (the dev: "when you pass any entity, it will say past"; then "something like, coin
+#: past, on your left, on your right, in the middle.").
+PASSED = {'monster': 'Monster passed, in the %s lane.', 'bat': 'Bats passed, in the %s lane.',
+          'coin': 'Coin passed, in the %s lane.', 'torch': 'Torch passed, in the %s lane.'}
 #: Said as you pick one up (the dev: "If you catch something, it should say coin caught,
 #: torch caught.").
 CAUGHT = {'coin': 'Coin caught.', 'torch': 'Torch caught.'}
@@ -251,10 +266,10 @@ class GameScene(Scene):
         self.threats = []               # monsters and bats in your lane at their sound
         # PORT ADDITION: the tutorial's state
         self.pendingCompanion = None    # a coin or torch waiting for an empty slot
-        self._lines = []                # (line, urgent) waiting for the voice
+        self._lines = []                # lines waiting for the voice
+        self._taught = set()            # (kind, cave lane) whose arrival has been said
         self._watching = []             # things announced, to say when they pass you
         self._voiceFreeAt = 0.0
-        self._speakingUrgent = False    # the line being said is a monster, bats or throw
         self._threwOnce = False
 
     # ---- helpers the binary inlines -----------------------------------------------------
@@ -841,7 +856,7 @@ class GameScene(Scene):
         self.changeSpritePlayer(False)
         if self.tutorialMode and not self._threwOnce:
             self._threwOnce = True      # the dev: a throw uses the torch up
-            self.tutorialSay(OUT_OF_LIGHT)
+            self.tutorialSay(OUT_OF_LIGHT, urgent=True)
 
     # ---- contacts -----------------------------------------------------------------------
     # -[GameScene didBeginContact:]~closure1 0x100012984
@@ -884,53 +899,37 @@ class GameScene(Scene):
         """0, 1 or 2: the lane a scene x is in."""
         return min(range(3), key=lambda i: abs((i - 1) * 0.3 * self.W - x))
 
-    @staticmethod
-    def where(diff):
-        """Words for a lane ``diff`` lanes from yours: 'on your left', 'two lanes to your
-        right'."""
-        side = 'left' if diff < 0 else 'right'
-        return 'on your %s' % side if abs(diff) == 1 else 'two lanes to your %s' % side
-
-    def announcement(self, node):
-        """What the tutorial says as ``node`` appears, or None (the dev: "It should be more
-        conversational. Example, A coin appeared on your left...")."""
-        kind = node.name
-        if kind not in ('coin', 'torch', 'monster', 'bat'):
+    def announcement(self, node, lane=None):
+        """What the tutorial says of ``node`` appearing in its cave lane, or None (the dev:
+        "It should be more conversational."; the cave's lanes, "I like these lines.").  The
+        throw is offered only while there is a torch to throw."""
+        if node.name not in ARRIVAL:
             return None
-        diff = self.laneOf(node.position[0]) - self.actualPositionPlayer
+        if lane is None:
+            lane = self.laneOf(node.position[0])
+        line, throw = ARRIVAL[node.name]
         lit = self.falloffSize < FALLOFF_LAST
-        if kind in ('coin', 'torch'):
-            what, verb = ('A coin', 'grab it') if kind == 'coin' else ('A torch', 'pick it up')
-            if diff == 0:
-                return '%s is coming right at you. Stay where you are.' % what
-            move = ('left' if diff < 0 else 'right') + (' twice' if abs(diff) == 2 else '')
-            return '%s appeared %s. Move %s to %s.' % (what, self.where(diff), move, verb)
-        bats = kind == 'bat'
-        if diff != 0:
-            return ('%s %s. Stay out of %s way.'
-                    % ('Bats appeared' if bats else 'A monster appeared', self.where(diff),
-                       'their' if bats else 'its'))
-        line = 'Bats are coming right at you! ' if bats else 'A monster is coming right at you! '
-        way = {0: 'Move right', 1: 'Move left or right', 2: 'Move left'}[
-            self.actualPositionPlayer]
-        if lit:
-            return line + way + (', or throw your torch to scare them off.' if bats
-                                 else ', or throw your torch at it.')
-        return line + way + '!'
+        return line % LANE_NAMES[lane] + (throw if lit else '') + '.'
 
     def announce(self, node):
-        """A thing appeared: in the tutorial, say what and where.  A monster or bats cuts
-        in; a coin or a torch waits its turn."""
-        if not self.tutorialMode:
+        """A thing appeared: in the tutorial, the first time its kind comes down its cave
+        lane, say so at once, cutting in (aidocks/project_tutorial_teaching_plan.md; the
+        dev: "Please make all 12 lines interupt.").  The 12th brings the closing line."""
+        if not self.tutorialMode or node.name not in ARRIVAL:
             return
-        text = self.announcement(node)
-        if text:
-            self.tutorialSay(text, urgent=node.name in ('monster', 'bat'))
-            self._watching.append(node)
+        key = (node.name, self.laneOf(node.position[0]))
+        if key in self._taught:
+            return
+        self._taught.add(key)
+        self._watching.append(node)
+        self.tutorialSay(self.announcement(node, key[1]), urgent=True)
+        if len(self._taught) == len(ARRIVAL) * len(LANE_NAMES):
+            self.tutorialSay(TUTORIAL_CLOSING)
 
     def _caught(self, node):
         """In the tutorial, a coin or torch picked up from the cave is said ("Coin
-        caught."); one not in the cave, as a tool's relit torch, is not."""
+        caught."), every time, cutting in (the dev: "These should interupt as well."); one
+        not in the cave, as a tool's relit torch, is not."""
         if self.tutorialMode and node.parent is not None and node.name in CAUGHT:
             if node in self._watching:
                 self._watching.remove(node)
@@ -938,7 +937,9 @@ class GameScene(Scene):
 
     def watchPassing(self):
         """A thing announced that has fallen below your row, still there, while you are
-        alive, has passed you: say so.  One taken, killed or gone is forgotten."""
+        alive, has passed you: say so at once, cutting in, and in which cave lane (bats a
+        torch moved, in the one they went to; the dev: "When the monster past, it did not
+        cut off the previous speech.").  One taken, killed or gone is forgotten."""
         if self.playerDead:
             self._watching.clear()
             return
@@ -948,7 +949,8 @@ class GameScene(Scene):
                 self._watching.remove(node)
             elif node.position[1] < row:
                 self._watching.remove(node)
-                self.tutorialSay(PASSED[node.name], urgent=True)
+                lane = LANE_NAMES[self.laneOf(node.position[0])]
+                self.tutorialSay(PASSED[node.name] % lane, urgent=True)
 
     def _voiceBusy(self):
         now = self.time or 0.0
@@ -956,9 +958,8 @@ class GameScene(Scene):
             return True
         return self.voice is not None and bool(getattr(self.voice, 'speaking', False))
 
-    def _speakNow(self, text, urgent=False):
+    def _speakNow(self, text):
         now = self.time or 0.0
-        self._speakingUrgent = urgent
         if self.voice is not None and self.voice.speak(text):
             self._voiceFreeAt = now + VOICE_SETTLE
         else:                       # no Windows voice: the screen reader, timed by length
@@ -966,28 +967,26 @@ class GameScene(Scene):
             self._voiceFreeAt = now + max(VOICE_SETTLE, len(text) / HINT_CHARS_PER_SECOND)
 
     def tutorialSay(self, text, urgent=False):
-        """The tutorial's lines, in the Windows voice.  An urgent one, a monster, bats or a
-        throw, is said at once, cutting off whatever the voice was saying, another warning
-        included (the dev, after hearing both ways: "I think I liked it better when the
-        speech interupted when another entity was approaching, rather than waiting for it
-        to finish.").  A coin or torch line cuts off anything too, a warning included (the
-        dev: "Please interupt the coin and torch lines, just encase a new one appears, and
-        I grabbed the other one."; then "Please cut off the warnings as well."): every new
-        line is said at once, the newest always heard."""
-        self._lines.clear()
-        self._speakNow(text, urgent=urgent)
+        """The tutorial's lines, in the Windows voice, each waiting its turn (the dev: "It
+        will do this non interuptively").  An urgent one, every line but the closing one,
+        is said at once, cutting off the line being said; the lines waiting
+        carry on after it (the dev: "it should interupt, not wait."; "Please make all 12
+        lines interupt.")."""
+        if urgent:
+            self._speakNow(text)
+        else:
+            self._lines.append(text)
 
     def hushTutorial(self):
-        """Ctrl (the dev: "pressing control can interupt the window speech"): the lines
-        waiting are dropped, and the voice, stopped by the caller, is free at once."""
-        self._lines.clear()
+        """Ctrl (the dev: "unless control is pressed of course, witch in that case will just
+        interupt one line and go onto the next one"): the voice, stopped by the caller, is
+        free at once, and the next line waiting follows."""
         self._voiceFreeAt = 0.0
-        self._speakingUrgent = False
 
     def _nextLine(self):
+        """The voice free: the next line waiting."""
         if self._lines and not self._voiceBusy() and not self.paused:
-            text, urgent = self._lines.pop(0)
-            self._speakNow(text, urgent)
+            self._speakNow(self._lines.pop(0))
 
     def tutorialMissed(self, torch):
         """A thrown torch has reached the top of the cave: did it hit anything?"""

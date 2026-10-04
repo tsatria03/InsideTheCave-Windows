@@ -349,9 +349,12 @@ def test_ctrl_hushes_the_windows_voice_and_the_tutorial():
         _press(app, pg.K_DOWN)
         _press(app, pg.K_RETURN)                # the tutorial
         s = app.game.scene
-        s._lines[:] = [('a coin line', False)]
-        _press(app, pg.K_LCTRL)
-        assert stopped and s._lines == [], 'the voice stopped, the waiting lines gone'
+        s._lines[:] = ['a coin line']
+        s._voiceFreeAt = 1e12                   # a line being said
+        app.handle(_Key(pg, pg.K_LCTRL, True, 0, ''))   # before a frame says the next
+        app.handle(_Key(pg, pg.K_LCTRL, False, 0))
+        assert stopped and s._voiceFreeAt == 0.0, 'the voice stopped and free'
+        assert s._lines == ['a coin line'], 'the next line still to come'
         assert app.kind == 'game' and not app.input.paused, 'nothing else happened'
     finally:
         app.close()

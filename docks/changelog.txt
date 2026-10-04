@@ -1,4 +1,5 @@
 unrelease:
+The Tutorial now names each kind of thing only the first time it appears in each of the cave's three lanes, such as A coin appeared in the left lane, then lets you learn it by its sound, and says when you have met everything. Passed lines now say the lane, such as Coin passed, in the left lane.
 
 26.10.03-2:
 Control stops the Windows voice at once, as it stops a screen reader.

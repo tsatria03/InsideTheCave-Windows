@@ -46,12 +46,14 @@ The tutorial
 Choose Tutorial on the main menu to learn the game at your own pace.
 A Windows voice welcomes you, then your screen reader says your keys, and the cave begins.
 The cave never speeds up, your torch lasts as long as on Easy, and your footsteps walk.
-Only one thing comes down at a time, and as each appears the Windows voice says what it is, where it is, and what to do, such as A coin appeared on your left. Move left to grab it.
-A monster or bats coming at you tells you to move, or to throw your torch if you have one.
-When a monster, bats, a coin or a torch falls past you without being taken, killed or catching you, the voice says so: Monster passed, Bats passed, Coin passed or Torch passed.
-When you pick up a coin or a torch, the voice says Coin caught or Torch caught.
-Each new line cuts off whatever the voice was saying, so you always hear about the newest thing.
-After a throw, the voice says whether your torch hit a monster or frightened bats, or flew off without hitting anything, and the first time, that you are out of light until you find another torch.
+Only one thing comes down at a time.
+The first time each kind of thing, a coin, a torch, a monster or bats, appears in each of the cave's three lanes, the Windows voice says what it is, which lane, and what to do, such as A coin appeared in the left lane. Go there to grab it.
+For a monster or bats, it tells you to stay out of that lane, or to throw your torch if you have one.
+After that, that kind of thing in that lane comes without a word, so you learn it by its sound. Once all twelve have been met, the voice says so.
+When one of those announced things falls past you without being taken, killed or catching you, the voice says so, such as Coin passed, in the left lane.
+When you pick up a coin or a torch, the voice says Coin caught or Torch caught, every time.
+Each line is said at once, cutting off whatever the voice was saying, and Control stops it.
+After a throw, the voice says at once, cutting in, whether your torch hit a monster or frightened bats, or flew off without hitting anything, and the first time, that you are out of light until you find another torch.
 There is no score in the tutorial: S and E say there is nothing to report, and C counts your coins.
 When you are caught, you hear You were caught, then Replay, which starts the tutorial again without the welcome, and Menu.
 A tutorial game is never saved and never counts in your scores or stats.

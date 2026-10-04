@@ -18,27 +18,32 @@ The starting points:
      1  the tutorial as chosen from the main menu: the welcome in the Windows voice, then
         your keys, then the cave
      2  the tutorial as after Replay or Restart: no welcome, the cave after two seconds
-     3  only coins and torches, one at a time, to hear each announced from its lane
-     4  only monsters and bats, to hear each announced, and to throw at them: your torch is
+     3  only coins and torches, one at a time, to hear each taught in each cave lane
+     4  only monsters and bats, to hear each taught, and to throw at them: your torch is
         lit again a second after each throw, so you can hear every throw line
 
-Things to listen for (aidocks/project_tutorial_plan.md):
+Things to listen for (aidocks/project_tutorial_plan.md and
+aidocks/project_tutorial_teaching_plan.md):
 
-* "A coin appeared on your left. Move left to grab it.", "A torch is coming right at you.
-  Stay where you are.", two lanes away "Move right twice";
-* "A monster is coming right at you! Move left or right, or throw your torch at it.", from a
-  side lane the one way out, without a torch no throw; "Bats appeared on your right. Stay
-  out of their way.";
-* "Monster passed.", "Bats passed.", "Coin passed.", "Torch passed." as each falls past you,
-  and nothing for a coin or torch you took or a monster you killed;
-* "Coin caught." and "Torch caught." as you pick them up (not for start 4's relit torch);
-* each new line cutting off whatever is being said, coins, torches and warnings alike;
-* "The monster was hit! It's gone.", "The bats were hit, and dodged to your left.", "Your
-  torch flew off without hitting anything.", and on the first throw "You're out of light
-  now. Find another torch soon.";
+* each kind said only the first time it comes down each cave lane, wherever you stand: "A
+  coin appeared in the left lane. Go there to grab it.", "A torch appeared in the middle
+  lane. Go there to pick it up.", "A monster appeared in the right lane. Stay out of it, or
+  throw your torch at it.", "Bats appeared in the left lane. Stay out of that lane, or throw
+  your torch to scare them off."; without a torch, no throw; the same kind in the same lane
+  again, nothing;
+* once all 12 (start 1 or 2; 3 and 4 have only 6 each): "You've met everything in the cave.
+  From now on, listen for them yourself.";
+* "Coin passed, in the left lane." and so on, only for one that was announced, and nothing
+  for a coin or torch you took or a monster you killed;
+* "Coin caught." and "Torch caught." every time you pick one up (not for start 4's relit
+  torch);
+* the closing line waiting for the one before to finish;
+* cutting in at once: each arrival, each passed and caught line, "The monster was hit! It's gone.", "The bats were hit, and dodged to
+  your left.", "Your torch flew off without hitting anything.", and on the first throw
+  "You're out of light now. Find another torch soon."; the lines waiting then carry on;
 * the cave never speeding up, your footsteps walking, S "No score to report.", E "No speed
   to report.", C your coins;
-* Control stopping the voice at once;
+* Control cutting off one line, the next waiting one following;
 * caught: "You were caught.", Replay (no welcome) and Menu; nothing saved.
 
 **Your save is never touched**: its own save in
