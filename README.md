@@ -71,9 +71,12 @@ As the original's code has it (`aidocks/GAME_STRUCTURE.md`), with the port's few
 - **Difficulties**: Play asks for Easy (speed 5.0 to 3.0, a longer torch), Medium (4.0 to
   2.0, the original's start and torch) or Hard (3.0 to 1.0, a shorter torch), each with its
   own best five.
-- After a game you type your name, and a score that beats your fifth best goes into your
-  **best five**, saved on your computer; a blank name is saved as "unnamed player". The
-  original also sent them to an online leaderboard, which this port leaves out.
+- After a game the result screen gives your score, coins, time survived and speed reached,
+  then you type your name, and a score that beats your fifth best goes into that
+  difficulty's **best five**, with its coins and time, saved on your computer; a blank name
+  is saved as "unnamed player". The original also sent them to an online leaderboard, which
+  this port leaves out. **Stats** keeps your games, runs, coins, torches, and the monsters
+  and bats you killed, frightened and dodged, per difficulty and all time.
 
 **Keys**: on the menus, Up and Down move, wrapping around at either end, Home and End go
 to the first and last row, Enter chooses and Escape goes back. In a game, A or Left Arrow
@@ -120,8 +123,8 @@ The keyboard, the screens' rows, the pause menu and the F1 key-binding screen ar
 `insidethecave/ui/`, and `InsideTheCave.py` is the entry point, the window and the loop
 that goes from screen to screen.
 
-The save lives in `%APPDATA%\InsideTheCave`: `save.json` (a best five for each
-difficulty, and the tutorial count), `settings.json` (the master, game music and menu music volumes) and
+The save lives in `%APPDATA%\InsideTheCave`: `save.json` (a best five and the stats
+for each difficulty, and the tutorial count), `settings.json` (the master, game music and menu music volumes) and
 `keys.json` (the key bindings).
 
 ### `game/`: the original's data

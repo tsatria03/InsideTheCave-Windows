@@ -2,12 +2,12 @@
 
 Add a Tutorial to the main menu, after Play, where the cave never speeds up and a Windows voice tells you what each thing is and what to do.
 Make Play say your keys only on your first two games, instead of the original's instructions on your first three.
-Make the result screen a list of rows, with your score, coins, how long you survived and the speed you reached.
-Make each saved score also say its coins and time, and rename Score on the main menu to Scores.
-Add a Stats row to the main menu, with your games, runs, coins, torches, and the monsters and bats you killed, frightened and dodged, for each difficulty and all time.
 
 ##Finished.
 
+The result screen is a list of rows: your score, coins, how long you survived and the speed you reached.
+Each saved score also says its coins and time, and Score on the main menu is now Scores.
+Stats on the main menu reads your games, runs, coins, torches, and the monsters and bats you killed, frightened and dodged, for each difficulty and all time.
 Play asks for a difficulty, Easy, Medium or Hard, each with its own speeds, torch length, footsteps and best five.
 S says your score, C your coins, and E how many times the cave has sped up, and all three can be changed with F1.
 T says how much torch you have left, from Torch full to No torch, and can be changed with F1.

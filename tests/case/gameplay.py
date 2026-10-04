@@ -760,6 +760,69 @@ def test_the_status_keys_say_nothing_after_death():
     assert g.speech.lines == before
 
 
+def _first_monster_in_your_lane(g):
+    """Only monsters come; the player stands in the first one's lane; nothing more comes."""
+    s = g.scene
+    s.createBats = s.createMonster
+    for make in ('createCoin', 'createTorchObstacle'):
+        setattr(s, make, lambda: G.SpriteNode(name='slot'))
+    for _ in range(400):
+        g.step(1 / 30.0)
+        found = _named(s, 'monster')
+        if found:
+            break
+    m = found[0]
+    s.createBats = s.createMonster = lambda: G.SpriteNode(name='slot')
+    lane = round(m.position[0] / W, 6)
+    s.actualPositionPlayer = {-0.3: 0, 0.0: 1, 0.3: 2}[lane]
+    s.player.position = (m.position[0], s.player.position[1])
+    return m
+
+
+def test_a_monster_in_your_lane_that_you_move_away_from_is_dodged():
+    """The dev's stats: dodged, a monster in your lane at its roar, passing you by."""
+    g = _Game(seed=3)
+    g.start()
+    s = g.scene
+    m = _first_monster_in_your_lane(g)
+    while m not in s.threats:
+        g.step(1 / 30.0)
+    (s.movePlayerRight if s.actualPositionPlayer < 2 else s.movePlayerLeft)()
+    g.run(6.0)
+    assert not s.playerDead and s.run['monstersDodged'] == 1, s.run
+
+
+def test_a_monster_killed_counts_as_killed_not_dodged_and_a_torch_as_picked_up():
+    g = _Game(seed=3)
+    g.start()
+    s = g.scene
+    m = _first_monster_in_your_lane(g)
+    while m not in s.threats:
+        g.step(1 / 30.0)
+    s.throwTorch()
+    g.run(6.0)
+    assert s.run['monstersKilled'] == 1 and s.run['monstersDodged'] == 0, s.run
+    s.playerDidCollideWithTorch(G.SpriteNode(name='torch'))
+    assert s.run['torchesPicked'] == 1
+
+
+def test_the_time_survived_leaves_out_the_pauses_and_the_instructions():
+    g = _Game()
+    s = g.scene
+    g.start()                       # 2.05 s: the 2 s before the first slot do not count
+    assert s.runSeconds < 0.1, s.runSeconds
+    g.run(1.95)
+    s.pause()
+    g.run(5.0)
+    s.resume()
+    g.run(1.0)
+    assert 2.9 < s.runSeconds < 3.2, s.runSeconds
+    g.vc.score = 12
+    _crash(g)
+    g.run(1.5)
+    assert g.vc.last_run['seconds'] == 3 and g.vc.last_run['score'] == 12, g.vc.last_run
+
+
 def test_in_debug_mode_nothing_kills_you():
     g = _Game(debug=True)
     g.start()

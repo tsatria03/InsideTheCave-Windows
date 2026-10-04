@@ -16,15 +16,15 @@ If no Windows voice can be used, your screen reader says the warning instead.
 
 The main menu
 
-The main menu has three rows: Play, Score and Quit.
+The main menu has four rows: Play, Scores, Stats and Quit.
 Up and Down move between the rows, and your screen reader says each one.
 The rows wrap around, so Down on the last row goes back to the first, and Up on the first row goes to the last.
 Home and End go to the first and the last row.
 Enter or Space chooses the row you are on.
 Escape in the main menu quits the game.
-Play and Score both ask you to choose a difficulty first: Easy, Medium or Hard.
+Play and Scores both ask you to choose a difficulty first: Easy, Medium or Hard. Stats asks the same, with All-time as a fourth choice.
 The difficulty screen opens on Easy when you start the game, and after that on the difficulty you last played, until you close the game. Escape goes back to the main menu.
-Music plays on the main menu, the difficulty screens, the Score screen and the result screen, and stops when a game starts.
+Music plays on the main menu, the difficulty screens, the Scores and Stats screens and the result screen, and stops when a game starts.
 
 The difficulties
 
@@ -91,12 +91,14 @@ When you pause, the game stops where it is, sounds and all, and a pause menu ope
 It has three rows: Resume, Restart and Quit to menu.
 Up and Down move between them, wrapping around as on the main menu, Home and End go to the first and the last row, and Enter chooses.
 Escape or P resumes the game.
-Restart and Quit to menu do not save your score.
+Restart and Quit to menu do not save your score, and do not count in your stats.
 
 Game over
 
-When a monster reaches you, the game ends a second later, and your screen reader says your score and your coins.
-Then type your name, up to fifteen characters.
+When a monster reaches you, the game ends a second later, and your screen reader says Game over and your score.
+The result screen is a list of rows: your score, your coins, how long you survived, as in Time survived, 3 minutes 12 seconds, and the speed you reached, the number E says.
+Below them is the name field, then Replay and Menu.
+Move down to the name field and type your name, up to fifteen characters.
 Your screen reader says each character as you type it, and Backspace says the one it removes.
 Enter or Down goes on to the Replay row, and the Menu row is below it.
 Replay plays again, and Menu or Escape goes back to the main menu.
@@ -106,9 +108,19 @@ A score that is already in your best five is not saved again, so no two of them 
 
 Your best five
 
-Choose Score in the main menu, then a difficulty, to hear that difficulty's best five scores, best first, with their names.
+Choose Scores in the main menu, then a difficulty, to hear that difficulty's best five scores, best first.
+Each is one line, such as 1, unnamed player. Score, 447. Coins, 15. Time, 3 minutes 12 seconds.
+Scores saved before coins and times were kept say only the name and the score.
 Up and Down move through them, and Menu or Escape goes back to the difficulties, where Escape again goes back to the main menu.
 The best five you had before the difficulties came are your Easy best five.
+
+Your stats
+
+Choose Stats in the main menu, then Easy, Medium, Hard or All-time, to hear your stats as rows: games played, longest run, fastest speed reached, total coins, total time played, torches picked up, bats frightened, monsters killed, bats dodged and monsters dodged.
+Bats frightened are bats your thrown torch hit, and monsters killed the monsters it killed.
+A monster or bats is dodged when it was in your lane as its sound played, and passed you by.
+All-time adds the three difficulties together, and its longest run and fastest speed are the best of them.
+Only games that end with you caught are counted, from the first game after this version; Restart and Quit to menu count nothing.
 
 Changing the keys
 

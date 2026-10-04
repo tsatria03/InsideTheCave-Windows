@@ -29,7 +29,10 @@ PORT, each in aidocks/DIVERGENCES.md:
 * the screen is rows: the name field, Replay and Menu.  On the field, typed characters go
   in and are said, Backspace deletes and says what it took, and Enter goes on to Replay;
 * the score is saved in the best five of the difficulty played (the fourth release,
-  aidocks/project_difficulty_plan.md).
+  aidocks/project_difficulty_plan.md);
+* since the fourth release (aidocks/project_scores_stats_plan.md) the facts are rows too,
+  above the name: Score, Coins, Time survived and Speed reached, the screen opening on
+  Score; and an entry saved keeps its coins and time, which the Scores screen reads.
 """
 from __future__ import annotations
 
@@ -39,6 +42,7 @@ from ..platform.defaults import RANK_KEYS
 from ..ui.rows import MODIFIERS, RowScreen
 from .game_scene import DEFAULT_DIFFICULTY
 from .home_screen_view_controller import default_rank
+from .stats import spoken_time
 
 log = logging.getLogger('screens')
 
@@ -59,9 +63,10 @@ def score_of(entry):
         return 0
 
 
-def ranked(rank, name, score):
+def ranked(rank, name, score, extra=None):
     """``checkRank``'s list: ``rank`` with the new entry in it, best first, five long; or
-    None when the score does not get in.  ``name`` is already what is saved."""
+    None when the score does not get in.  ``name`` is already what is saved.  PORT:
+    ``extra`` adds to the entry, its "Coins" and "Time"."""
     rank = [dict(e) for e in rank if isinstance(e, dict)]
     if len(rank) < RANK_SIZE:            # the original traps here (0x10001d884)
         rank += default_rank()[len(rank):]
@@ -69,7 +74,7 @@ def ranked(rank, name, score):
         return None
     if any(score_of(e) == score for e in rank):     # PORT: no two equal scores (the dev)
         return None
-    rank.append({'Name': name, 'Score': str(score)})
+    rank.append(dict({'Name': name, 'Score': str(score)}, **(extra or {})))
     rank.sort(key=lambda e: -score_of(e))           # best first
     return rank[:RANK_SIZE]
 
@@ -84,15 +89,20 @@ class ResultViewController(RowScreen):
                  'F1 key bindings')
 
     def __init__(self, score=0, coins=0, defaults=None, speech=None,
-                 difficulty=DEFAULT_DIFFICULTY):
+                 difficulty=DEFAULT_DIFFICULTY, seconds=0, speed=0):
         super().__init__(speech)
         self.score = int(score)
         self.coins = int(coins)
+        self.seconds = int(seconds)
+        self.speed = int(speed)
         self.defaults = defaults
         self.rank_key = RANK_KEYS[difficulty]
         self.name = ''
         self.saved = False
-        self.rows = [('name', ''), ('replay', 'Replay'), ('menu', 'Menu')]
+        self.rows = [('fact', 'Score, %d.' % self.score), ('fact', 'Coins, %d.' % self.coins),
+                     ('fact', 'Time survived, %s.' % spoken_time(self.seconds)),
+                     ('fact', 'Speed reached, %d.' % self.speed),
+                     ('name', ''), ('replay', 'Replay'), ('menu', 'Menu')]
 
     def label(self, i=None):
         i = self.index if i is None else i
@@ -102,7 +112,8 @@ class ResultViewController(RowScreen):
 
     # ResultViewController.viewDidLoad 0x10001bf40
     def viewDidLoad(self):
-        self.announce('Game over. Score %d. Coins %d' % (self.score, self.coins))
+        self.index = 0                          # PORT: on Score, the facts first (the dev)
+        self.announce('Game over')
 
     # ---- the name field ---------------------------------------------------------------
     def key(self, name, char=''):
@@ -117,7 +128,7 @@ class ResultViewController(RowScreen):
                 self.say_row()
             return
         if self.current() == 'name' and name in ('return', 'enter'):
-            self.index = 1                      # textFieldShouldReturn: only lets go
+            self.index += 1                     # textFieldShouldReturn: only lets go; Replay
             self.say_row()
             return
         super().key(name, char)
@@ -150,7 +161,8 @@ class ResultViewController(RowScreen):
             return False
         self.saved = True
         rank = self.defaults.objectForKey_(self.rank_key)
-        new = ranked(rank if isinstance(rank, list) else [], self.saved_name(), self.score)
+        new = ranked(rank if isinstance(rank, list) else [], self.saved_name(), self.score,
+                     {'Coins': str(self.coins), 'Time': str(self.seconds)})
         if new is None:
             return False
         self.defaults.setObject_forKey_(new, self.rank_key)

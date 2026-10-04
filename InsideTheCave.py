@@ -43,7 +43,8 @@ FPS = 120
 LINES, LINE_HEIGHT = 19, 22
 #: PORT ADDITION: the screens the menu music plays on (ui/menu_music.py); not the warning,
 #: and not a game, paused or not.
-MENU_MUSIC_SCREENS = ('menu', 'choose_game', 'choose_ranking', 'ranking', 'result')
+MENU_MUSIC_SCREENS = ('menu', 'choose_game', 'choose_ranking', 'ranking', 'choose_stats',
+                      'stats', 'result')
 KEY_LINES = ['Keys: your move and throw keys, P or Escape pause, F1 key bindings,',
              'Page Up / Page Down track volume, Home / End master volume, Alt+F4 quit.']
 
@@ -95,6 +96,8 @@ class App:
         #: PORT ADDITION: the difficulty last played since the game was opened, where the
         #: difficulty screens open; None, so Easy, at first (the dev: not kept in the save).
         self.played_difficulty = None
+        #: PORT ADDITION: the stats the Stats screen shows: a difficulty, or 'all'.
+        self.stats_choice = None
         #: Its object; None during a game, which is ``self.game``.
         self.page = None
         self.over = None                # (score, coins) once a game is over
@@ -109,6 +112,7 @@ class App:
         from insidethecave.game.result_view_controller import ResultViewController
         from insidethecave.game.warning_view_controller import WarningViewController
         from insidethecave.ui.difficulty_screen import DifficultyScreen
+        from insidethecave.ui.stats_screen import StatsScreen
 
         log.info('-> %s', kind)
         chosen = getattr(self.page, 'chosen', None)     # a difficulty, from its screen
@@ -117,6 +121,8 @@ class App:
             self.played_difficulty = chosen
         elif kind == 'ranking' and chosen is not None:
             self.ranking_difficulty = chosen
+        elif kind == 'stats' and chosen is not None:
+            self.stats_choice = chosen
         if self.kind == 'game' and kind != 'game':
             self.leave_game()
         if kind in MENU_MUSIC_SCREENS:
@@ -136,16 +142,22 @@ class App:
                                               voice=self.voice)
         elif kind == 'menu':
             self.page = HomeScreenViewController(self.defaults, self.speech)
-        elif kind in ('choose_game', 'choose_ranking'):
+        elif kind in ('choose_game', 'choose_ranking', 'choose_stats'):
             self.page = DifficultyScreen(self.speech, then=kind[len('choose_'):],
                                          last=self.played_difficulty)
+        elif kind == 'stats':
+            self.page = StatsScreen(self.defaults, self.speech,
+                                    self.stats_choice or self.game.difficulty)
         elif kind == 'ranking':
             self.page = RankingViewController(self.defaults, self.speech,
                                               self.ranking_difficulty or self.game.difficulty)
         elif kind == 'result':
             score, coins = self.over or (0, 0)
+            run = self.game.last_run or {}
             self.page = ResultViewController(score, coins, self.defaults, self.speech,
-                                             difficulty=self.game.difficulty)
+                                             difficulty=self.game.difficulty,
+                                             seconds=run.get('seconds', 0),
+                                             speed=run.get('speed', 0))
         self.page.viewDidLoad()
 
     def follow(self):
@@ -188,8 +200,12 @@ class App:
 
     def game_over(self, score, coins):
         """``gameOverDelegateFunc``'s segue to the result screen, taken once the frame is
-        done (``follow``)."""
+        done (``follow``).  PORT ADDITION: a game caught counts in the stats; Restart and
+        Quit to menu never reach here (the dev: "restarts and quits do not count")."""
+        from insidethecave.game import stats
         self.over = (score, coins)
+        if self.game.last_run is not None:
+            stats.record(self.defaults, self.game.difficulty, self.game.last_run)
 
     # ---- keys -------------------------------------------------------------------------
     def change_music(self, step):

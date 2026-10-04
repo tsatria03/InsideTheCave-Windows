@@ -9,9 +9,12 @@
   MENU button, unwinds to the menu.
 
 PORT: no World tab, as there are no online scores (aidocks/project_port_plan.md, question
-9).  The five entries and MENU are rows, read as "1, Ana, 120"; Escape is MENU.  Since the
-fourth release it shows one difficulty's best five, chosen just before, and MENU and
-Escape go back to that choice (aidocks/project_difficulty_plan.md).
+9).  The five entries and MENU are rows; Escape is MENU.  Since the fourth release it
+shows one difficulty's best five, chosen just before, and MENU and Escape go back to that
+choice (aidocks/project_difficulty_plan.md); each entry is one line with its coins and
+time, "1, unnamed player. Score, 447. Coins, 15. Time, 3 minutes 12 seconds.", an older
+one leaving out what was never saved, "2, Ana. Score, 300." (the dev;
+aidocks/project_scores_stats_plan.md).
 """
 from __future__ import annotations
 
@@ -20,6 +23,21 @@ from ..ui.difficulty_screen import NAMES
 from ..ui.rows import RowScreen
 from .game_scene import DEFAULT_DIFFICULTY
 from .home_screen_view_controller import default_rank
+from .stats import spoken_time
+
+
+def entry_line(position, entry):
+    """One best-five entry in words, with whatever of its coins and time was saved."""
+    parts = ['%d, %s.' % (position, entry.get('Name', '')),
+             'Score, %s.' % entry.get('Score', '')]
+    if 'Coins' in entry:
+        parts.append('Coins, %s.' % entry['Coins'])
+    if 'Time' in entry:
+        try:
+            parts.append('Time, %s.' % spoken_time(int(entry['Time'])))
+        except (TypeError, ValueError):
+            pass
+    return ' '.join(parts)
 
 
 class RankingViewController(RowScreen):
@@ -30,7 +48,7 @@ class RankingViewController(RowScreen):
         super().__init__(speech)
         self.defaults = defaults
         self.difficulty = difficulty
-        self.title = 'Score, %s' % NAMES[difficulty]
+        self.title = 'Scores, %s' % NAMES[difficulty]
 
     def entries(self):
         key = RANK_KEYS[self.difficulty]
@@ -41,8 +59,7 @@ class RankingViewController(RowScreen):
 
     # RankingViewController.viewDidLoad 0x100020e60, and the table 0x100021a9c
     def viewDidLoad(self):
-        self.rows = [('entry', '%d, %s, %s' % (i + 1, e.get('Name', ''), e.get('Score', '')))
-                     for i, e in enumerate(self.entries())]
+        self.rows = [('entry', entry_line(i + 1, e)) for i, e in enumerate(self.entries())]
         self.rows.append(('menu', 'Menu'))                              # the MENU button
         self.index = 0
         self.announce('%s, your best five' % NAMES[self.difficulty])

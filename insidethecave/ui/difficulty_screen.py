@@ -14,7 +14,7 @@ from __future__ import annotations
 from ..game.game_scene import DEFAULT_DIFFICULTY, DIFFICULTY_ORDER
 from .rows import RowScreen
 
-NAMES = {'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard'}
+NAMES = {'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard', 'all': 'All-time'}
 
 
 class DifficultyScreen(RowScreen):
@@ -22,11 +22,14 @@ class DifficultyScreen(RowScreen):
     keys_line = 'Up/Down move   Enter choose   Escape menu   F1 key bindings   Alt+F4 quit'
 
     def __init__(self, speech=None, then='game', last=None):
-        """``then``: 'game' for Play, 'ranking' for Score; ``last``: the difficulty last
-        played since the game was opened, or None."""
+        """``then``: 'game' for Play, 'ranking' for Scores, 'stats' for Stats, which adds
+        All-time; ``last``: the difficulty last played since the game was opened, or
+        None."""
         super().__init__(speech)
         self.then = then
         self.rows = [(d, NAMES[d]) for d in DIFFICULTY_ORDER]
+        if then == 'stats':
+            self.rows.append(('all', NAMES['all']))     # the dev: "an opion for all time"
         start = last if last in DIFFICULTY_ORDER else DEFAULT_DIFFICULTY
         self.index = DIFFICULTY_ORDER.index(start)
         #: The difficulty chosen, once Enter is pressed.

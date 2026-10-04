@@ -241,7 +241,8 @@ def test_play_asks_for_a_difficulty_and_restart_and_replay_keep_it():
         app.game.scene.clear()
         _frames(app, 0.05)
         assert app.kind == 'result'
-        _press(app, pg.K_RETURN)
+        _press(app, pg.K_END)
+        _press(app, pg.K_UP)
         _press(app, pg.K_RETURN)                # Replay
         assert app.kind == 'game' and app.game.scene.difficulty == 'hard'
         assert app.defaults.objectForKey_('rankHard')[0]['Score'] == '77'
@@ -289,12 +290,36 @@ def test_a_game_over_goes_to_the_result_screen_and_replay_saves():
         _frames(app, 0.05)
         assert app.kind == 'result'
         assert app.lines()[1] == 'Score 25   Coins 2'
+        assert app.page.current() == 'fact', 'it opens on Score'
+        for _ in range(4):
+            _press(app, pg.K_DOWN)              # past the facts to the name
         for key, ch in ((pg.K_a, 'A'), (pg.K_l, 'l')):
             _press(app, key, unicode=ch)
         _press(app, pg.K_RETURN)
         _press(app, pg.K_RETURN)
         assert app.kind == 'game' and not app.game.over
-        assert app.defaults.objectForKey_('rank')[0] == {'Name': 'Al', 'Score': '25'}
+        first = app.defaults.objectForKey_('rank')[0]
+        assert (first['Name'], first['Score'], first['Coins']) == ('Al', '25', '2'), first
+        assert app.defaults.objectForKey_('stats')['easy']['games'] >= 1, 'counted'
+    finally:
+        app.close()
+
+
+def test_restart_and_quit_count_nothing_in_the_stats():
+    """The dev: "restarts and quits do not count in a game." """
+    from insidethecave.game import stats
+    app = _app()
+    pg = app.pygame
+    try:
+        before = stats.load(app.defaults)
+        _frames(app, 0.1)
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_DOWN)
+        _press(app, pg.K_RETURN)                # Restart
+        _press(app, pg.K_ESCAPE)
+        _press(app, pg.K_END)
+        _press(app, pg.K_RETURN)                # Quit to menu
+        assert app.kind == 'menu' and stats.load(app.defaults) == before
     finally:
         app.close()
 

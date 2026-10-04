@@ -1,11 +1,13 @@
 ---
 name: project_scores_stats_plan
-description: "PLANNED 2026-10-03, waiting for the go-ahead: the result screen as rows (Score, Coins, Time survived, Speed reached, name, Replay, Menu); the main menu Play, Tutorial, Scores, Stats, Quit; Scores per difficulty, each entry one line with coins and time; Stats per difficulty and All-time, ten rows in the dev's order."
+description: "FINISHED 2026-10-03, confirmed by the dev: the result screen as rows (Score, Coins, Time survived, Speed reached, name, Replay, Menu); the main menu Play, Tutorial, Scores, Stats, Quit; Scores per difficulty, each entry one line with coins and time; Stats per difficulty and All-time, ten rows in the dev's order."
 metadata:
   type: project
 ---
 
-**Status: planned, agreed with the dev on 2026-10-03, not built.** Settled one question at a time. Built only on the dev's go-ahead ([[feedback_record_plans_first]]). Builds on [[project_difficulty_plan]] (a best five for each difficulty) and [[project_status_keys_plan]] (the speed count).
+**Status: FINISHED 2026-10-03, confirmed by the dev by ear ("Oaky doak, all tests past."), built on the dev's go-ahead ("Yes please. Do both.", with the tutorial).** Agreed the same day, settled one question at a time ([[feedback_record_plans_first]]). The Tutorial row comes with [[project_tutorial_plan]]; until then the menu is Play, Scores, Stats, Quit.
+
+**As built:** `game/game_scene.py` (`RUN_COUNTS`; the scene's `run`, `runSeconds` and `threats`; `_threat` at the sensor, `_settle` for a kill, a fright or a debug hit, and `update`, which counts the time and the dodges), `game/game_view_controller.py` (`last_run` at the game over), `game/stats.py` (new: `spoken_time`, the save's `stats`, `record`, `totals`, the Stats rows), `game/result_view_controller.py` (the fact rows, the entry's "Coins" and "Time"), `game/ranking_view_controller.py` (`entry_line`, titled "Scores"), `game/home_screen_view_controller.py` (Scores, Stats), `ui/difficulty_screen.py` (All-time for Stats), `ui/stats_screen.py` (new), `InsideTheCave.py` ('choose_stats', 'stats', recording a game caught). A run over an hour reads in minutes, "66 minutes 40 seconds"; only the total time played uses hours. Tests: `gameplay.py` (a dodge, a kill and a pickup counted, the time without the instructions or a pause), `screens.py` (the result rows and words, the time in words, entries with coins and time, the Stats rows in order and All-time, All-time offered only by Stats), `app.py` (opening on Score, saving coins, a caught game counted, Restart and Quit counting nothing). Builds on [[project_difficulty_plan]] (a best five for each difficulty) and [[project_status_keys_plan]] (the speed count).
 
 **Why:** the dev's picks: "Make the result screen also say how long you survived and the top speed you reached." and "Add lifetime stats to the Score screen: games played, total coins and your longest run.", grown in planning.
 

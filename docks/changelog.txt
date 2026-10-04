@@ -1,4 +1,7 @@
 unrelease:
+A Stats row on the main menu reads your games played, longest run, fastest speed, coins, time played, torches picked up, and the bats and monsters you frightened, killed and dodged, for each difficulty and all time.
+Score on the main menu is now Scores, and each saved score also says its coins and how long you survived.
+The result screen is now a list of rows: your score, your coins, how long you survived and the speed you reached, then your name, Replay and Menu.
 Play now asks you to choose a difficulty. Easy runs from speed 5.0 to 3.0 with a torch that lasts longer, Medium from 4.0 to 2.0 like the original, and Hard from 3.0 all the way to 1.0 with a torch that burns out sooner. Each has its own best five, and your old best five is now your Easy one. On Medium and Hard your footsteps run from the start.
 Press S in a game for your score, C for your coins, and E for how many times the cave has sped up, from 0 to 40. You can change the keys with F1.
 Press T in a game to hear how much torch you have left, from Torch full to No torch. You can change the key with F1.

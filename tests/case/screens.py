@@ -192,7 +192,9 @@ def test_the_menu_rows_and_keys():
     _keys(m, 'down')
     assert said.last == 'Play', 'and Down on the last to the first'
     _keys(m, 'down')
-    assert said.last == 'Score'
+    assert said.last == 'Scores'
+    _keys(m, 'down')
+    assert said.last == 'Stats'
     _keys(m, 'end')
     assert said.last == 'Quit'
     _keys(m, 'home', 'x')
@@ -216,17 +218,46 @@ def test_score_goes_to_the_ranking_and_escape_quits():
 
 # ---- the result screen ---------------------------------------------------------------------
 
-def test_the_result_screen_says_the_score_and_asks_for_a_name():
+def _to_name(r):
+    """Down from Score, past the four facts, to the name field."""
+    _keys(r, 'down', 'down', 'down', 'down')
+    assert r.current() == 'name'
+
+
+def test_the_result_screen_is_rows_of_facts_then_the_name():
+    """The dev: "seprat rows so everything is not crammed into one line.", from Score."""
     said = _Said()
-    r = R.ResultViewController(120, 4, _defaults(rank=default_rank()), said)
+    r = R.ResultViewController(412, 7, _defaults(rank=default_rank()), said,
+                               seconds=192, speed=18)
     r.viewDidLoad()
-    assert said.last == 'Game over. Score 120. Coins 4. Insert name', said.last
+    assert said.last == 'Game over. Score, 412.', said.last
+    _keys(r, 'down')
+    assert said.last == 'Coins, 7.'
+    _keys(r, 'down')
+    assert said.last == 'Time survived, 3 minutes 12 seconds.'
+    _keys(r, 'down')
+    assert said.last == 'Speed reached, 18.'
+    _keys(r, 'down')
+    assert said.last == 'Insert name'
+    _keys(r, 'up', 'up', 'x')
+    assert said.last == 'Time survived, 3 minutes 12 seconds.', 'a letter on a fact says it'
+    assert r.name == ''
+
+
+def test_time_in_words():
+    from insidethecave.game.stats import spoken_time
+    assert spoken_time(45) == '45 seconds' and spoken_time(1) == '1 second'
+    assert spoken_time(60) == '1 minute' and spoken_time(192) == '3 minutes 12 seconds'
+    assert spoken_time(61) == '1 minute 1 second'
+    assert spoken_time(4440, hours=True) == '1 hour 14 minutes'
+    assert spoken_time(2710, hours=True) == '45 minutes 10 seconds'
 
 
 def test_typing_a_name_says_each_character():
     said = _Said()
     r = R.ResultViewController(1, 0, _defaults(), said)
     r.viewDidLoad()
+    _to_name(r)
     r.key('left shift')
     r.key('a', 'A')
     r.key('n', 'n')
@@ -243,6 +274,7 @@ def test_typing_a_name_says_each_character():
 def test_backspace_on_an_empty_name_says_blank():
     said = _Said()
     r = R.ResultViewController(1, 0, _defaults(), said)
+    _to_name(r)
     r.key('backspace')
     assert said.last == 'Blank' and r.name == ''
 
@@ -250,6 +282,7 @@ def test_backspace_on_an_empty_name_says_blank():
 def test_a_name_holds_at_most_fifteen_characters():
     said = _Said()
     r = R.ResultViewController(1, 0, _defaults(), said)
+    _to_name(r)
     for ch in 'abcdefghijklmnopq':
         r.key(ch, ch)
     assert r.name == 'abcdefghijklmno' and len(r.name) == R.NAME_LIMIT == 15
@@ -259,22 +292,25 @@ def test_a_name_holds_at_most_fifteen_characters():
 def test_enter_in_the_name_field_goes_on_to_replay():
     said = _Said()
     r = R.ResultViewController(1, 0, _defaults(), said)
+    _to_name(r)
     r.key('return')
     assert r.current() == 'replay' and said.last == 'Replay' and r.next is None
 
 
-def test_replay_and_menu_save_first():
+def test_replay_and_menu_save_first_with_the_coins_and_time():
     d = _defaults(rank=default_rank())
-    r = R.ResultViewController(30, 1, d, _Said())
+    r = R.ResultViewController(30, 1, d, _Said(), seconds=75)
+    _to_name(r)
     _keys(r, 'z', 'o', 'e', 'return', 'return')
     assert r.next == 'game'
-    assert d.objectForKey_('rank')[0] == {'Name': 'zoe', 'Score': '30'}
+    assert d.objectForKey_('rank')[0] == {'Name': 'zoe', 'Score': '30', 'Coins': '1',
+                                          'Time': '75'}
 
     d = _defaults(rank=default_rank())
     r = R.ResultViewController(30, 1, d, _Said())
     _keys(r, 'escape')
     assert r.next == 'menu'
-    assert d.objectForKey_('rank')[0] == {'Name': 'unnamed player', 'Score': '30'}
+    assert d.objectForKey_('rank')[0]['Name'] == 'unnamed player'
 
 
 def test_check_rank_saves_once():
@@ -329,9 +365,9 @@ def test_the_ranking_reads_the_five_and_menu():
     d = _defaults(rank=[{'Name': 'Ana', 'Score': '120'}] + default_rank()[:4])
     s = RankingViewController(d, said)
     s.viewDidLoad()
-    assert said.last == 'Easy, your best five. 1, Ana, 120', said.last
+    assert said.last == 'Easy, your best five. 1, Ana. Score, 120.', said.last
     _keys(s, 'down')
-    assert said.last == '2, Player, 0'
+    assert said.last == '2, Player. Score, 0.'
     _keys(s, 'end')
     assert said.last == 'Menu'
     _keys(s, 'return')
@@ -372,13 +408,50 @@ def test_each_difficulty_has_its_own_best_five():
     HomeScreenViewController(d, _Said()).viewDidLoad()
     assert d.objectForKey_('rank') == old
     assert d.objectForKey_('rankMedium') == default_rank() == d.objectForKey_('rankHard')
-    r = R.ResultViewController(150, 3, d, _Said(), difficulty='hard')
+    r = R.ResultViewController(150, 3, d, _Said(), difficulty='hard', seconds=192)
     assert r.checkRank()
-    assert d.objectForKey_('rankHard')[0] == {'Name': 'unnamed player', 'Score': '150'}
+    assert d.objectForKey_('rankHard')[0]['Score'] == '150'
     assert d.objectForKey_('rank') == old and d.objectForKey_('rankMedium') == default_rank()
     said = _Said()
     RankingViewController(d, said, 'hard').viewDidLoad()
-    assert said.last == 'Hard, your best five. 1, unnamed player, 150', said.last
+    assert said.last == ('Hard, your best five. 1, unnamed player. Score, 150. Coins, 3. '
+                         'Time, 3 minutes 12 seconds.'), said.last
+
+
+def test_the_stats_screen_reads_its_rows_in_the_devs_order():
+    from insidethecave.game import stats
+    from insidethecave.ui.stats_screen import StatsScreen
+    d = _defaults()
+    d.removeObjectForKey_(stats.STATS_KEY)
+    run = dict(score=400, coins=7, seconds=192, speed=18, torchesPicked=3,
+               batsFrightened=1, monstersKilled=2, batsDodged=4, monstersDodged=9)
+    stats.record(d, 'easy', run)
+    stats.record(d, 'easy', dict(run, seconds=30, speed=5, coins=1))
+    stats.record(d, 'hard', dict(run, seconds=4000, speed=36))
+    said = _Said()
+    s = StatsScreen(d, said, 'easy')
+    s.viewDidLoad()
+    assert said.last == 'Easy stats. Games played, 2.', said.last
+    assert [label for _k, label in s.rows] == [
+        'Games played, 2.', 'Longest run, 3 minutes 12 seconds.', 'Fastest speed reached, 18.',
+        'Total coins, 8.', 'Total time played, 3 minutes 42 seconds.',
+        'Torches picked up, 6.', 'Bats frightened, 2.', 'Monsters killed, 4.',
+        'Bats dodged, 8.', 'Monsters dodged, 18.', 'Menu']
+    _keys(s, 'escape')
+    assert s.next == 'choose_stats'
+    every = StatsScreen(d, said, 'all')
+    every.viewDidLoad()
+    assert every.rows[0][1] == 'Games played, 3.'
+    assert every.rows[1][1] == 'Longest run, 66 minutes 40 seconds.', every.rows[1]
+    assert every.rows[2][1] == 'Fastest speed reached, 36.'
+    assert every.rows[4][1] == 'Total time played, 1 hour 10 minutes.', every.rows[4]
+
+
+def test_stats_offers_all_time_and_the_others_do_not():
+    assert [k for k, _ in DifficultyScreen(_Said(), then='stats').rows] == \
+        ['easy', 'medium', 'hard', 'all']
+    assert [k for k, _ in DifficultyScreen(_Said(), then='ranking').rows] == \
+        ['easy', 'medium', 'hard']
 
 
 # ---- the pause menu ------------------------------------------------------------------------

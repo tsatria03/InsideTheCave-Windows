@@ -35,9 +35,10 @@ class HomeScreenViewController(RowScreen):
     def __init__(self, defaults=None, speech=None):
         super().__init__(speech)
         self.defaults = defaults
-        # the buttons' titles; PORT: each asks for a difficulty first, and Quit is added
-        self.rows = [('choose_game', 'Play'), ('choose_ranking', 'Score'),
-                     ('quit', 'Quit')]
+        # the buttons' titles, play and score; PORT: each asks for a difficulty first, Score
+        # is "Scores", and Stats and Quit are added (the dev; project_scores_stats_plan.md)
+        self.rows = [('choose_game', 'Play'), ('choose_ranking', 'Scores'),
+                     ('choose_stats', 'Stats'), ('quit', 'Quit')]
 
     # HomeScreenViewController.viewDidLoad 0x100019fa4
     def viewDidLoad(self, announce=True):

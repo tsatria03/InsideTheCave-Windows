@@ -110,6 +110,11 @@ NO_TORCH_TO_THROW = 'No torch to throw.'
 #: from 5.0 whatever speed a game starts at, so the planned Medium opens on 10 and Hard on 20.
 SAY_SCORE, SAY_COINS, SAY_SPEED = 'Score, %d.', 'Coins, %d.', 'Speed, %d.'
 SPEED_COUNT_FROM = 5.0
+#: PORT ADDITION: what a run counts for the stats (aidocks/project_scores_stats_plan.md).
+#: Dodged: a monster or bats in your lane when its sound played, which then passed without
+#: catching you; one a torch killed or frightened is counted as that instead.
+RUN_COUNTS = ('torchesPicked', 'batsFrightened', 'monstersKilled', 'batsDodged',
+              'monstersDodged')
 #: PORT ADDITION: the sound each coin and each torch on the path carries, looped, at
 #: SpriteKit's default volume (question 4).  The coins had tilintar until the dev gave it to
 #: the torches, and the coins the early versions' coin.wav (for the third release).
@@ -209,6 +214,12 @@ class GameScene(Scene):
         self.torch_low_said = False
         self.started = False
         self.footsteps = None                                # PORT ADDITION: the loop playing
+        # PORT ADDITION: what this run did, for the result screen and the stats
+        # (aidocks/project_scores_stats_plan.md)
+        self.run = {key: 0 for key in RUN_COUNTS}
+        self.runSeconds = 0.0           # in the cave: from the first slot, not paused
+        self._lastFrame = None
+        self.threats = []               # monsters and bats in your lane at their sound
 
     # ---- helpers the binary inlines -----------------------------------------------------
     @property
@@ -803,8 +814,10 @@ class GameScene(Scene):
 
         if (p := pair(SENSOR, MONSTER)):
             self.playMonsterRoarAtPoint(p[1].position)
+            self._threat(p[1])
         elif (p := pair(SENSOR, BAT)):
             self.playBatSoundAtPoint(p[1].position)
+            self._threat(p[1])
         elif (p := pair(COIN, PLAYER)):
             self.playerDidCollideWithCoin(p[0], p[1])
         elif (p := pair(THROWN_TORCH, MONSTER)):
@@ -815,6 +828,32 @@ class GameScene(Scene):
             self.playerDidCollideWithTorch(p[0])
         elif (p := pair(PLAYER, MONSTER)) or (p := pair(PLAYER, BAT)):
             self.obstacleDidCollideWithPlayer(p[0], p[1])
+
+    # ---- PORT ADDITION: what the run counts -------------------------------------------
+    def _threat(self, node):
+        """A monster or bats at the sensor: in your lane, as the roar's own test has it
+        (0x10000f738), it is one to dodge."""
+        if node.position[0] == self.player.position[0] and node not in self.threats:
+            self.threats.append(node)
+
+    def _settle(self, node):
+        """It will not count as dodged: killed, frightened, or it hit you in debug mode."""
+        if node in self.threats:
+            self.threats.remove(node)
+
+    def update(self, now):
+        """``update:`` is empty in the original (0x10001561c).  PORT ADDITION: the time in
+        the cave, from the first slot, alive and not paused; and a threat that has left the
+        scene without catching you is dodged."""
+        last, self._lastFrame = self._lastFrame, now
+        if last is not None and self.started and not self.playerDead and not self.paused:
+            self.runSeconds += now - last
+        for node in list(self.threats):
+            if node.parent is None:
+                self.threats.remove(node)
+                if not self.playerDead:
+                    key = 'batsDodged' if node.name == 'bat' else 'monstersDodged'
+                    self.run[key] += 1
 
     # GameScene.playerDidCollideWithCoin:playerP: 0x10001390c
     def playerDidCollideWithCoin(self, coin, player):
@@ -834,6 +873,7 @@ class GameScene(Scene):
         self.lightTorch.falloff = FALLOFF_START
         self.torch_low_said = False                                    # PORT: a new torch
         self.changeSpritePlayer(True)
+        self.run['torchesPicked'] += 1                                 # PORT: the stats
 
     # GameScene.torchDidCollideWithObstacle:obstacleE: 0x1000133b8
     def torchDidCollideWithObstacle(self, torch, monster):
@@ -849,6 +889,8 @@ class GameScene(Scene):
             self.createObjectScene()
         torch.removeFromParent()
         monster.removeFromParent()
+        self._settle(monster)                                          # PORT: the stats
+        self.run['monstersKilled'] += 1
         if self.throwLightTorch is not None:
             self.throwLightTorch.removeFromParent()
         self.lightTorch.falloff = FALLOFF_OUT
@@ -868,11 +910,16 @@ class GameScene(Scene):
             fraction = 0.0
         bat.runAction(A.moveToX(fraction * W, 0.3))
         self.batSound.runAction(A.moveToX(fraction * W, 0.3))          # PORT ADDITION
+        self._settle(bat)                                              # PORT: the stats
+        if not getattr(bat, 'frightened', False):
+            bat.frightened = True
+            self.run['batsFrightened'] += 1
 
     # GameScene.obstacleDidCollideWithPlayer:obstacleE: 0x1000230c4
     def obstacleDidCollideWithPlayer(self, player, obstacle):
         if self.debug:
             self.say('Hit')         # --debug: nothing kills the player
+            self._settle(obstacle)  # not dodged
             return
         if self.playerDead:
             return

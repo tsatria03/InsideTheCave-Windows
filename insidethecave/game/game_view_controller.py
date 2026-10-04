@@ -42,6 +42,7 @@ class GameViewController:
         #: PORT ADDITION: the difficulty the next game is played at, set by the screen loop
         #: (aidocks/project_difficulty_plan.md); Replay and Restart keep it.
         self.difficulty = DEFAULT_DIFFICULTY
+        self.last_run = None
         self.scene = None
         self.engine = None
         self.score = 0
@@ -87,6 +88,13 @@ class GameViewController:
     # -[GameViewController gameOverDelegateFunc] 0x100017fdc
     def gameOverDelegateFunc(self):
         self.over = True
+        s = self.scene
+        #: PORT ADDITION: the run, for the result screen and the stats
+        self.last_run = dict(score=self.score, coins=self.coins,
+                             seconds=int(s.runSeconds) if s is not None else 0,
+                             speed=s.speedCount() if s is not None else 0,
+                             difficulty=self.difficulty,
+                             **(dict(s.run) if s is not None else {}))
         log.info('game over: score %d, coins %d', self.score, self.coins)
         if self.on_game_over is not None:
             self.on_game_over(self.score, self.coins)
