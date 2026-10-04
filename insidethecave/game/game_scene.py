@@ -138,8 +138,17 @@ ARRIVAL = {'coin': ('A coin appeared in the %s lane. Go there to grab it', ''),
                        ', or throw your torch at it'),
            'bat': ('Bats appeared in the %s lane. Stay out of that lane',
                    ', or throw your torch to scare them off')}
-#: Said once all 12 have been (the dev: "Do a closing line.").
-TUTORIAL_CLOSING = "You've met everything in the cave. From now on, listen for them yourself."
+#: Said once the 12th has gone (the dev: "Do a closing line."; reworded: "let the player
+#: know that they can now practice what they've learned").
+TUTORIAL_CLOSING = ("Well done! You've met everything in the cave! Now practice what you've "
+                    "learned, just like the real game, but at a steady pace. I'll stay quiet "
+                    "from here, so trust your ears.")
+#: The teaching part's things: each kind in each cave lane once, shuffled (the dev: "I like
+#: steered."; aidocks/project_tutorial_steered_plan.md).
+LESSONS = tuple((kind, lane) for kind in ARRIVAL for lane in range(len(LANE_NAMES)))
+#: Seconds the cave stays empty after one is passed, killed or caught (the dev: "It should
+#: give me breathing room to wait for the next one to spawn"; 3 s, "Yes.").
+LESSON_PAUSE = 3.0
 #: Said as one announced falls past your row without being taken, killed or catching you
 #: (the dev: "when you pass any entity, it will say past"; then "something like, coin
 #: past, on your left, on your right, in the middle.").
@@ -265,9 +274,14 @@ class GameScene(Scene):
         self._lastFrame = None
         self.threats = []               # monsters and bats in your lane at their sound
         # PORT ADDITION: the tutorial's state
-        self.pendingCompanion = None    # a coin or torch waiting for an empty slot
+        #: the teaching part, until the closing line has been said; then the real game
+        self.teaching = self.tutorialMode
+        self.lessons = list(LESSONS) if self.teaching else []   # (kind, cave lane) to come
+        self.random.shuffle(self.lessons)   # only the tutorial's: Play's draws stay as they were
+        self.lesson = None              # the one in the cave
+        self._nextLessonAt = 0.0        # the cave's time the next may come
+        self._closing = False           # the closing line said, or waiting to be
         self._lines = []                # lines waiting for the voice
-        self._taught = set()            # (kind, cave lane) whose arrival has been said
         self._watching = []             # things announced, to say when they pass you
         self._voiceFreeAt = 0.0
         self._threwOnce = False
@@ -391,20 +405,23 @@ class GameScene(Scene):
         the slot objectHeight picks, every 3rd obstacle round; otherwise an empty slot that
         only keeps the chain going.  Then the light dims a step, and every 20th slot the
         game speeds up, the original's while speedMonster is 2.0 or more, the port's while
-        it is above the difficulty's top."""
+        it is above the difficulty's top.  PORT: in the tutorial's teaching part a slot
+        holds the next of its 12 things, when one may come, or nothing; after it, the
+        original's slots as they are."""
         s = self.countObjectScene
         slot = SpriteNode(name='slot')                                 # an empty sprite
-        if s & 3 == 0:
+        if self.teaching:                                              # PORT: the tutorial
+            slot = self.nextLesson() or slot
+            self.addChild(slot)
+            slot.runAction(self.moveObstacleWithBorn(slot))
+            self.announce(slot)
+        elif s & 3 == 0:
             if self.countObstacles % 7 == 0:                           # 0x10000c760..0x10000c778
                 node = self.createBats()
             else:
                 node = self.createMonster()
             if self.objectHeight == 4:                                 # 0x10000c7c4
-                if self.tutorialMode:
-                    # PORT: one thing at a time; the companion waits for an empty slot
-                    self.pendingCompanion = (self.createCoin if self.countSubObstacles & 3
-                                             else self.createTorchObstacle)
-                elif self.countSubObstacles & 3:
+                if self.countSubObstacles & 3:
                     self.coinTogether()
                 else:
                     self.torchTogether()
@@ -415,7 +432,6 @@ class GameScene(Scene):
             self.addChild(node)
             node.runAction(self.moveObstacleWithBorn(node))
             self.countObstacles += 1                                   # 0x10000c888
-            self.announce(node)                                        # PORT: the tutorial
         else:
             if (self.countObstacles % 3 == 0 and self.objectHeight <= 3
                     and s % 4 == self.objectHeight):                   # 0x10000c6dc..0x10000c720
@@ -424,12 +440,9 @@ class GameScene(Scene):
                 else:
                     slot = self.createTorchObstacle()
                 self.countSubObstacles += 1                            # 0x10000c8c0
-            elif self.pendingCompanion is not None:                    # PORT: the tutorial
-                slot, self.pendingCompanion = self.pendingCompanion(), None
             self.addChild(slot)                                        # 0x10000c8d4
             slot.runAction(self.moveObstacleWithBorn(slot))
-            self.announce(slot)                                        # PORT: the tutorial
-        self.countObjectScene += 1                                     # 0x10000c93c
+        self.countObjectScene += 1                                    # 0x10000c93c
         self.updateFootsteps()                                         # PORT ADDITION
         self.changeFalloffSize()                                       # 0x10000c94c
         if self.countObjectScene % 20 == 0 and self.speedMonster > self.topSpeed:
@@ -912,19 +925,46 @@ class GameScene(Scene):
         return line % LANE_NAMES[lane] + (throw if lit else '') + '.'
 
     def announce(self, node):
-        """A thing appeared: in the tutorial, the first time its kind comes down its cave
-        lane, say so at once, cutting in (aidocks/project_tutorial_teaching_plan.md; the
-        dev: "Please make all 12 lines interupt.").  The 12th brings the closing line."""
-        if not self.tutorialMode or node.name not in ARRIVAL:
+        """A thing appeared in the teaching part: say what and which cave lane at once,
+        cutting in (aidocks/project_tutorial_teaching_plan.md; the dev: "Please make all 12
+        lines interupt.")."""
+        if not self.teaching or node.name not in ARRIVAL:
             return
-        key = (node.name, self.laneOf(node.position[0]))
-        if key in self._taught:
-            return
-        self._taught.add(key)
         self._watching.append(node)
-        self.tutorialSay(self.announcement(node, key[1]), urgent=True)
-        if len(self._taught) == len(ARRIVAL) * len(LANE_NAMES):
-            self.tutorialSay(TUTORIAL_CLOSING)
+        self.tutorialSay(self.announcement(node), urgent=True)
+
+    # ---- PORT ADDITION: the teaching part (aidocks/project_tutorial_steered_plan.md) ----
+    def nextLesson(self):
+        """The next of the 12, in its own cave lane, if none is in the cave and the pause
+        after the last is over; else None."""
+        if self.lesson is not None or not self.lessons \
+                or (self.time or 0.0) < self._nextLessonAt:
+            return None
+        kind, lane = self.lessons.pop(0)
+        make = {'coin': self.createCoin, 'torch': self.createTorchObstacle,
+                'monster': self.createMonster, 'bat': self.createBats}[kind]
+        node = make()
+        node.position = ((lane - 1) * 0.3 * self.W, node.position[1])
+        self.lesson = node
+        return node
+
+    def watchLesson(self):
+        """The one in the cave done, passed below your row, killed or caught (bats a torch
+        frightened still come on, so they are done once passed): the next may come after
+        the pause; after the 12th, the closing line, and once it has been said, the real
+        game (the dev: "It can resume spawning them like normal after the closing line
+        speaks.")."""
+        node = self.lesson
+        if node is not None and (node.parent is None
+                                 or node.position[1] < self.player.position[1]):
+            self.lesson = None
+            self._nextLessonAt = (self.time or 0.0) + LESSON_PAUSE
+            if not self.lessons:
+                self._closing = True
+                self.tutorialSay(TUTORIAL_CLOSING)
+        if self._closing and TUTORIAL_CLOSING not in self._lines and not self._voiceBusy():
+            self.teaching = False
+            self._watching.clear()
 
     def _caught(self, node):
         """In the tutorial, a coin or torch picked up from the cave is said ("Coin
@@ -971,7 +1011,11 @@ class GameScene(Scene):
         will do this non interuptively").  An urgent one, every line but the closing one,
         is said at once, cutting off the line being said; the lines waiting
         carry on after it (the dev: "it should interupt, not wait."; "Please make all 12
-        lines interupt.")."""
+        lines interupt.").  After the teaching part, nothing (the dev: "the speeches for
+        coin and toarch caught will no longer play after the intruductory parts are
+        over."; the torch lines too)."""
+        if not self.teaching:
+            return
         if urgent:
             self._speakNow(text)
         else:
@@ -1018,9 +1062,11 @@ class GameScene(Scene):
                 if not self.playerDead:
                     key = 'batsDodged' if node.name == 'bat' else 'monstersDodged'
                     self.run[key] += 1
-        if self.tutorialMode:
+        if self.teaching:
             self.watchPassing()
             self._nextLine()
+            if self.started and not self.playerDead:
+                self.watchLesson()
 
     # GameScene.playerDidCollideWithCoin:playerP: 0x10001390c
     def playerDidCollideWithCoin(self, coin, player):

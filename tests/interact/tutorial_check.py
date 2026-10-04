@@ -18,33 +18,34 @@ The starting points:
      1  the tutorial as chosen from the main menu: the welcome in the Windows voice, then
         your keys, then the cave
      2  the tutorial as after Replay or Restart: no welcome, the cave after two seconds
-     3  only coins and torches, one at a time, to hear each taught in each cave lane
-     4  only monsters and bats, to hear each taught, and to throw at them: your torch is
-        lit again a second after each throw, so you can hear every throw line
+     3  just after the closing line: the real game at speed 5.0, with nothing said
 
-Things to listen for (aidocks/project_tutorial_plan.md and
-aidocks/project_tutorial_teaching_plan.md):
+Things to listen for (aidocks/project_tutorial_plan.md,
+aidocks/project_tutorial_teaching_plan.md and aidocks/project_tutorial_steered_plan.md):
 
-* each kind said only the first time it comes down each cave lane, wherever you stand: "A
-  coin appeared in the left lane. Go there to grab it.", "A torch appeared in the middle
-  lane. Go there to pick it up.", "A monster appeared in the right lane. Stay out of it, or
-  throw your torch at it.", "Bats appeared in the left lane. Stay out of that lane, or throw
-  your torch to scare them off."; without a torch, no throw; the same kind in the same lane
-  again, nothing;
-* once all 12 (start 1 or 2; 3 and 4 have only 6 each): "You've met everything in the cave.
-  From now on, listen for them yourself.";
-* "Coin passed, in the left lane." and so on, only for one that was announced, and nothing
-  for a coin or torch you took or a monster you killed;
-* "Coin caught." and "Torch caught." every time you pick one up (not for start 4's relit
-  torch);
-* the closing line waiting for the one before to finish;
-* cutting in at once: each arrival, each passed and caught line, "The monster was hit! It's gone.", "The bats were hit, and dodged to
-  your left.", "Your torch flew off without hitting anything.", and on the first throw
-  "You're out of light now. Find another torch soon."; the lines waiting then carry on;
-* the cave never speeding up, your footsteps walking, S "No score to report.", E "No speed
-  to report.", C your coins;
-* Control cutting off one line, the next waiting one following;
-* caught: "You were caught.", Replay (no welcome) and Menu; nothing saved.
+* the teaching part (starts 1 and 2): exactly 12 things, a coin, a torch, a monster and
+  bats in each cave lane, in a new order each time, none twice;
+* only one in the cave at a time, the next coming 3 seconds after the last has passed you,
+  been killed, or been caught; bats your torch frightened still have to pass you;
+* each announced as it appears, wherever you stand: "A coin appeared in the left lane. Go
+  there to grab it.", "A torch appeared in the middle lane. Go there to pick it up.", "A
+  monster appeared in the right lane. Stay out of it, or throw your torch at it.", "Bats
+  appeared in the left lane. Stay out of that lane, or throw your torch to scare them
+  off."; without a torch, no throw;
+* "Coin passed, in the left lane." and so on, and nothing for a coin or torch you took or
+  a monster you killed; "Coin caught." and "Torch caught.";
+* cutting in at once: each arrival, passed and caught line, "The monster was hit! It's
+  gone.", "The bats were hit, and dodged to your left.", "Your torch flew off without
+  hitting anything.", and on the first throw "You're out of light now. Find another torch
+  soon.";
+* after the 12th, the closing line, waiting for the one before to finish: "Well done!
+  You've met everything in the cave! Now practice what you've learned, just like the real
+  game, but at a steady pace. I'll stay quiet from here, so trust your ears.";
+* once it is said (and from the start in start 3): the real game, a monster or bats with a
+  coin or torch beside it at times, the cave at 5.0, and no tutorial line at all;
+* throughout: your footsteps walking, S "No score to report.", E "No speed to report.", C
+  your coins, Control stopping the voice;
+* caught: "You were caught.", Replay (no welcome, a new 12) and Menu; nothing saved.
 
 **Your save is never touched**: its own save in
 ``%APPDATA%\\InsideTheCave\\tutorial_check``, with a copy of your key bindings and volume
@@ -67,16 +68,15 @@ from platform_check import Quit, Window                          # noqa: E402
 platform_check.SAVE_NAME = 'tutorial_check'
 Window.TITLE = 'Inside The Cave - tutorial check'
 
-#: (what it is, with the welcome, what comes down: None for everything)
-STARTS = (('the tutorial as chosen from the main menu, with its welcome', True, None),
-          ('the tutorial as after Replay, without the welcome', False, None),
-          ('only coins and torches', False, 'pickups'),
-          ('only monsters and bats, and your torch lit again after each throw', False,
-           'threats'))
+#: (what it is, with the welcome, straight to the real game after the closing line)
+STARTS = (('the tutorial as chosen from the main menu, with its welcome', True, False),
+          ('the tutorial as after Replay, without the welcome', False, False),
+          ('just after the closing line: the real game at speed 5.0, nothing said', False,
+           True))
 
 
 def choose():
-    """The window's menu; returns (welcome, only, debug), or None to quit."""
+    """The window's menu; returns (welcome, practice, debug), or None to quit."""
     from insidethecave.platform.speech import Speech
     speech = Speech.shared()
     window = Window()
@@ -106,8 +106,8 @@ def choose():
                     debug = not debug
                     say('Debug mode %s.' % ('on' if debug else 'off'))
                 elif name in ('return', 'enter'):
-                    _label, welcome, only = STARTS[index]
-                    return welcome, only, debug
+                    _label, welcome, practice = STARTS[index]
+                    return welcome, practice, debug
                 else:
                     say(item())
             time.sleep(0.02)
@@ -122,12 +122,9 @@ def main():
     picked = choose()
     if picked is None:
         return 0
-    welcome, only, debug = picked
+    welcome, practice, debug = picked
 
     import InsideTheCave
-    from insidethecave.game import game_scene as G
-    from insidethecave.scene import actions as A
-    from insidethecave.scene.node import SpriteNode
 
     class Args:
         game = None
@@ -136,31 +133,13 @@ def main():
 
     Args.debug = debug
 
-    def empty():
-        return SpriteNode(name='slot')
-
     class TutorialApp(InsideTheCave.App):
         def start_game(self):
             super().start_game()
             s = self.game.scene
-            if only == 'pickups':
-                s.createMonster = s.createBats = empty
-            elif only == 'threats':
-                s.createCoin = s.createTorchObstacle = empty
-                real_throw = s.throwTorch
-
-                def relight():
-                    if not s.playerDead:
-                        s.playerDidCollideWithTorch(SpriteNode(name='torch'))
-
-                def throw():
-                    """A throw, then the torch lit again about a second later."""
-                    lit = s.falloffSize < G.FALLOFF_LAST
-                    real_throw()
-                    if lit and s.falloffSize == G.FALLOFF_OUT:
-                        s.runAction(A.sequence([A.waitForDuration(1.0),
-                                                A.runBlock(relight)]))
-                s.throwTorch = throw
+            if practice:                    # the teaching part over before it began
+                s.lessons.clear()
+                s.teaching = False
 
     app = TutorialApp(Args())
     if welcome:

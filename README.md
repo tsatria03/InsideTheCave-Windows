@@ -87,8 +87,10 @@ menu with Resume, Restart and Quit to menu, where Escape or P resumes. While a g
 Home and End set the master volume. Page Up and Page Down set the game's music in a game,
 paused or not, and the menu music on the menus. F1 lists and changes the keys, and Alt+F4
 quits. Leaving the window pauses. On your first two games your screen reader says the
-keys. The **Tutorial** teaches the game at a speed that never rises, one thing at a time,
-a Windows voice saying what each is, where, and what to do; nothing in it is saved.
+keys. The **Tutorial** teaches the game at a speed that never rises: twelve things, a coin,
+a torch, a monster and bats in each lane, one at a time in a shuffled order, a Windows
+voice saying what each is, which lane, and what to do; then the real game, with nothing
+said. Nothing in it is saved.
 
 ## Layout
 
@@ -223,9 +225,9 @@ to, and your torch is lit again a second later.
 
     python tests/interact/bat_check.py
 
-`tutorial_check.py` starts the Tutorial, with or without its welcome, or with only coins
-and torches, or only monsters and bats with your torch lit again after each throw, so you
-can hear every announcement and throw line; debug mode is a choice.
+`tutorial_check.py` starts the Tutorial, with or without its welcome, so you can hear
+its twelve things taught one at a time, or just after its closing line, to hear the real
+game it becomes; debug mode is a choice.
 
     python tests/interact/tutorial_check.py
 

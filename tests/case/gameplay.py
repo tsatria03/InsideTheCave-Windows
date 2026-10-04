@@ -159,23 +159,35 @@ def test_without_a_windows_voice_the_screen_reader_says_the_welcome():
 
 # ---- the tutorial --------------------------------------------------------------------------
 
-def _tutorial(seed=1):
+def _tutorial(seed=1, debug=False):
     """A tutorial game just started, its voice quiet and nothing waiting to be said."""
-    g = _Game(seed=seed, tutorial=True)
+    g = _Game(seed=seed, tutorial=True, debug=debug)
     g.start()
     g.voice.lines.clear()
     g.voice.speaking = False
     g.scene._lines.clear()
-    g.scene._taught.clear()         # the first slot's, said as the game started
-    g.scene._watching.clear()
+    g.scene._watching.clear()       # the first lesson's, said as the game started
     g.scene._voiceFreeAt = 0.0
     return g
 
 
+def _unlesson(s):
+    """The lesson in the cave made an empty slot: it still makes the next slot as it
+    falls, as removing it would not."""
+    if s.lesson is not None:
+        s.lesson.name = 'slot'
+        s.lesson.physicsBody = None             # it touches nothing
+        s.lesson = None
+
+
 def _quiet(g):
-    """Nothing more comes down the cave: each slot is an empty node."""
+    """Nothing more comes down the cave, the teaching part still on: the first lesson
+    gone, none to follow, each slot an empty node."""
+    s = g.scene
+    _unlesson(s)
+    s.lessons.clear()
     for make in ('createMonster', 'createBats', 'createCoin', 'createTorchObstacle'):
-        setattr(g.scene, make, lambda: G.SpriteNode(name='slot'))
+        setattr(s, make, lambda: G.SpriteNode(name='slot'))
 
 
 def _hear(g, seconds):
@@ -217,26 +229,89 @@ def test_the_tutorial_holds_the_speed_scores_nothing_and_walks():
     assert g.speech.lines[-3:] == ['No score to report.', 'No speed to report.', 'Coins, 1.']
 
 
-def test_in_the_tutorial_a_companion_waits_for_the_next_empty_slot():
+def test_the_teaching_part_has_the_12_each_once_in_a_shuffled_order():
+    """The dev: "I like steered."."""
+    orders = []
+    for seed in (1, 2, 3):
+        s = _Game(seed=seed, tutorial=True).scene
+        assert sorted(s.lessons) == sorted(G.LESSONS) and len(G.LESSONS) == 12
+        orders.append(tuple(s.lessons))
+    assert len(set(orders)) == 3, 'a new order each tutorial'
+    assert not _Game(seed=1).scene.teaching, 'Play never teaches'
+
+
+def test_the_12_come_one_at_a_time_then_the_closing_line_then_the_real_game():
+    """The dev: "an entity will not spawn untill the user has fully either A, past it, B,
+    torched it, and or C, caught it."; "It can resume spawning them like normal after the
+    closing line speaks."."""
+    g = _Game(seed=5, tutorial=True, debug=True)    # nothing can catch you
+    g.start()
+    s = g.scene
+    s.actualPositionPlayer = 2                  # the right lane: some pass, some are caught
+    s.player.position = (0.3 * W, s.player.position[1])
+    came, done = [], []
+    last = s.lesson
+    came.append(s.time)
+    while s.teaching and g.t < 200.0:
+        g.voice.speaking = False
+        g.run(0.1)
+        inside = [n for n in s.children if n.name in G.ARRIVAL]
+        assert len(inside) <= 1, 'two in the cave at once'
+        if s.lesson is not last:
+            if last is not None:
+                done.append(s.time)
+            if s.lesson is not None:
+                came.append(s.time)
+            last = s.lesson
+    assert not s.teaching, 'the teaching part never ended'
+    assert len(came) == 12 and len(done) == 12
+    gaps = [b - a for a, b in zip(done, came[1:])]
+    assert min(gaps) >= G.LESSON_PAUSE - 1e-6, gaps
+    arrivals = [line for line in g.voice.lines if 'appeared' in line]
+    assert len(arrivals) == 12 == len(set(arrivals)), arrivals
+    assert G.TUTORIAL_CLOSING in g.voice.lines
+    said = len(g.voice.lines)
+    obstacles = s.countObstacles
+    g.run(30.0)
+    assert s.countObstacles > obstacles, 'the real game after'
+    assert len(g.voice.lines) == said, 'nothing more said'
+    assert s.speedMonster == 5.0
+
+
+def test_a_lesson_killed_or_torched_bats_passed_is_done():
+    g = _tutorial(seed=2)
+    s = g.scene
+    _unlesson(s)
+    s.lessons[:] = [('monster', 0), ('bat', 1), ('coin', 2)]
+    g.run(1.0)
+    monster = s.lesson
+    assert monster is not None and monster.name == 'monster'
+    s.torchDidCollideWithObstacle(s.createTorch(), monster)
+    g.step(0.0)
+    assert s.lesson is None, 'killed: done'
+    g.run(G.LESSON_PAUSE - 0.2)
+    assert s.lesson is None, 'the pause'
+    g.run(1.2)
+    bats = s.lesson
+    assert bats is not None and bats.name == 'bat'
+    s.torchDidCollideWithBat(s.createTorch(), bats)
+    g.run(1.0)
+    assert s.lesson is bats, 'frightened bats still to pass'
+    g.run(6.0)
+    assert s.lesson is not bats
+
+
+def test_no_tutorial_lines_after_the_teaching_part():
+    """The dev: the caught lines "will no longer play after the intruductory parts are
+    over."; the torch lines too."""
     g = _tutorial()
     s = g.scene
-    made = []
-    for kind in ('createCoin', 'createTorchObstacle', 'createMonster', 'createBats'):
-        real = getattr(s, kind)
-
-        def wrap(real=real, kind=kind):
-            made.append((s.countObjectScene, kind))
-            return real()
-        setattr(s, kind, wrap)
-    for _ in range(400):
-        s.createObjectScene()
-    slots = [slot for slot, _kind in made]
-    assert len(slots) == len(set(slots)), 'two things in one slot'
-    after = [slot for slot, kind in made
-             if kind in ('createCoin', 'createTorchObstacle')
-             and ((slot - 1, 'createMonster') in made or (slot - 1, 'createBats') in made)]
-    assert after, 'no companion came the slot after its obstacle'
-    assert s.pendingCompanion is None or s.countObjectScene % 4 == 1
+    s.teaching = False
+    _coming(g, 'coin', 0)
+    s.tutorialSay(G.MONSTER_HIT, urgent=True)
+    s.tutorialSay('Coin caught.')
+    _hear(g, 6.0)
+    assert g.voice.lines == []
 
 
 def test_the_tutorial_names_the_cave_lanes_wherever_you_stand():
@@ -266,30 +341,6 @@ def test_the_tutorial_names_the_cave_lanes_wherever_you_stand():
                                                  'out of it.'
     assert s.announcement(node('bat', 1)) == 'Bats appeared in the middle lane. Stay out of ' \
                                              'that lane.'
-
-
-def test_each_kind_is_taught_once_in_each_cave_lane_then_the_closing_line():
-    """The dev: "It gives people the feel for what's going to be in a level without
-    bombarding them with so much info over and over."; "Do a closing line."."""
-    g = _tutorial()
-    _quiet(g)
-    s = g.scene
-    _coming(g, 'coin', 0, moving=False)
-    _coming(g, 'coin', 0, moving=False)         # the same, once taught
-    _hear(g, 2.0)
-    assert g.voice.lines == ['A coin appeared in the left lane. Go there to grab it.']
-    for kind in ('coin', 'torch', 'monster', 'bat'):
-        for lane in (0, 1, 2):
-            _coming(g, kind, lane, moving=False)
-    _hear(g, 15.0)
-    arrivals = [line for line in g.voice.lines if 'appeared' in line]
-    assert len(arrivals) == 12 == len(set(arrivals)), arrivals
-    assert g.voice.lines[-1] == G.TUTORIAL_CLOSING, 'after the 12th'
-    for kind in ('coin', 'torch', 'monster', 'bat'):
-        _coming(g, kind, 1, moving=False)
-    _hear(g, 5.0)
-    assert g.voice.lines.count(G.TUTORIAL_CLOSING) == 1 and len(g.voice.lines) == 13, \
-        'silent once taught'
 
 
 def test_tutorial_lines_wait_their_turn_and_a_throw_line_cuts_in():
@@ -374,21 +425,19 @@ def test_the_tutorial_says_when_an_announced_thing_passes_you():
     _coming(g, 'coin', 0)
     _hear(g, 5.0)
     assert g.voice.lines[-1] == 'Coin passed, in the left lane.', g.voice.lines
-    _coming(g, 'coin', 0)                       # taught already: no arrival, no passed
-    _hear(g, 5.0)
-    assert g.voice.lines.count('Coin passed, in the left lane.') == 1
     taken = _coming(g, 'torch', 2)
     _hear(g, 1.0)
     s.playerDidCollideWithTorch(taken)          # picked up before it passed
     _hear(g, 5.0)
     assert g.voice.lines[-1] == 'Torch caught.', 'the dev: "torch caught"'
+    caught = g.voice.lines.count('Coin caught.')
     coin = _coming(g, 'coin', 1)
     s.playerDidCollideWithCoin(coin, s.player)
     _hear(g, 1.0)
     coin = _coming(g, 'coin', 1)
     s.playerDidCollideWithCoin(coin, s.player)
     _hear(g, 1.0)
-    assert g.voice.lines[-2:] == ['Coin caught.', 'Coin caught.'], 'every time'
+    assert g.voice.lines.count('Coin caught.') == caught + 2, 'every time'
     s.playerDidCollideWithTorch(G.SpriteNode(name='torch'))     # not from the cave
     _hear(g, 1.0)
     assert g.voice.lines[-1] == 'Coin caught.', 'a relit torch is not caught'
